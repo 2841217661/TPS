@@ -17,14 +17,21 @@ public class GameManager : MonoSingleton<GameManager>
     {
         //测试：打开任务面板
         //UIManager.Instance.OpenPanel("QuestPanel");
+
+        //测试：开启一个
+        QuestManager.Instance.TryStartQuest(QuestName.村庄许可证);
     }
+
 
     private void Update()
     {
-        //测试：开启与蒙面男的对话任务
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-
+            UIManager.Instance.OpenPanel("QuestPanel");
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            UIManager.Instance.CloseCurrentPanel();
         }
     }
 }

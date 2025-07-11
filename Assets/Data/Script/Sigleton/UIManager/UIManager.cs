@@ -75,8 +75,8 @@ public class UIManager : MonoSingleton<UIManager>
         {
             {"DialoguePanel", UIPanelPath.DialoguePanel },
             {"QuestPanel",UIPanelPath.QuestPanel},
-            {"MainTaskPanel",UIPanelPath.MainQuestPanel },
-            {"BranchTaskPanel",UIPanelPath.BranchQuestPanel },
+            {"MainQuestPanel",UIPanelPath.MainQuestPanel },
+            {"BranchQuestPanel",UIPanelPath.BranchQuestPanel },
             //{PanelPathConfi.WeaponPanel, "Panel/Package/Weapon/WeaponPanel" },
             //{PanelPathConfi.WeaponDetailPanel, "Panel/Package/Weapon/WeaponDetailPanel" },
             //{PanelPathConfi.SelectSlotItemPanel, "Panel/Package/Weapon/SelectSlotItemPanel"  },

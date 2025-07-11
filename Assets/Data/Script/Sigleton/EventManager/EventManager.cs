@@ -5,6 +5,7 @@ public class EventManager : MonoSingleton<EventManager>
 {
     public EnemyEvent enemyEvent;
     public QuestEvent questEvent;
+    public NPCEvent npcEvent;
     protected override void Init()
     {
         base.Init();
@@ -13,5 +14,6 @@ public class EventManager : MonoSingleton<EventManager>
 
         enemyEvent = new EnemyEvent();
         questEvent = new QuestEvent();
+        npcEvent = new NPCEvent();
     }
 }

@@ -59,5 +59,6 @@ public class NPCManager : CharacterManager
     public virtual void InteractableFinish()
     {
         m_state = NPCState.Idle;
+        EventManager.Instance.npcEvent.FinishConversation(this);
     }
 }
