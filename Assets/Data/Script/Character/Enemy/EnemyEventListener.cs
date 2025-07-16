@@ -22,7 +22,7 @@ public class EnemyEventListener : MonoBehaviour
     private void Death_Enemy(EnemyManager _enemyManager)
     {
         Debug.Log("µĞÈËËÀÍö");
-        if(_enemyManager is TestEnemyManager)
+        if(_enemyManager is Enemy_Zombie)
         {
             EventManager.Instance.enemyEvent.Death_Zombie(_enemyManager);
         }

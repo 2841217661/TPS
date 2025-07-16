@@ -48,4 +48,9 @@ public class CharacterManager : MonoBehaviour
     {
 
     }
+
+    public virtual void OnDeath()
+    {
+
+    }
 }

@@ -4884,26 +4884,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e8135e46c26ca4d9b0a043f96e7f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterName: 
+  characterTitle: 
   defaultMoveSpeedMul: 0
   currentMoveSpeedMul: 0
   defaultAttackPowerMul: 0
   currentAttackPowerMul: 0
-  defaultShootSpeedMul: 0
-  currentShootSpeedMul: 0
-  defaultBulletCountMul: 0
-  currentBulletCountMul: 0
-  maxBulletCount: 0
-  currentBulletCount: 0
   defaultHealthMul: 0
   currentHealthMul: 0
   maxHealthValue: 0
   currentHealthValue: 0
   speed: 100
   damage: 1
-  lifeTime: 1
-  ignoreCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 20736
+  lifeTime: 3
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 9217

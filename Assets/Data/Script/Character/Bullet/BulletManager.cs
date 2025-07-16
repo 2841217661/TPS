@@ -23,8 +23,6 @@ public class BulletManager : CharacterManager,IPoolable
     public virtual void OnSpawn()
     {
         previousPosition = transform.position;
-
-        Debug.Log("实例一次子弹");
     }
 
 
@@ -53,7 +51,7 @@ public class BulletManager : CharacterManager,IPoolable
 
             //调用被击中者的受击接口方法
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-            damageable?.TakeDamage(damage);
+            damageable?.TakeDamage(damage,this, TakeDamageType.Light);
 
             PoolManager.Instance.Recycle(gameObject.name, gameObject); //回收子弹
                                                                        //实例特效
@@ -80,6 +78,10 @@ public class BulletManager : CharacterManager,IPoolable
         string _targetSXName = "";
         switch (_target.tag)
         {
+            case "Enemy":
+                _targetFXName = PoolManager.Instance.fx_bulletHitEnemy.name;
+                _targetSXName = PoolManager.Instance.sx_shootHit_Body.name;
+                break;
             case "Bark":
                 _targetFXName = PoolManager.Instance.fx_bulletHitObstacle_Bark.name;
                 _targetSXName = PoolManager.Instance.sx_shootHit_Bark.name;
@@ -123,7 +125,9 @@ public class BulletManager : CharacterManager,IPoolable
         }
 
         GameObject fx = PoolManager.Instance.Spawn(_targetFXName, _spawnPoint, Quaternion.identity);
+
         GameObject sx = PoolManager.Instance.Spawn(_targetSXName, _spawnPoint, Quaternion.identity);
+
         return fx;
     }
 }

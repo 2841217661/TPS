@@ -16,6 +16,7 @@ TagManager:
   - Plaster
   - Rock
   - Water
+  - Enemy
   layers:
   - Default
   - TransparentFX

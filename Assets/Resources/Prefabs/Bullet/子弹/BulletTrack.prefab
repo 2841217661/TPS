@@ -4884,26 +4884,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2692e5c80692189428e7c10f7cae238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterName: 
+  characterTitle: 
   defaultMoveSpeedMul: 0
   currentMoveSpeedMul: 0
   defaultAttackPowerMul: 0
   currentAttackPowerMul: 0
-  defaultShootSpeedMul: 0
-  currentShootSpeedMul: 0
-  defaultBulletCountMul: 0
-  currentBulletCountMul: 0
-  maxBulletCount: 0
-  currentBulletCount: 0
   defaultHealthMul: 0
   currentHealthMul: 0
   maxHealthValue: 0
   currentHealthValue: 0
-  speed: 20
+  speed: 10
   damage: 1
-  lifeTime: 1
-  ignoreCollisionLayer:
-    serializedVersion: 2
-    m_Bits: 20736
+  lifeTime: 10
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 9217
@@ -4911,7 +4904,8 @@ MonoBehaviour:
   trackTargetLayer:
     serializedVersion: 2
     m_Bits: 512
-  rotateSpeed: 200
+  rotateSpeed: 100
+  trackPointOffset: {x: 0, y: 1.4, z: 0}
 --- !u!114 &-3826991185341375405
 MonoBehaviour:
   m_ObjectHideFlags: 0

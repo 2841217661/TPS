@@ -7,19 +7,10 @@ public class TrackBulletManager : BulletManager
     public float trackDefaultTime = 0.1f;
     public LayerMask trackTargetLayer; //可追踪的物体层级
     public float rotateSpeed;
+    public Vector3 trackPointOffset; //追踪目标偏移量，因为一般模型点都是脚底，如果不加偏移量会追着敌人的脚底板打
     private float trackTimer;
     private Transform tractTargetTransform; //被追踪的目标
-
     private BulletState bulletState = BulletState.normal;
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        trackTimer = trackDefaultTime;
-    }
-
 
     protected override void Update()
     {
@@ -52,7 +43,7 @@ public class TrackBulletManager : BulletManager
                 else
                 {
                     // 1. 计算目标方向
-                    Vector3 dirToTarget = (tractTargetTransform.position - transform.position).normalized;
+                    Vector3 dirToTarget = ((tractTargetTransform.position + trackPointOffset) - transform.position).normalized;
 
                     // 2. 计算目标旋转
                     Quaternion targetRotation = Quaternion.LookRotation(dirToTarget);
@@ -105,7 +96,9 @@ public class TrackBulletManager : BulletManager
         }
 
         if (closestCharacterManager != null)
+        {
             return closestCharacterManager.transform;
+        }
 
         return null;
     }
@@ -122,5 +115,9 @@ public class TrackBulletManager : BulletManager
         base.OnSpawn();
 
         tractTargetTransform = CheckCloseEnemy(100f);
+
+        trackTimer = trackDefaultTime;
+
+        bulletState = BulletState.normal;
     }
 }
