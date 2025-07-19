@@ -1,17 +1,16 @@
 using UnityEngine;
-
+public enum NormalBulletType
+{
+    ordinary, //最普通的子弹
+    flame, //火焰子弹
+}
 public class NormalBulletManager : BulletManager
 {
-    private Rigidbody rb;
-
+    public NormalBulletType normalBulletType;
     protected override void Awake()
     {
         base.Awake();
-        //rb = GetComponent<Rigidbody>();
     }
-
-
-
 
     protected override void FixedUpdate()
     {

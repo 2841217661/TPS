@@ -38,7 +38,9 @@ public class BuffData:ScriptableObject
     public string[] tags = null;
 
     [Header("ÓÃÓÚUIÏÔÊ¾")]
+    [TextArea]
     public string buffDescript1 = "ÃèÊö1";
+    [TextArea]
     public string buffDescript2 = "ÃèÊö2"; 
 
     public Sprite icon;

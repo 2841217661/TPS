@@ -2,15 +2,18 @@ using UnityEngine;
 using RootMotion.FinalIK;
 using System.Collections.Generic;
 
-public class PlayerManager : CharacterManager
+public class PlayerManager : CharacterManager,IDamageable
 {
-    [Header("射击速度倍率")]
-    public float defaultShootSpeedMul;
-    public float currentShootSpeedMul;
+    [Header("攻击力倍率")]
+    public float defaultAttackPowerMul;
+    public float currentAttackPowerMul;
+
+    [Header("射击速度倍率")] //射击间隔
+    public float baseShootSpeed;
+    public float currentShootSpeed;
 
     [Header("弹容量倍率")]
-    public float defaultBulletCountMul;
-    public float currentBulletCountMul;
+    public int baseBulletCount;
     public int maxBulletCount;
     public int currentBulletCount;
 
@@ -46,12 +49,12 @@ public class PlayerManager : CharacterManager
     public LayerMask notDamageLayer; //玩家不可射击的对象层级
     public Transform shooter;
     public CurrentUseBulletType currentUseBulletType;
-    public float shootInterval; //射击间隔
     public float shootTimer;
     public enum CurrentUseBulletType
     {
-        BulletNormal,
-        BulletTrack,
+        BulletNormal_Ordinary,
+        BulletNormal_Flame,
+        BulletTrack_Ordinary,
     }
 
     private bool isMouseVisible;
@@ -76,6 +79,13 @@ public class PlayerManager : CharacterManager
     protected override void Awake()
     {
         base.Awake();
+
+        buffSystem = new BuffSystem(this);
+
+        currentShootSpeed = baseShootSpeed;
+
+        maxBulletCount = baseBulletCount;
+        currentBulletCount = maxBulletCount;
 
         //测试：开始游戏时隐藏鼠标
         //// 游戏开始时隐藏鼠标
@@ -117,7 +127,7 @@ public class PlayerManager : CharacterManager
 
         currentState = idleState;
         currentState.Enter();
-
+        
     }
 
     //初始化玩家属性值
@@ -149,30 +159,30 @@ public class PlayerManager : CharacterManager
 
         #region 进行调试
         当前姿态 = currentState.ToString();
-        //List<string> buffList = new List<string>();
-        //for(int i = 0; i < buffSystem.buffs.Count; i++)
-        //{
-        //    buffList.Add(buffSystem.buffs[i].BuffData.buffName);
-        //}
-        //当前拥有的Buff = buffList;
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    buffSystem.AddBuff<B_风之祝福>();
-        //}
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    buffSystem.RemoveBuff<B_风之祝福>();
-        //}
+        当前拥有的Buff.Clear();
+        for (int i = 0; i < buffSystem.buffs.Count; i++)
+        {
+            当前拥有的Buff.Add(buffSystem.buffs[i].BuffData.buffName);
+        }
         #endregion
 
         buffSystem.Update();
 
-        //测试：鼠标隐藏/显示
-        // 检测鼠标中键按下
-        if (Input.GetMouseButtonDown(2)) // 2代表鼠标中键
-        {
-            //ToggleMouseVisibility();
-        }
+        //if(Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    B_怒火焚身 b = buffSystem.FindOneBuff<B_怒火焚身>();
+        //    if(b != null)
+        //    {
+        //        Debug.Log("找到buff");
+        //        Debug.Log(b.rotationRadius);
+        //        b.rotationRadius = 333;
+        //        Debug.Log(b.rotationRadius);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("没有找到buff");
+        //    }
+        //}
     }
 
     private void ToggleMouseVisibility()
@@ -185,7 +195,7 @@ public class PlayerManager : CharacterManager
 
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         currentState.FixedUpdate();
 
@@ -352,6 +362,15 @@ public class PlayerManager : CharacterManager
     public GameObject InstantiatePrefab(GameObject _prefab, Vector3 _point, Quaternion _rotation)
     {
         return Instantiate(_prefab, _point, _rotation);
+    }
+
+
+    #endregion
+
+    #region 接口实现
+    public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
+    {
+        
     }
     #endregion
 }

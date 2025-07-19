@@ -1,8 +1,4 @@
 using UnityEngine;
-using TMPro;
-using DG.Tweening;
-using System.Collections;
-
 public class GameManager : MonoSingleton<GameManager>
 {
     public PlayerManager playerManager;
@@ -53,5 +49,4 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
     }
-
 }

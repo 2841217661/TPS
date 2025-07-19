@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Zombie : EnemyManager
+public class Enemy_Zombie : EnemyManager,IDamageable
 {
     [Header("设置相关")]
     public GameObject boomEffect; //死亡爆炸VFX
 
+    public float backResistance; //击退抗性
+    private float currentBackResistance;
 
     //检测范围分为两个检测
     //1：前方一定视角
@@ -17,12 +19,34 @@ public class Enemy_Zombie : EnemyManager
     public Vector3 checkOffset; //只能改变y的值
     private float checkInterval = 1f;  // 每隔1秒检测一次
     private float checkTimer = 0f;
-    
 
+    public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
+    {
+        Debug.Log($"{gameObject.name}受到来自{_source}的{_value}点伤害，伤害类型:{_type}");
+        switch (_type)
+        {
+            case TakeDamageType.Heavy:
+                state = EnemyState.Damage;
+                currentBackResistance = 100f;
+                break;
+            case TakeDamageType.Light:
+                currentBackResistance -= _value;
+                if (currentBackResistance <= 0f)
+                {
+                    currentBackResistance = backResistance;
+                    state = EnemyState.Damage;
+                }
+                break;
+        }
+
+        currentHealthValue -= _value;
+    }
 
     protected override void Awake()
     {
         base.Awake();
+
+        currentBackResistance = backResistance;
 
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();

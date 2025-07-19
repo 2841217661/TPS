@@ -10,6 +10,7 @@ public class Zombie_Damage : Action
         isEnterDamageAnim = false;
 
         self.Value.animator.CrossFade("Damage", 0.1f);
+        self.Value.animator.applyRootMotion = true;
     }
 
     public override TaskStatus OnUpdate()
@@ -36,5 +37,7 @@ public class Zombie_Damage : Action
     public override void OnEnd()
     {
         isEnterDamageAnim = false;
+
+        self.Value.animator.applyRootMotion = false;
     }
 } 

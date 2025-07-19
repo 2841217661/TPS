@@ -76,19 +76,23 @@ public class PlayerAimState : PlayerGroundState
     {
         base.Update();
 
-        playFootIntervaler += Time.deltaTime;
-        if (playFootIntervaler >= playFootInterval)
+        //播放脚步音效
+        if(playerManager.inputManager.movementInput != Vector2.zero)
         {
-            if (isFootL)
+            playFootIntervaler += Time.deltaTime;
+            if (playFootIntervaler >= playFootInterval)
             {
-                PoolManager.Instance.Spawn(PoolManager.Instance.sx_playerFoot_R.name, playerManager.transform.position, Quaternion.identity);
+                if (isFootL)
+                {
+                    PoolManager.Instance.Spawn(PoolManager.Instance.sx_playerFoot_R.name, playerManager.transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    PoolManager.Instance.Spawn(PoolManager.Instance.sx_playerFoot_L.name, playerManager.transform.position, Quaternion.identity);
+                }
+                isFootL = !isFootL;
+                playFootIntervaler = 0f;
             }
-            else
-            {
-                PoolManager.Instance.Spawn(PoolManager.Instance.sx_playerFoot_L.name, playerManager.transform.position, Quaternion.identity);
-            }
-            isFootL = !isFootL;
-            playFootIntervaler = 0f;
         }
 
         //this -> idle
@@ -135,7 +139,7 @@ public class PlayerAimState : PlayerGroundState
 
         playerManager.shootTimer += Time.fixedDeltaTime;
 
-        if (playerManager.shootTimer >= playerManager.shootInterval && playerManager.inputManager.GetFireInput())
+        if (playerManager.shootTimer >= playerManager.currentShootSpeed && playerManager.inputManager.GetFireInput())
         {
             GenerateBullet();
             GenerateShootSFX();
@@ -169,13 +173,17 @@ public class PlayerAimState : PlayerGroundState
 
         switch (playerManager.currentUseBulletType)
         {
-            case CurrentUseBulletType.BulletNormal:
-                PoolManager.Instance.Spawn(PoolManager.Instance.bulletNormal.name, shootOrigin, shootRotation);
-                PoolManager.Instance.Spawn(PoolManager.Instance.fx_bulletFire.name, shootOrigin, shootRotation);
+            case CurrentUseBulletType.BulletNormal_Ordinary:
+                PoolManager.Instance.Spawn(PoolManager.Instance.bulletNormal_Ordinary.name, shootOrigin, shootRotation);
+                PoolManager.Instance.Spawn(PoolManager.Instance.fx_bulletNormal_Ordinary_Fire.name, shootOrigin, shootRotation);
                 break;
-            case CurrentUseBulletType.BulletTrack:
-                PoolManager.Instance.Spawn(PoolManager.Instance.bulletTrack.name, shootOrigin, shootRotation);
-                PoolManager.Instance.Spawn(PoolManager.Instance.fx_bulletFire.name, shootOrigin, shootRotation);
+            case CurrentUseBulletType.BulletNormal_Flame:
+                PoolManager.Instance.Spawn(PoolManager.Instance.bulletNormal_Flame.name, shootOrigin, shootRotation);
+                PoolManager.Instance.Spawn(PoolManager.Instance.fx_bulletNormal_Flame_Fire.name, shootOrigin, shootRotation);
+                break;
+            case CurrentUseBulletType.BulletTrack_Ordinary:
+                PoolManager.Instance.Spawn(PoolManager.Instance.bulletTrack_Ordinary.name, shootOrigin, shootRotation);
+                PoolManager.Instance.Spawn(PoolManager.Instance.fx_bulletNormal_Ordinary_Fire.name, shootOrigin, shootRotation);
                 break;
             default:
                 Debug.LogWarning("不存在子弹类型: " + playerManager.currentUseBulletType);
@@ -186,7 +194,18 @@ public class PlayerAimState : PlayerGroundState
 
     private void GenerateShootSFX()
     {
-        PoolManager.Instance.Spawn(PoolManager.Instance.sx_ak47.name, playerManager.shooter.position, Quaternion.identity);
+        switch (playerManager.currentUseBulletType)
+        {
+            case CurrentUseBulletType.BulletNormal_Ordinary:
+                PoolManager.Instance.Spawn(PoolManager.Instance.sx_ak47.name, playerManager.shooter.position, Quaternion.identity);
+                break;
+            case CurrentUseBulletType.BulletNormal_Flame:
+                PoolManager.Instance.Spawn(PoolManager.Instance.sx_ak47_normal_flame.name, playerManager.shooter.position, Quaternion.identity);
+                break;
+            default:
+                Debug.LogWarning("开火类型与当前子弹类型不匹配？？？");
+                break;
+        }
     }
 
     //调试(需要删除)

@@ -13,25 +13,11 @@ public class BuffBase
 
     private int m_CurrentLevel = 0;
     private float m_ResidualDuration = 0;
-    private int m_TimeFreeze = 0;
+    //private int m_TimeFreeze = 0;
 
     private bool m_Initialized = false;
 
-    public bool TimeFreeze
-    {
-        get { return m_TimeFreeze == 0; }
-        set
-        {
-            if (value)
-            {
-                m_TimeFreeze += 1;
-            }
-            else
-            {
-                m_TimeFreeze -= 1;
-            }
-        }
-    }
+    public bool TimeFreeze = false;
 
 
     /// <summary>
@@ -70,13 +56,14 @@ public class BuffBase
     public CharacterManager characterManager;
     public void Init(BuffData buffData, CharacterManager owner)
     {
-        if (m_Initialized)
+        characterManager = owner; // 每次复用都要设置
+
+        // BuffData 是只初始化一次的配置，不需要重复赋值
+        if (!m_Initialized)
         {
-            return;
+            BuffData = buffData;
+            m_Initialized = true;
         }
-        BuffData = buffData;
-        characterManager = owner;
-        m_Initialized = true;
     }
 
     #region 虚方法

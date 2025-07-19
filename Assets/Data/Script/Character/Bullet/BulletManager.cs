@@ -1,5 +1,10 @@
 using UnityEngine;
-public enum BulletState
+public enum BulletType
+{
+    normal,
+    track,
+}
+public enum BulletMotionState
 {
     normal,
     track,
@@ -7,11 +12,11 @@ public enum BulletState
 public class BulletManager : CharacterManager,IPoolable
 {
     [Header("基本属性")]
+    public BulletType bulletType; //子弹类型
     public float speed;
     public float damage;
     public float lifeTime;
     private float lifeTimer; //存活计时器
-    public LayerMask obstacleLayer; //障碍物层级，当碰撞到障碍物时会在障碍物上实例特效,否则就实例子弹爆炸的特效
     private Vector3 previousPosition; //上一帧的位置
     private Vector3 currentPosition; //当前帧的位置
 
@@ -23,10 +28,13 @@ public class BulletManager : CharacterManager,IPoolable
     public virtual void OnSpawn()
     {
         previousPosition = transform.position;
+
+        //执行子弹生成的事件 
+        EventManager.Instance.bulletEvent.BulletSpawn(bulletType);
     }
 
 
-    protected virtual void FixedUpdate()
+    protected override void FixedUpdate()
     {
         lifeTimer += Time.fixedDeltaTime;
         if (lifeTimer >= lifeTime)
@@ -45,9 +53,12 @@ public class BulletManager : CharacterManager,IPoolable
         transform.position = currentPosition;
 
         RaycastHit hit;
-        if(Physics.Raycast(previousPosition,currentPosition - previousPosition, out hit, Vector3.Distance(previousPosition,currentPosition),~GameManager.Instance.playerManager.notDamageLayer))
+        if(Physics.Raycast(previousPosition,currentPosition - previousPosition, out hit, Vector3.Distance(previousPosition,currentPosition),~GameManager.Instance.playerManager.notDamageLayer, QueryTriggerInteraction.Ignore))
         {
             //Debug.Log("碰到了: " + hit.collider.gameObject.name);
+
+            //触发子弹命中事件回调
+            EventManager.Instance.bulletEvent.BulletHitObject(bulletType);
 
             //调用被击中者的受击接口方法
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
@@ -63,25 +74,22 @@ public class BulletManager : CharacterManager,IPoolable
             // 2. 命中法线
             Vector3 normal = hit.normal;
 
-            // 3. 根据障碍物的Tag生成特定特效
-            GameObject _fx = GenerateHitObstacleEffect(hit.collider.gameObject, targetPoint);
+            // 3. 根据障碍物的Tag生成特定特效和音效
+            (GameObject _fx, GameObject _) = GenerateHitVFXAndSFX(hit.collider.gameObject, targetPoint);
 
             // 4. 让特效朝向命中表面
             _fx.transform.rotation = Quaternion.LookRotation(normal);
         }
-
     } 
 
-    private GameObject GenerateHitObstacleEffect(GameObject _target, Vector3 _spawnPoint)
+
+    //所有子弹命中障碍物时的音效和特效都是一样的，所以只需要区别不同子弹命中敌人和其他目标时情况
+    private (string, string) GetHitVFXAndSFXName(string _hitTag)
     {
         string _targetFXName = "";
         string _targetSXName = "";
-        switch (_target.tag)
+        switch (_hitTag)
         {
-            case "Enemy":
-                _targetFXName = PoolManager.Instance.fx_bulletHitEnemy.name;
-                _targetSXName = PoolManager.Instance.sx_shootHit_Body.name;
-                break;
             case "Bark":
                 _targetFXName = PoolManager.Instance.fx_bulletHitObstacle_Bark.name;
                 _targetSXName = PoolManager.Instance.sx_shootHit_Bark.name;
@@ -118,16 +126,83 @@ public class BulletManager : CharacterManager,IPoolable
                 _targetFXName = PoolManager.Instance.fx_bulletHitObstacle_Water.name;
                 _targetSXName = PoolManager.Instance.sx_shootHit_Water.name;
                 break;
-            default:
-                _targetFXName = PoolManager.Instance.fx_bulletHitObstacle.name;
-                _targetSXName = PoolManager.Instance.sx_shootHit_Body.name;
+            case "Enemy":
+                (_targetFXName, _targetSXName) = GetFXAndSXByOtherHitObject(this);
+                break;
+            default: //碰到特定障碍物以外的物体
+                if(bulletType == BulletType.normal)
+                {
+                    NormalBulletManager normalBulletManager = this as NormalBulletManager;
+                    if(normalBulletManager.normalBulletType == NormalBulletType.flame)
+                    {
+                        _targetFXName = PoolManager.Instance.fx_bulletHitEnemy_Normal_Flame.name;
+                    }
+                    else if(normalBulletManager.normalBulletType == NormalBulletType.ordinary)
+                    {
+                        _targetFXName = PoolManager.Instance.fx_bulletHitObstacle.name;
+                    }
+                }
+                else //追踪子弹
+                {
+
+                    //追踪子弹打在墙上和敌人身上的效果是一样的
+                    _targetFXName = PoolManager.Instance.fx_bulletHitEnemy_Track_Ordinary.name;
+                }
                 break;
         }
 
+        return (_targetFXName, _targetSXName);
+    }
+
+    private (string _targetFXName, string _targetSXName) GetFXAndSXByOtherHitObject(BulletManager manager)
+    {
+
+        string targetFXName = "", targetSXName = "";
+        switch(manager.bulletType)
+        {
+            case BulletType.track:
+                TrackBulletManager trackBulletManager = manager as TrackBulletManager;
+                switch (trackBulletManager.trackBulletType)
+                {
+                    case TrackBulletType.ordinary:
+                        targetFXName = PoolManager.Instance.fx_bulletHitEnemy_Track_Ordinary.name;
+                        break;
+                    default:
+                        Debug.LogError("子弹类型错误");
+                        break;
+                }
+                break;
+            case BulletType.normal:
+                NormalBulletManager normalBulletManager = manager as NormalBulletManager;
+                switch (normalBulletManager.normalBulletType)
+                {
+                    case NormalBulletType.ordinary:
+                        targetFXName = PoolManager.Instance.fx_bulletHitEnemy_Normal_Ordinary.name;
+                        break;
+                    case NormalBulletType.flame:
+                        targetFXName = PoolManager.Instance.fx_bulletHitEnemy_Normal_Flame.name;
+                        break;
+                    default:
+                        Debug.LogError("子弹类型错误");
+                        break;
+                }
+                break;
+        }
+        return (targetFXName, targetSXName);
+    }
+
+    private (GameObject,GameObject) GenerateHitVFXAndSFX(GameObject _target, Vector3 _spawnPoint)
+    {
+        (string _targetFXName,string _targetSXName) = GetHitVFXAndSFXName(_target.tag);
+
         GameObject fx = PoolManager.Instance.Spawn(_targetFXName, _spawnPoint, Quaternion.identity);
 
-        GameObject sx = PoolManager.Instance.Spawn(_targetSXName, _spawnPoint, Quaternion.identity);
+        GameObject sx = null;
+        if (_targetSXName != "")
+        {
+           sx = PoolManager.Instance.Spawn(_targetSXName, _spawnPoint, Quaternion.identity);
+        }
 
-        return fx;
+        return (fx,sx);
     }
 }

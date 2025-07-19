@@ -52,8 +52,8 @@ public class BuffSystem
         }
         else//否则进行冲突处理
         {
-            BuffType sameProviderBuff = null;
-            switch (buffs[0].BuffData.conflictResolution)
+            BuffType sameProviderBuff = buffs[0];
+            switch (sameProviderBuff.BuffData.conflictResolution)
             {
                 /*叠层(合并)：
                  * 规则：
@@ -63,7 +63,7 @@ public class BuffSystem
                  * 并且buff1的提供者始终为A
                  */
                 case ConflictResolution.combine:
-                    buffs[0].CurrentLevel += heap;
+                    sameProviderBuff.CurrentLevel += heap;
                     break;
                 /*独立存在：
                  * 规则：如果A提供了buff1给玩家，
@@ -78,8 +78,11 @@ public class BuffSystem
                  * 无论谁再次提供buff1给玩家，都会删除之前的buff并重新添加新的buff1
                  */
                 case ConflictResolution.cover://覆盖
-                    RemoveBuff(sameProviderBuff);
-                    AddNewBuff<BuffType>(heap);
+                    //这里应该再判断如何进行覆盖：例如先移除再重新添加；或者直接刷新当前buff的持续时间
+                    //RemoveBuff(sameProviderBuff);
+                    //AddNewBuff<BuffType>(heap);
+                    //目前选择刷新buff持续时间
+                    sameProviderBuff.ResidualDuration = sameProviderBuff.BuffData.maxDuration;
                     break;
             }
         }
@@ -146,6 +149,25 @@ public class BuffSystem
 
         return buffs;
     }
+
+    /// <summary>
+    /// 查找指定类型的第一个Buff，一般是那种非独立存在的buff
+    /// </summary>
+    /// <typeparam name="BuffType"></typeparam>
+    /// <returns></returns>
+    public BuffType FindOneBuff<BuffType>() where BuffType : BuffBase
+    {
+        foreach (BuffBase buff in m_Buffs)
+        {
+            if (buff is BuffType)
+            {
+                return buff as BuffType;
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 返回当前拥有的所有buff。
     /// </summary>
@@ -171,6 +193,8 @@ public class BuffSystem
 
         m_Buffs.RemoveAt(_index);
 
+        Debug.Log("成功移除buff:" + buff.BuffData.buffName);
+
         BuffPool.Release(buff, buff.GetType().Name);
 
         buff.CurrentLevel = 0;
@@ -189,6 +213,7 @@ public class BuffSystem
 
         //添加buff
         m_Buffs.Add(buff);
+        Debug.Log("成功添加buff:" + buff.BuffData.buffName);
         buff.AfterBeAdded(); //该buff的添加成功方法回调
 
         E_OnAddBuff?.Invoke(buff); //该buff系统的buff添加成功事件回调

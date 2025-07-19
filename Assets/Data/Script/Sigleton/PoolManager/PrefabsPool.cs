@@ -41,9 +41,13 @@ public class PrefabsPool
         return obj;
     }
 
-    public void Recycle(GameObject obj)
+    public void Recycle(GameObject obj, Transform parent)
     {
         obj.SetActive(false);
+        if(parent != null)
+        {
+            obj.transform.SetParent(parent);
+        }
         poolQueue.Enqueue(obj);
 
         // ´¥·¢»Øµ÷

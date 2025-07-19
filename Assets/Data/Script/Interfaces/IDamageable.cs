@@ -3,9 +3,11 @@ using UnityEngine;
 //受击类型
 public enum TakeDamageType
 {
-    Light,
-    Middle,
-    Heavy,
+    Light, //轻击
+    Middle, //中击
+    Heavy, //重击
+    Fire, //灼烧
+
 }
 public interface IDamageable
 {

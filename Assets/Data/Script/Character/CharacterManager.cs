@@ -6,21 +6,15 @@ public class CharacterManager : MonoBehaviour
     public string characterName;
     public string characterTitle;
 
-    #region 属性值
-    [Header("移动速度倍率")]
-    public float defaultMoveSpeedMul; //初始移动倍率
-    public float currentMoveSpeedMul; //当前移动倍率
-
-    [Header("攻击力倍率")]
-    public float defaultAttackPowerMul;
-    public float currentAttackPowerMul;
-
-    [Header("生命值上限倍率")]
-    public float defaultHealthMul;
-    public float currentHealthMul;
+    [Header("生命值相关")]
+    public float baseHealthValue;
     public float maxHealthValue;
     public float currentHealthValue;
-    #endregion
+
+    [Header("攻击相关")]
+    public float baseAttackValue;
+    public float maxAttackValue;
+    public float currentAttackValue;
 
     public BuffSystem buffSystem;
 
@@ -36,7 +30,11 @@ public class CharacterManager : MonoBehaviour
 
     protected virtual void Awake()
     {
-        buffSystem = new BuffSystem(this);
+        maxHealthValue = baseHealthValue;
+        currentHealthValue = maxHealthValue;
+
+        maxAttackValue = baseAttackValue;
+        currentAttackValue = baseAttackValue;
     }
 
     protected virtual void Start()
@@ -45,6 +43,11 @@ public class CharacterManager : MonoBehaviour
     }
 
     protected virtual void Update()
+    {
+
+    }
+
+    protected virtual void FixedUpdate()
     {
 
     }

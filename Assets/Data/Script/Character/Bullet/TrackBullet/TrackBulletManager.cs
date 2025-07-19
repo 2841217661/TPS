@@ -1,16 +1,21 @@
 using UnityEngine;
-
+public enum TrackBulletType
+{
+    ordinary, //最普通的追踪子弹
+}
 public class TrackBulletManager : BulletManager
 {
     //当跟踪子弹发射后，有两个阶段，第一阶段沿着直线飞行trackDefaultTime,然后再进行跟踪
     [Header("追踪子弹")]
+    public TrackBulletType trackBulletType;
     public float trackDefaultTime = 0.1f;
     public LayerMask trackTargetLayer; //可追踪的物体层级
     public float rotateSpeed;
     public Vector3 trackPointOffset; //追踪目标偏移量，因为一般模型点都是脚底，如果不加偏移量会追着敌人的脚底板打
     private float trackTimer;
     private Transform tractTargetTransform; //被追踪的目标
-    private BulletState bulletState = BulletState.normal;
+    private BulletMotionState motionState = BulletMotionState.normal;
+
 
     protected override void Update()
     {
@@ -27,15 +32,15 @@ public class TrackBulletManager : BulletManager
         trackTimer -= Time.fixedDeltaTime;
         if(trackTimer <= 0f)
         {
-            bulletState = BulletState.track;
+            motionState = BulletMotionState.track;
         }
 
-        switch (bulletState)
+        switch (motionState)
         {
-            case BulletState.normal:
+            case BulletMotionState.normal:
                 transform.position = transform.position + transform.forward * speed * Time.fixedDeltaTime;
                 break;
-            case BulletState.track:
+            case BulletMotionState.track:
                 if(tractTargetTransform == null)
                 {
                     transform.position = transform.position + transform.forward * speed * Time.fixedDeltaTime;
@@ -118,6 +123,6 @@ public class TrackBulletManager : BulletManager
 
         trackTimer = trackDefaultTime;
 
-        bulletState = BulletState.normal;
+        motionState = BulletMotionState.normal;
     }
 }

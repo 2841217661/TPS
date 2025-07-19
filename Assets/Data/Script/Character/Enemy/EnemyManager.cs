@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyManager : CharacterManager,IDamageable
+public class EnemyManager : CharacterManager
 {
     public EnemyState state;
 
@@ -16,21 +16,11 @@ public class EnemyManager : CharacterManager,IDamageable
     public Transform patrolPointParent;
     [HideInInspector] public Transform[] patrolPoint; //巡逻数组点
 
-    public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
-    {
-        Debug.Log($"{gameObject.name}受到来自{_source}的{_value}点伤害，伤害类型:{_type}");
-        if(_type == TakeDamageType.Heavy)
-        {
-            state = EnemyState.Damage;
-        }
-        currentHealthValue -= _value;
-    }
-
     protected override void Awake()
     {
         base.Awake();
 
-        currentHealthValue = maxHealthValue;
+        buffSystem = new BuffSystem(this);
 
         patrolPoint = new Transform[patrolPointParent.childCount];
         for(int i = 0; i < patrolPointParent.childCount; i++)
@@ -48,8 +38,15 @@ public class EnemyManager : CharacterManager,IDamageable
     {
         base.Update();
 
+        buffSystem.Update();
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        buffSystem.FixedUpdate();
+    }
 
     public override void OnDeath()
     {
