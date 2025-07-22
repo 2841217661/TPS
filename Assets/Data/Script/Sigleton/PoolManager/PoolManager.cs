@@ -144,4 +144,10 @@ public class PoolManager : MonoSingleton<PoolManager>
 
         poolDict[key].Recycle(obj,parent);
     }
+
+    public bool HasPool(string poolName)
+    {
+        return poolDict.ContainsKey(poolName);
+    }
+
 }

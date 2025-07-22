@@ -1,8 +1,9 @@
 public enum EnemyState
 {
-    Idle,
-    Patrol,
-    Chase,
-    Attack,
-    Damage,
+    Idle, //´ý»ú
+    Patrol, //Ñ²Âß
+    Chase, //×·×Ù
+    Attack, //¹¥»÷
+    KnockBack, //ÊÜ»÷(±»»÷ÍË)
+    KnockUp,//ÊÜ»÷(±»»÷·É)
 }

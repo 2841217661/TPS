@@ -15,8 +15,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-        //3s后开启第一个任务
-        //StartCoroutine(QuestManager.Instance.DelayedQuestStart(3f,QuestName.Quest_村庄许可证));
+
     }
 
     private void Update()

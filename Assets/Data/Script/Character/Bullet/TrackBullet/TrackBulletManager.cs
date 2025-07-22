@@ -119,7 +119,7 @@ public class TrackBulletManager : BulletManager
     {
         base.OnSpawn();
 
-        tractTargetTransform = CheckCloseEnemy(100f);
+        tractTargetTransform = CheckCloseEnemy(50f);
 
         trackTimer = trackDefaultTime;
 

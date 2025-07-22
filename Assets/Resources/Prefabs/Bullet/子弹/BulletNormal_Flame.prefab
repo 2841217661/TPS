@@ -14638,7 +14638,7 @@ MonoBehaviour:
   currentAttackValue: 0
   bulletType: 0
   speed: 50
-  damage: 1
+  damage: 5
   lifeTime: 3
   normalBulletType: 1
 --- !u!65 &5002081802875647781

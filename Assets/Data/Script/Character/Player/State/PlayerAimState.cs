@@ -119,17 +119,15 @@ public class PlayerAimState : PlayerGroundState
             playerManager.animator.SetLayerWeight(2, 1f);
 
             //aimCamera持续抖动
-            playerManager.cameraManager.aimCameraFireShakeNoise.m_AmplitudeGain = 0.2f;
-            playerManager.cameraManager.aimCameraFireShakeNoise.m_FrequencyGain = 20f;
-;        }
+            playerManager.cameraManager.AddCurrentCameraShark(0.2f, 8f);
+        }
         else
         {
             playerManager.animator.SetBool("Fire", false);
             playerManager.animator.SetLayerWeight(2, 0f);
 
             //取消抖动
-            playerManager.cameraManager.aimCameraFireShakeNoise.m_AmplitudeGain = 0f;
-            playerManager.cameraManager.aimCameraFireShakeNoise.m_FrequencyGain = 0f;
+            playerManager.cameraManager.RemoveCurrentCameraShark();
         }
     }
 
@@ -169,7 +167,20 @@ public class PlayerAimState : PlayerGroundState
 
         // 计算方向（从枪口 -> 瞄准点）
         Vector3 shootDir = (targetPoint - shootOrigin).normalized;
-        Quaternion shootRotation = Quaternion.LookRotation(shootDir);
+
+        // 添加一定角度的偏移
+        float maxAngleOffset = 1f;
+
+        // 生成一个随机方向的偏移角度
+        float offsetYaw = Random.Range(-maxAngleOffset, maxAngleOffset);     // 水平方向偏移
+        float offsetPitch = Random.Range(-maxAngleOffset, maxAngleOffset);   // 垂直方向偏移
+
+        // 对 shootDir 施加旋转
+        Quaternion offsetRotation = Quaternion.Euler(offsetPitch, offsetYaw, 0f);
+        Vector3 offsetDir = offsetRotation * shootDir;
+
+        Quaternion shootRotation = Quaternion.LookRotation(offsetDir);
+
 
         switch (playerManager.currentUseBulletType)
         {

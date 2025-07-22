@@ -24,4 +24,4 @@ MonoBehaviour:
   tags: []
   buffDescript1: "\u6301\u7EED\u53D7\u5230\u4F24\u5BB3"
   buffDescript2: "\u6BCF\u79D20.2s\u53D7\u52301\u70B9\u4F24\u5BB3\uFF0C\u6301\u7EED3s"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1b14d70ca840fe24aae796a7e2f945c2, type: 3}

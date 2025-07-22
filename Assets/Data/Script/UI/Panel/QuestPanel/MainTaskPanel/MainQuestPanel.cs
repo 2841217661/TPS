@@ -2,8 +2,10 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class MainQuestPanel : BasePanel
 {
@@ -32,6 +34,12 @@ public class MainQuestPanel : BasePanel
     private Color selectedColor = new Color(1f, 0.85f, 0.4f);
     // 未选中按钮的颜色
     private Color normalColor = Color.white;
+
+    //当前选中的QuestItem
+    private Color selectedQuestItemColor = new Color(1f, 0.85f, 0.4f);
+    // 未选中QuestItem的颜色
+    private Color normalQuestItemColor = Color.white;
+    private Button currentSelectItemButton;
 
 
     private void Start()
@@ -100,10 +108,68 @@ public class MainQuestPanel : BasePanel
         foreach (Quest quest in filteredQuests)
         {
             GameObject questDisplayItem = Instantiate(mainQuestItem, content);
+
+            //为每个QuestItem添加点击事件
+            MainQuestItem item = questDisplayItem.GetComponent<MainQuestItem>();
+            //如果任务已经完成，则就没有Step了
+            try
+            {
+                item.title = quest.GetCurrentQuestStepPrefab().name.Substring(3);
+            }
+            catch
+            {
+                item.title = quest.info.id;
+            }
+            item.description = quest.info.questDescription;
+            item.reward = quest.info.rewardDescription;
+            //默认选中第一个
+            if (quest == filteredQuests[0])
+            {
+                ShowRightInfo(item);
+            }
+            item.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                ShowRightInfo(item);
+            });
+
+            //显示左边Item的信息
             questDisplayItem.transform.Find("Chapter").GetComponent<TextMeshProUGUI>().text = quest.info.chapter;
             questDisplayItem.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = quest.info.id;
         }
     }
+
+    private void ShowRightInfo(MainQuestItem _item)
+    {
+        // 还原上一个按钮颜色和缩放（如果有）
+        if (currentSelectItemButton != null)
+        {
+            currentSelectItemButton.image.color = normalQuestItemColor;
+            currentSelectItemButton.transform.DOScale(Vector3.one, 0.1f);
+        }
+
+        // 设置当前按钮
+        currentSelectItemButton = _item.GetComponent<Button>();
+
+        // 修改颜色
+        currentSelectItemButton.image.color = selectedQuestItemColor;
+
+        // 播放点击缩放动画
+        currentSelectItemButton.transform
+            .DOScale(0.95f, 0.1f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                currentSelectItemButton.transform
+                    .DOScale(1f, 0.2f)
+                    .SetEase(Ease.OutBack);
+            });
+
+        // 设置右侧信息
+        Text_TaskName.text = _item.title;
+        Text_Introduce.text = _item.description;
+        Text_Reward.text = _item.reward;
+    }
+
 
     private void ClearAllQuestDisplayItems()
     {

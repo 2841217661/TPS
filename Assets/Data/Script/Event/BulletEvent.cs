@@ -10,11 +10,11 @@ public class BulletEvent
         onBulletSpawn?.Invoke(_type);
     }
 
-    public Action<BulletType> onBulletHitObject; //子弹击中目标的事件
+    public Action<BulletType,CharacterManager> onBulletHitObject; //子弹击中目标的事件
 
-    public void BulletHitObject(BulletType _type)
+    public void BulletHitObject(BulletType _type, CharacterManager _manaer)
     {
-        onBulletHitObject?.Invoke(_type);
+        onBulletHitObject?.Invoke(_type, _manaer);
     }
 
 }

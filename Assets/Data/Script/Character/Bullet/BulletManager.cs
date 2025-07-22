@@ -58,7 +58,7 @@ public class BulletManager : CharacterManager,IPoolable
             //Debug.Log("碰到了: " + hit.collider.gameObject.name);
 
             //触发子弹命中事件回调
-            EventManager.Instance.bulletEvent.BulletHitObject(bulletType);
+            EventManager.Instance.bulletEvent.BulletHitObject(bulletType,hit.transform.GetComponent<CharacterManager>());
 
             //调用被击中者的受击接口方法
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();

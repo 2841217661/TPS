@@ -17,7 +17,7 @@ public class BulletEventListener : MonoBehaviour
     }
 
     //子弹命中事件方法
-    private void BulletHitObject(BulletType _type)
+    private void BulletHitObject(BulletType _type, CharacterManager _manaer)
     {
         switch (_type)
         {

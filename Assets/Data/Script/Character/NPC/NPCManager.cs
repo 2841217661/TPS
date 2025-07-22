@@ -1,8 +1,10 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class NPCManager : CharacterManager
 {
+    [HideInInspector] public GameObject questTip;
     public DialogueGraph currentGraph;
 
     protected GameObject buttonGroup;
@@ -16,9 +18,18 @@ public class NPCManager : CharacterManager
         Interactable, //交谈状态
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        questTip = transform.Find("QuestTipCanvas").gameObject;
+    }
+
     protected override void Update()
     {
         base.Update();
+
+        QuestTipToFaceCamera();
 
         if (m_state != NPCState.Idle) return; //非待机状态下不能进行交谈
 
@@ -36,9 +47,7 @@ public class NPCManager : CharacterManager
             {
                 DialoguePanel dialoguePanel = (UIManager.Instance.OpenPanel("DialoguePanel")) as DialoguePanel;
                 dialoguePanel.npcManager = this;
-                dialoguePanel.graph = currentGraph;
-                m_state = NPCState.Interactable;
-
+                //dialoguePanel.graph = currentGraph;
                 Destroy(buttonGroup);
             }
         }
@@ -55,10 +64,35 @@ public class NPCManager : CharacterManager
         return Vector3.Distance(GameManager.Instance.playerManager.transform.position, transform.position) < m_interactableDis;
     }
 
-
+    //剧情对话结束
     public virtual void InteractableFinish()
     {
         m_state = NPCState.Idle;
         EventManager.Instance.npcEvent.FinishConversation_Anyone(this);
+    }
+
+    //剧情对话开始
+    public virtual void InteractableStart()
+    {
+        m_state = NPCState.Interactable;
+        EventManager.Instance.npcEvent.StartConversation_Anyone(this);
+    }
+
+    public void ShowQuestTip()
+    {
+        questTip.SetActive(true);
+    }
+
+    public void HideQuestTip()
+    {
+        questTip.SetActive(false);
+    }
+
+    private void QuestTipToFaceCamera()
+    {
+        if (questTip.activeSelf)
+        {
+            questTip.transform.rotation = Quaternion.LookRotation(questTip.transform.position - Camera.main.transform.position);
+        }
     }
 }

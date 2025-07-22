@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class QS_进入村庄 : QuestStep
 {
-    [SerializeField] private QuestInfoSO quest;
     [SerializeField] private GameObject airWall;
     private GameObject airWallObj;
     private void OnEnable()
@@ -23,6 +22,10 @@ public class QS_进入村庄 : QuestStep
     {
         FinishQuestStep();
         QuestManager.Instance.TryFinishQuest(quest.id);
-        //Instantiate(初次沟通_开启器);
+
+        QuestManager.Instance.StartDelayedQuest(QuestName.Quest_赛前准备,1f);
+
+        NPC_NarratorManager manager = FindFirstObjectByType<NPC_NarratorManager>();
+        manager.questTip.SetActive(true);
     }
 }

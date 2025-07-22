@@ -57,8 +57,14 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
             case "追踪子弹":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_追踪子弹>();
                 break;
+            case "火焰弹头":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_火焰弹头>();
+                break;
+            case "淘汰回放":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_淘汰回放>();
+                break;
             default:
-                Debug.Log("buff类型没有找到: " + "B_" + _buffName);
+                Debug.LogWarning("buff类型没有找到: " + "B_" + _buffName);
                 break;
         }
     }

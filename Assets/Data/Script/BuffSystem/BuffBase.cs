@@ -33,8 +33,8 @@ public class BuffBase
         {
             value = Math.Clamp(value, 0, BuffData.maxLevel);
             int change = value - m_CurrentLevel;
-            OnCurrentLevelChange(change);
             m_CurrentLevel = value;
+            OnCurrentLevelChange(change);
             //刷新持续时间
             if (BuffData.autoRefresh && change >= 0)
             {

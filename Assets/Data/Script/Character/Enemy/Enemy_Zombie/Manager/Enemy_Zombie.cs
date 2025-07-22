@@ -25,17 +25,21 @@ public class Enemy_Zombie : EnemyManager,IDamageable
         Debug.Log($"{gameObject.name}受到来自{_source}的{_value}点伤害，伤害类型:{_type}");
         switch (_type)
         {
-            case TakeDamageType.Heavy:
-                state = EnemyState.Damage;
-                currentBackResistance = 100f;
-                break;
-            case TakeDamageType.Light:
+            case TakeDamageType.Light: //持续受到轻击会被击退
                 currentBackResistance -= _value;
                 if (currentBackResistance <= 0f)
                 {
+                    state = EnemyState.KnockBack;
                     currentBackResistance = backResistance;
-                    state = EnemyState.Damage;
                 }
+                break;
+            case TakeDamageType.Middle: //受到较重的攻击会被击退
+                state = EnemyState.KnockBack;
+                currentBackResistance = backResistance;
+                break;
+            case TakeDamageType.Heavy: //受到重击会被击飞
+                state = EnemyState.KnockUp;
+                currentBackResistance = backResistance;
                 break;
         }
 
@@ -73,6 +77,8 @@ public class Enemy_Zombie : EnemyManager,IDamageable
 
         CheckPlayerIsAround(target);
     }
+
+
 
     /// <summary>
     /// 尝试发现玩家

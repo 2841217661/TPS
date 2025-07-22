@@ -14,7 +14,6 @@ public class PlayerCameraManager : MonoBehaviour
     public CinemachineVirtualCamera aimCamera;
     public CinemachineVirtualCamera throwCamera;
 
-    public CinemachineBasicMultiChannelPerlin aimCameraFireShakeNoise {  get; private set; }
 
     [Header("Camera Follow Target")]
     [Tooltip("虚拟相机跟随的目标 Transform")]
@@ -39,8 +38,6 @@ public class PlayerCameraManager : MonoBehaviour
             yaw = euler.y;
             pitch = euler.x;
         }
-
-        aimCameraFireShakeNoise = aimCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void ChangePlayerCamera(CinemachineVirtualCamera targetCamera)
@@ -68,5 +65,29 @@ public class PlayerCameraManager : MonoBehaviour
         {
             cameraFollowTarget.rotation = Quaternion.Euler(pitch, yaw, 0f);
         }
+    }
+
+    //添加当前相机抖动
+    public void AddCurrentCameraShark(float m_AmplitudeGain, float m_FrequencyGain)
+    {
+        CinemachineBasicMultiChannelPerlin c = currentCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        c.m_AmplitudeGain = m_AmplitudeGain;
+        c.m_FrequencyGain = m_FrequencyGain;
+    }
+
+    //取消当前相机抖动
+    public void RemoveCurrentCameraShark()
+    {
+        CinemachineBasicMultiChannelPerlin aim = aimCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        aim.m_AmplitudeGain = 0;
+        aim.m_FrequencyGain = 0;
+
+        CinemachineBasicMultiChannelPerlin normal = normalCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        normal.m_AmplitudeGain = 0;
+        normal.m_FrequencyGain = 0;
+
+        CinemachineBasicMultiChannelPerlin thro = throwCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        thro.m_AmplitudeGain = 0;
+        thro.m_FrequencyGain = 0;
     }
 }

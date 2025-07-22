@@ -47,6 +47,8 @@ public class DialoguePanel : BasePanel
         //进入对话时，禁用玩家输入
         GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, true);
 
+        npcManager.InteractableStart();
+
         if (npcManager == null)
         {
             Debug.LogError("对话者未传入？？？");
@@ -56,6 +58,7 @@ public class DialoguePanel : BasePanel
             Debug.LogError("对话图为空，请检测是否已经传入！");
         }
 
+        graph = npcManager.currentGraph;
         currentNode = graph.nodes[0];
         ShowCurrentNodeContent();
     }
@@ -76,6 +79,23 @@ public class DialoguePanel : BasePanel
 
     private void Advance(int _choiceIndex = 0)
     {
+        if (isTyping)
+        {
+            // 立即完成显示
+            if (typingTween != null && typingTween.IsActive())
+            {
+                typingTween.Kill();
+            }
+
+            if (currentNode is DialogueNode dn)
+            {
+                Text_SpeakContent.text = dn.content;
+            }
+
+            isTyping = false;
+            return;
+        }
+
         if (currentNode is DialogueNode)
         {
             //调用当前对话节点的方法
@@ -102,13 +122,16 @@ public class DialoguePanel : BasePanel
         }
     }
 
+    private Tween typingTween;             // 当前的打字动画
+    private bool isTyping = false;         // 是否正在打字中
+
+
     private void ShowCurrentNodeContent()
     {
-        if(currentNode is DialogueNode)
+        if (currentNode is DialogueNode dn)
         {
-            DialogueNode dn = currentNode as DialogueNode;
-            Debug.Log($"{dn.speaker}: {dn.content}");
-            if(dn.speaker == Speaker.Player)
+            // 设置说话者信息
+            if (dn.speaker == Speaker.Player)
             {
                 Text_SpeakerName.text = GameManager.Instance.playerManager.characterName;
                 Text_SpeakerTitle.text = GameManager.Instance.playerManager.characterTitle;
@@ -118,36 +141,59 @@ public class DialoguePanel : BasePanel
                 Text_SpeakerName.text = npcManager.characterName;
                 Text_SpeakerTitle.text = npcManager.characterTitle;
             }
-                
-            Text_SpeakContent.text = dn.content;
-        }
-        else if(currentNode is ChoiceNode)
-        {
-            ChoiceNode choiceNode = currentNode as ChoiceNode;
 
-            Button_Next.GetComponent<CanvasGroup>().interactable = false; //进入选项，禁用nextbutton交互
+            // 停止旧动画
+            if (typingTween != null && typingTween.IsActive())
+            {
+                typingTween.Kill();
+            }
+
+            // 启动新的逐字动画
+            string fullContent = dn.content;
+            Text_SpeakContent.text = ""; // 清空
+            isTyping = true;
+
+            typingTween = DOTween.To(
+                () => 0,
+                i =>
+                {
+                    Text_SpeakContent.text = fullContent.Substring(0, i);
+                },
+                fullContent.Length,
+                1.0f // 动画持续时间，可调
+            ).SetEase(Ease.Linear)
+             .OnComplete(() =>
+             {
+                 isTyping = false;
+             });
+        }
+        else if (currentNode is ChoiceNode choiceNode)
+        {
+            Button_Next.GetComponent<CanvasGroup>().interactable = false; // 选项出现前禁用Next
+
             Transform canvas = GameObject.Find("Canvas").transform;
-            //实例选项选项Button
             GameObject buttonGroup = Instantiate(Pre_Button_SelectGroup, canvas);
+
             for (int i = 0; i < choiceNode.outputs.Count; i++)
             {
-                int index = i; // 这里非常重要，创建局部变量副本
+                int index = i;
 
                 GameObject buttonItem = Instantiate(Pre_Button_SelectItem, buttonGroup.transform);
                 buttonItem.GetComponentInChildren<TextMeshProUGUI>().text = choiceNode.outputs[index];
+
                 buttonItem.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     RunCurrentDialogueMethod(choiceNode.methodName[index]);
-                    CanvasGroup canvasGroup = Button_Next.GetComponent<CanvasGroup>();
-                    canvasGroup.interactable = true;
+                    Button_Next.GetComponent<CanvasGroup>().interactable = true;
                     Advance(index);
                     Destroy(buttonGroup);
                 });
             }
-            EventSystem.current.SetSelectedGameObject(buttonGroup.transform.GetChild(0).gameObject);
 
+            EventSystem.current.SetSelectedGameObject(buttonGroup.transform.GetChild(0).gameObject);
         }
     }
+
 
     private void RunCurrentDialogueMethod(string _methodName)
     {

@@ -52,7 +52,7 @@ public class QuestManager : MonoSingleton<QuestManager>
 
         //显示任务开始提示
         GameObject _ = Instantiate(startQuestShowItemPre, UIManager.Instance.UIRoot.Find("Left/QuestStartShowItem/StartQuestShowItemContent"));
-        _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name);
+        _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name.Substring(3));
     }
 
     private void AdvanceQuest(string id)
@@ -136,7 +136,7 @@ public class QuestManager : MonoSingleton<QuestManager>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    private Quest GetQuestById(string id)
+    public Quest GetQuestById(string id)
     {
         Quest quest = questMap[id];
         if (quest == null)
@@ -292,9 +292,14 @@ public class QuestManager : MonoSingleton<QuestManager>
     }
 
     //延迟开启任务
-    public IEnumerator DelayedQuestStart(float _delayedTime, string _questId)
+    public void StartDelayedQuest(string questId, float delayTime)
     {
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(DelayedQuestStart(questId,delayTime));
+    }
+
+    private IEnumerator DelayedQuestStart(string _questId, float _delayedTime)
+    {
+        yield return new WaitForSeconds(_delayedTime);
         QuestManager.Instance.TryStartQuest(_questId);
     }
     #endregion
