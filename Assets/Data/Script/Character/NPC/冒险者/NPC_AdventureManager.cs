@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPC_AdventureManager : NPCManager
 {
@@ -43,5 +44,7 @@ public class NPC_AdventureManager : NPCManager
         yield return new WaitForSeconds(3f);
         QuestManager.Instance.TryStartQuest(QuestName.Quest_村庄许可证);
         questTip.SetActive(true);
+
+        Minmap.Instance.AddMinmapIcon(this.transform, MinmapIconType.quest);
     }
 }
