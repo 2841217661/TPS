@@ -20,8 +20,12 @@ public class Enemy_Zombie : EnemyManager,IDamageable
     private float checkInterval = 1f;  // 每隔1秒检测一次
     private float checkTimer = 0f;
 
+    
+
     public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
     {
+        if (state == EnemyState.Death) return;
+
         Debug.Log($"{gameObject.name}受到来自{_source}的{_value}点伤害，伤害类型:{_type}");
         switch (_type)
         {
@@ -44,11 +48,17 @@ public class Enemy_Zombie : EnemyManager,IDamageable
         }
 
         currentHealthValue -= _value;
+        if(currentHealthValue <= 0f)
+        {
+            state = EnemyState.Death;
+        }
     }
 
     protected override void Awake()
     {
         base.Awake();
+
+        target = GameManager.Instance.playerManager.transform;
 
         currentBackResistance = backResistance;
 
@@ -58,7 +68,6 @@ public class Enemy_Zombie : EnemyManager,IDamageable
         agent.updatePosition = false;   // 不自动更新 Transform 位置
         agent.updateRotation = false;   // 不自动更新 Transform 旋转
 
-        patrolPointParent.SetParent(null); //分离巡逻点父物体
     }
 
     public override void OnDeath()

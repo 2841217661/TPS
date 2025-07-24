@@ -28,7 +28,7 @@ public class B_灼烧 : BuffBase
         //每次触碰会刷新持续时间，并且立即造成一次伤害
         DamageCharacter(onceDamageValue);
 
-        vfx_fire = PoolManager.Instance.Spawn(PoolManager.Instance.vx_buff_灼烧.name, characterManager.transform.position + Vector3.up, Quaternion.identity);
+        vfx_fire = PoolManager.Instance.Spawn(PoolManager.Instance.灼烧.name, characterManager.transform.position + Vector3.up, Quaternion.identity);
         vfx_fire.transform.SetParent(characterManager.transform);
     }
 

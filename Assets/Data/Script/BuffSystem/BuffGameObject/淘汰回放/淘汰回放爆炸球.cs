@@ -4,24 +4,15 @@ public class 淘汰回放爆炸球 : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 0.5f;
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float explodeRadius = 10;
-    [SerializeField] private float explodeForce = 500f;
-    public GameObject exploedEffect;
+    [SerializeField] private float explodeRadius = 4;
+    [SerializeField] private float explodeForce = 500;
     private Vector3 offset = Vector3.up;
 
     private Transform target;
 
     private void Start()
     {
-        if (GameManager.Instance != null && GameManager.Instance.playerManager != null)
-        {
-            target = GameManager.Instance.playerManager.transform;
-        }
-        else
-        {
-            Debug.LogWarning("PlayerManager 未找到，爆炸球目标为空！");
-            enabled = false;
-        }
+        target = GameManager.Instance.playerManager.transform;
     }
 
     private void Update()
@@ -38,13 +29,19 @@ public class 淘汰回放爆炸球 : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(moveDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+
+        //距离玩家很近时自动回收(不进行爆炸)
+        if (moveDir.sqrMagnitude < 0.5)
+        {
+            PoolManager.Instance.Recycle(PoolManager.Instance.淘汰回放爆炸.name, this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, explodeRadius);
 
-        Instantiate(exploedEffect, transform.position, transform.rotation);
+        PoolManager.Instance.Spawn(PoolManager.Instance.淘汰回放爆炸.name, transform.position, transform.rotation);
 
         if (colliders.Length > 0)
         {
@@ -57,8 +54,6 @@ public class 淘汰回放爆炸球 : MonoBehaviour
                 }
             }
         }
-
-        Destroy(gameObject);
-
+        PoolManager.Instance.Recycle(PoolManager.Instance.淘汰回放爆炸.name, this.gameObject);
     }
 }

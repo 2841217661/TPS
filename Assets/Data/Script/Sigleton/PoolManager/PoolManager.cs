@@ -49,7 +49,11 @@ public class PoolManager : MonoSingleton<PoolManager>
     public GameObject sx_buff_×ÆÉÕ;
 
     [Header("ÌØĞ§")]
-    public GameObject vx_buff_×ÆÉÕ;
+    public GameObject ×ÆÉÕ;
+    public GameObject ÌÔÌ­»Ø·Å±¬Õ¨;
+    public GameObject ÌÔÌ­»Ø·Å±¬Õ¨Çò;
+    public GameObject »ğÑæÓ¡¼Ç±¬Õ¨;
+
 
     protected override void Init()
     {
@@ -112,13 +116,17 @@ public class PoolManager : MonoSingleton<PoolManager>
         #endregion
 
         #region ÌØĞ§VFX
-        CreatePool(vx_buff_×ÆÉÕ.name, vx_buff_×ÆÉÕ, 10, transform.Find("VFXPool/Pool_VX_Buff_×ÆÉÕ"));
+        //buffÌØĞ§
+        CreatePool(×ÆÉÕ.name, ×ÆÉÕ, 10, transform.Find("VFXPool/Buff/×ÆÉÕ"));
+        CreatePool(ÌÔÌ­»Ø·Å±¬Õ¨.name, ÌÔÌ­»Ø·Å±¬Õ¨, 10, transform.Find("VFXPool/Buff/ÌÔÌ­»Ø·Å±¬Õ¨"));
+        CreatePool(ÌÔÌ­»Ø·Å±¬Õ¨Çò.name, ÌÔÌ­»Ø·Å±¬Õ¨Çò, 10, transform.Find("VFXPool/Buff/ÌÔÌ­»Ø·Å±¬Õ¨Çò"));
+        CreatePool(»ğÑæÓ¡¼Ç±¬Õ¨.name, »ğÑæÓ¡¼Ç±¬Õ¨, 10, transform.Find("VFXPool/Buff/»ğÑæÓ¡¼Ç±¬Õ¨"));
         #endregion
     }
     public void CreatePool(string key, GameObject prefab, int initialSize, Transform parent = null)
     {
         if (poolDict.ContainsKey(key)) return;
-
+        
         PrefabsPool pool = new PrefabsPool(prefab, initialSize, parent);
         poolDict[key] = pool;
     }

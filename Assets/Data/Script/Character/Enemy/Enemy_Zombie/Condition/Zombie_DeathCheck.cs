@@ -8,6 +8,6 @@ public class Zombie_DeathCheck : Conditional
 
     public override TaskStatus OnUpdate()
     {
-        return self.Value.currentHealthValue <= 0f ? TaskStatus.Success : TaskStatus.Failure;
+        return self.Value.state == EnemyState.Death ? TaskStatus.Success : TaskStatus.Failure;
     }
 }

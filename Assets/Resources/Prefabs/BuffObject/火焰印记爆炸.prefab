@@ -15154,6 +15154,7 @@ GameObject:
   - component: {fileID: 6572292775234228418}
   - component: {fileID: 2086896411317381840}
   - component: {fileID: 6886584956002954871}
+  - component: {fileID: -6900844000930745148}
   m_Layer: 0
   m_Name: "\u706B\u7130\u5370\u8BB0\u7206\u70B8"
   m_TagString: Untagged
@@ -20313,15 +20314,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f26db44e0c89d84891d6167b401fcdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explodeRadius: 5
+  explodeRadius: 3
   targetLayer:
     serializedVersion: 2
     m_Bits: 512
+  explodeForce: 300
   sharkTime: 0.3
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
   checkRadius: 10
+--- !u!114 &-6900844000930745148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323952846389261453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1f65e67807a644881d104a7cc58b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7685841304344750877
 GameObject:
   m_ObjectHideFlags: 0

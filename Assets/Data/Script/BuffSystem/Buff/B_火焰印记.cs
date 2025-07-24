@@ -8,7 +8,7 @@ public class B_火焰印记 : BuffBase
         {
             //进行一次爆炸
             Debug.Log("爆炸一次");
-            var explode = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/BuffObject/火焰印记爆炸"), characterManager.transform.position, characterManager.transform.rotation);
+            var explode = PoolManager.Instance.Spawn(PoolManager.Instance.火焰印记爆炸.name,characterManager.transform.position, characterManager.transform.rotation);
             characterManager.buffSystem.RemoveBuff<B_火焰印记>();
         }
     }

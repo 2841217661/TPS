@@ -17,7 +17,7 @@ public class B_淘汰回放 : BuffBase
     {
         if(Random.Range(0f, 1f) < 0.5f)
         {
-            GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/BuffObject/淘汰回放爆炸球"), _manager.transform.position + Vector3.up, Quaternion.identity);
+            PoolManager.Instance.Spawn(PoolManager.Instance.淘汰回放爆炸球.name, _manager.transform.position + Vector3.up, Quaternion.identity);
         }
     }
 }

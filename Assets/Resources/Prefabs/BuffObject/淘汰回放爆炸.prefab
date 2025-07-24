@@ -15185,7 +15185,7 @@ GameObject:
   - component: {fileID: 6234292323878275345}
   - component: {fileID: 7134191882803576025}
   - component: {fileID: 8553129158134018913}
-  - component: {fileID: 8741705820723929950}
+  - component: {fileID: 4877629094490455593}
   m_Layer: 0
   m_Name: "\u6DD8\u6C70\u56DE\u653E\u7206\u70B8"
   m_TagString: Untagged
@@ -20093,7 +20093,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8741705820723929950
+--- !u!114 &4877629094490455593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20102,7 +20102,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5690995689586344384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b155f49d0feb6cc47a3b3859c2ef7299, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e1f65e67807a644881d104a7cc58b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7150989763327876807

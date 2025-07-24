@@ -14748,13 +14748,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   rotationSpeed: 10
-  stopDistance: 0.5
-  explodeRadius: 10
+  explodeRadius: 4
   explodeForce: 500
-  exploedEffect: {fileID: 5690995689586344384, guid: 9f5e825c7250de345a2c6349b1442c53, type: 3}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!135 &2122290746832491377
 SphereCollider:
   m_ObjectHideFlags: 0

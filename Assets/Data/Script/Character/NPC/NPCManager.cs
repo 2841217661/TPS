@@ -45,9 +45,8 @@ public class NPCManager : CharacterManager
 
             if (GameManager.Instance.playerManager.inputManager.inputActions.UI.EnterDialogue.WasPressedThisFrame())
             {
-                DialoguePanel dialoguePanel = (UIManager.Instance.OpenPanel("DialoguePanel")) as DialoguePanel;
-                dialoguePanel.npcManager = this;
-                //dialoguePanel.graph = currentGraph;
+                var dialoguePanel = UIManager.Instance.OpenPanel("DialoguePanel",UIManager.Instance.UIRoot);
+                (dialoguePanel as DialoguePanel).npcManager = this;
                 Destroy(buttonGroup);
             }
         }

@@ -6,4 +6,5 @@ public enum EnemyState
     Attack, //¹¥»÷
     KnockBack, //ÊÜ»÷(±»»÷ÍË)
     KnockUp,//ÊÜ»÷(±»»÷·É)
+    Death, //ËÀÍö×´Ì¬
 }
