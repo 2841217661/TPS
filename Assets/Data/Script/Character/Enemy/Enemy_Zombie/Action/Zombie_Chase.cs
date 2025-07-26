@@ -4,15 +4,23 @@ using UnityEngine;
 public class Zombie_Chase : Action
 {
     public SharedEnemyManager self;
-    private float findPathInterval = 1f; // Â·¾¶Ñ°ÕÒ¼ä¸ô
+    private float findPathInterval = 1f; // è·¯å¾„å¯»æ‰¾é—´éš”
     private float findPathIntervalTimer;
-
+    private Rigidbody rb;
     public override void OnStart()
     {
         self.Value.animator.CrossFade("Walk", 0.2f);
         self.Value.state = EnemyState.Chase;
-        findPathIntervalTimer = findPathInterval; // Á¢¼´´¥·¢µÚÒ»´ÎÑ°Â·
+        findPathIntervalTimer = findPathInterval;
+
+        rb = self.Value.GetComponent<Rigidbody>(); // èŽ·å–åˆšä½“
+
+        self.Value.agent.updatePosition = false;
+        self.Value.agent.updateRotation = false;
+
+        rb.useGravity = false;
     }
+
 
     public override TaskStatus OnUpdate()
     {
@@ -21,7 +29,9 @@ public class Zombie_Chase : Action
             return TaskStatus.Failure;
         }
 
-        // Â·¾¶¸üÐÂ£¨¼ä¸ô´¥·¢£©
+        
+
+        // è·¯å¾„æ›´æ–°ï¼ˆé—´éš”è§¦å‘ï¼‰
         findPathIntervalTimer += Time.deltaTime;
         if (findPathIntervalTimer >= findPathInterval)
         {
@@ -29,23 +39,31 @@ public class Zombie_Chase : Action
             findPathIntervalTimer = 0f;
         }
 
-        // ÒÆ¶¯·½Ïò
+        // ç§»åŠ¨æ–¹å‘
         Vector3 desiredVelocity = self.Value.agent.desiredVelocity;
         Vector3 moveDir = desiredVelocity.normalized;
 
-        // Æ½»¬ÒÆ¶¯
+        // ä½¿ç”¨ Rigidbody è¿›è¡Œç§»åŠ¨
         if (moveDir.sqrMagnitude > 0.01f)
         {
-            transform.position += moveDir * self.Value.moveSpeed * Time.deltaTime;
+            Vector3 newPosition = rb.position + moveDir * self.Value.moveSpeed * Time.deltaTime;
+            rb.MovePosition(newPosition); // æ›¿ä»£ transform.position += ...
 
-            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, self.Value.rotateSpeed * Time.deltaTime);
+            Vector3 flatDir = new Vector3(moveDir.x, 0f, moveDir.z);
+            if (flatDir.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(flatDir);
+                rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, self.Value.rotateSpeed * Time.deltaTime));
+            }
         }
 
-        // ¸üÐÂ NavMeshAgent µÄ nextPosition
+
+
+
+        // æ›´æ–° NavMeshAgent çš„ nextPosition
         self.Value.agent.nextPosition = transform.position;
 
-        // µ½´ïÄ¿±ê
+        // åˆ°è¾¾ç›®æ ‡
         if (Vector3.Distance(self.Value.transform.position, self.Value.target.position) <= self.Value.reachDistance)
         {
             self.Value.animator.CrossFade("Idle", 0.2f);
@@ -53,5 +71,10 @@ public class Zombie_Chase : Action
         }
 
         return TaskStatus.Running;
+    }
+
+    public override void OnEnd()
+    {
+        rb.useGravity = true;
     }
 }

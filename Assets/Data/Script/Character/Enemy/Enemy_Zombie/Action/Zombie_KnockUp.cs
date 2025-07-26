@@ -10,7 +10,6 @@ public class Zombie_KnockUp : Action
     {
         self.Value.animator.CrossFade("KnockBack", 0.1f);
         rb = self.Value.GetComponent<Rigidbody>();
-        //ApplyExplosionForce(transform.position, 500f, 10f);
     }
 
     public override TaskStatus OnUpdate()
@@ -24,13 +23,9 @@ public class Zombie_KnockUp : Action
         return TaskStatus.Running;
     }
 
-    //public void ApplyExplosionForce(Vector3 explosionPosition, float force, float radius, float upwardModifier = 0.5f)
-    //{
-    //    Rigidbody rb = GetComponent<Rigidbody>();
-    //    if (rb != null)
-    //    {
-    //        rb.AddExplosionForce(force, explosionPosition, radius, upwardModifier, ForceMode.Impulse);
-    //    }
-    //}
-
+    public override void OnEnd()
+    {
+        Debug.LogWarning(99999);
+        self.Value.agent.Warp(self.Value.transform.position);
+    }
 }

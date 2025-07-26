@@ -7,6 +7,7 @@ public enum MinmapIconType
     quest,
     buff,
     buy,
+    enemy,
 }
 
 public class MinmapIcon : MonoBehaviour
@@ -24,6 +25,7 @@ public class MinmapIcon : MonoBehaviour
     [SerializeField] private Image icon_quest;
     [SerializeField] private Image icon_buff;
     [SerializeField] private Image icon_buy;
+    [SerializeField] private Image icon_enemy;
 
 
     private void Start()
@@ -97,6 +99,9 @@ public class MinmapIcon : MonoBehaviour
                 break;
             case MinmapIconType.buy:
                 currentIcon = icon_buy;
+                break;
+            case MinmapIconType.enemy:
+                currentIcon = icon_enemy;
                 break;
         }
         minmapIconType = _iconType;

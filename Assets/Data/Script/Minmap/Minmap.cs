@@ -43,7 +43,7 @@ public class Minmap : MonoSingleton<Minmap>
     {
         GameObject minmapIcon = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Minmap/MinmapIcon"));
         MinmapIcon minmap = minmapIcon.GetComponent<MinmapIcon>();
-        minmap.Init(_target, MinmapIconType.quest);
+        minmap.Init(_target, _iconType);
         minmapIconList.Add(minmapIcon);
     }
 

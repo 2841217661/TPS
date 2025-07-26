@@ -40,8 +40,12 @@ public class Zombie_Patrol : Action
                 Quaternion targetRotation = Quaternion.LookRotation(moveDir);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, self.Value.rotateSpeed * Time.deltaTime);
             }
+            else
+            {
+                Debug.Log("速度大小小于0.1f");
+            }
 
-            self.Value.agent.nextPosition = transform.position;
+            //self.Value.agent.nextPosition = transform.position;
 
             if (Vector3.Distance(self.Value.transform.position, self.Value.currentPatrolPoint.position) <= self.Value.reachDistance)
             {
