@@ -15,7 +15,7 @@ public class Å­»ğ·ÙÉíĞ¡Çò : MonoBehaviour
 
                 //½øĞĞÒ»´Î×ÆÉÕÉËº¦
                 IDamageable damageable = manager.GetComponent<IDamageable>();
-                damageable?.TakeDamage(20, transform.parent.GetComponent<Å­»ğ·ÙÉÕ»·ÈÆÆ÷>().orbitTransform.GetComponent<CharacterManager>(), TakeDamageType.Light);
+                damageable?.TakeDamage(20, transform.parent.GetComponent<Å­»ğ·ÙÉÕ»·ÈÆÆ÷>().orbitTransform.GetComponent<CharacterManager>(), transform.position, DamageIntensity.Light,DamageElement.Fire);
                 //ÊµÀıÉËº¦ÒôĞ§
                 PoolManager.Instance.Spawn(PoolManager.Instance.sx_buff_×ÆÉÕ.name, manager.transform.position, Quaternion.identity);
             }

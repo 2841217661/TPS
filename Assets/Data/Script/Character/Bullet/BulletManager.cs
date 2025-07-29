@@ -62,7 +62,7 @@ public class BulletManager : CharacterManager,IPoolable
 
             //调用被击中者的受击接口方法
             var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-            damageable?.TakeDamage(damage,this, TakeDamageType.Light);
+            damageable?.TakeDamage(damage,this,hit.point, DamageIntensity.Light,DamageElement.Physical);
 
             PoolManager.Instance.Recycle(gameObject.name, gameObject); //回收子弹
                                                                        //实例特效

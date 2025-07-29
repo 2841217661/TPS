@@ -428,7 +428,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388206898607748835}
   serializedVersion: 4
-  m_Mass: 75
+  m_Mass: 300
   m_Drag: 0.5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -560,19 +560,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   reachDistance: 1
-  moveSpeed: 2
+  moveSpeed: 1.5
   rotateSpeed: 200
+  attackPower: 5
   isGrounded: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 8193
   groundCheckSphereRadius: 0.3
-  boomEffect: {fileID: 1824402899247718, guid: c709ca9e4e68eea458660766a5ecaee7, type: 3}
   backResistance: 200
   forwardCheckDistance: 20
   forwardCheckAngle: 60
   roundCheckRaious: 5
   checkOffset: {x: 0, y: 1, z: 0}
+  normalAttackRadius: 0
+  normalAttackoffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1722886568167487660
 GameObject:
   m_ObjectHideFlags: 0

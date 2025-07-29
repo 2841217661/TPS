@@ -16,6 +16,9 @@ public class EnemyManager : CharacterManager,IKnockUpable
     public float moveSpeed;
     public float rotateSpeed;
 
+    [Header("¹¥»÷ÉèÖÃ")]
+    public float attackPower;
+
     
 
     protected override void Awake()
@@ -71,13 +74,13 @@ public class EnemyManager : CharacterManager,IKnockUpable
         isGrounded = Physics.CheckSphere(transform.position, groundCheckSphereRadius, groundLayer);
         if (!isGrounded)
         {
-            state = EnemyState.KnockUp;
-            //airTimer += Time.deltaTime;
-            //if(airTimer > airTime)
-            //{
-            //    state = EnemyState.KnockUp;
-            //    airTimer = 0f;
-            //}
+            //state = EnemyState.KnockUp;
+            airTimer += Time.deltaTime;
+            if (airTimer > airTime)
+            {
+                state = EnemyState.KnockUp;
+                airTimer = 0f;
+            }
         }
         else
         {
@@ -93,4 +96,6 @@ public class EnemyManager : CharacterManager,IKnockUpable
             rb.AddExplosionForce(force, explosionPosition, radius, upwardModifier, ForceMode.Impulse);
         }
     }
+
+
 }

@@ -72,6 +72,7 @@ public class UIManager : MonoSingleton<UIManager>
             {"MainQuestPanel",UIPanelPath.MainQuestPanel },
             {"BranchQuestPanel",UIPanelPath.BranchQuestPanel },
             {"ScreenFadePanel",UIPanelPath.ScreenFadePanel },
+            {"BuffSelectPanel",UIPanelPath.BuffSelectPanel },
         };
     }
 

@@ -4,7 +4,7 @@ public class B_火焰印记 : BuffBase
 {
     protected override void OnCurrentLevelChange(int change)
     {
-        if(CurrentLevel >= 2)
+        if(CurrentLevel >= 100)
         {
             //进行一次爆炸
             Debug.Log("爆炸一次");

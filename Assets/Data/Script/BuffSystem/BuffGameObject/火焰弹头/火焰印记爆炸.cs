@@ -26,7 +26,7 @@ public class 火焰印记爆炸 : MonoBehaviour,IPoolable
         {
             collider.GetComponent<IKnockUpable>()?.ApplyExplosionForce(transform.position, explodeForce, explodeRadius);
 
-            collider.GetComponent<IDamageable>()?.TakeDamage(100f, GameManager.Instance.playerManager, TakeDamageType.Heavy);
+            collider.GetComponent<IDamageable>()?.TakeDamage(100f, GameManager.Instance.playerManager,collider.transform.position + Vector3.up, DamageIntensity.Heavy,DamageElement.Fire);
         }
 
         Vector3 toPlayer = GameManager.Instance.playerManager.transform.position - transform.position;

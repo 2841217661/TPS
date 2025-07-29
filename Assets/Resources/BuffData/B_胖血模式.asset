@@ -22,6 +22,5 @@ MonoBehaviour:
   buffType: 1
   intensity: 0
   tags: []
-  buffDescript1: "\u5C11\u91CF\u589E\u52A0\u751F\u547D\u503C\u4E0A\u9650\uFF0C\u53EF\u65E0\u9650\u53E0\u52A0"
-  buffDescript2: "\u6211\u8D85\u80FD\u6297\uFF01\u6BCF\u5C42\u63D0\u534710%\u751F\u547D\u503C\u4E0A\u9650"
+  buffDescript: "\u6700\u5927\u751F\u547D\u503C\u63D0\u534710%\uFF0C\u53EF\u65E0\u9650\u53E0\u52A0\u3002"
   icon: {fileID: 21300000, guid: 498c024262768b14b9d97eda9a772a95, type: 3}

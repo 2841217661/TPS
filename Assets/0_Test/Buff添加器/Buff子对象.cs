@@ -14,14 +14,12 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Buff添加器.Instance.描述1.text = buffData.buffDescript1;
-        Buff添加器.Instance.描述2.text = buffData.buffDescript2;
+        Buff添加器.Instance.描述1.text = buffData.buffDescript;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         Buff添加器.Instance.描述1.text = "请先将鼠标放置Buff上！";
-        Buff添加器.Instance.描述2.text = "请先将鼠标放置Buff上！";
     }
 
     private void Start()
@@ -44,9 +42,6 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
                 break;
             case "狂暴火力":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_狂暴火力>();
-                break;
-            case "战术扩容":
-                Buff添加器.Instance.actorBuffSystem.AddBuff<B_战术扩容>();
                 break;
             case "胖血模式":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_胖血模式>();

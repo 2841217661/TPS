@@ -41,8 +41,8 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   speaker: 1
-  methodName: "AddBuff_\u8F85\u52A9\u7CBE\u7075"
-  content: "\u54E6\uFF01\u771F\u662F\u7CDF\u7CD5\u7684\u9009\u62E9\u4F19\u8BA1\u3002\u201C\u8F85\u52A9\u7CBE\u7075\u201D\u867D\u7136\u53EF\u4EE5\u534F\u52A9\u4F60\u8FDB\u884C\u6218\u6597\uFF0C\u4F46\u6218\u529B\u5B9E\u5728\u592A\u4F4E\u3002"
+  methodName: "AddBuff_\u72C2\u66B4\u706B\u529B"
+  content: "\u4E0D\u9519\u7684\u9009\u62E9\uFF0C\"\u72C2\u66B4\u706B\u529B\u53EF\u4EE5\u8BA9\u4F60\u7684\u5C04\u51FB\u901F\u5EA6\u76F4\u63A5\u7FFB\u500D\""
 --- !u!114 &-7402411484962978582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 1
   outputs:
-  - "\u8F85\u52A9\u7CBE\u7075"
+  - "\u72C2\u66B4\u706B\u529B"
   - "\u5371\u673A\u5408\u7EA6"
   - "\u6DD8\u6C70\u56DE\u653E"
   - "\u5F3A\u8005\u65E0\u9700\u4ED6\u7269\uFF01"

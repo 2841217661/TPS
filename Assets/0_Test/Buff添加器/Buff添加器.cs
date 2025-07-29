@@ -8,7 +8,6 @@ public class Buff添加器 : MonoSingleton<Buff添加器>
     public Button Button_OC;
     public GameObject 修改器面板;
     public TextMeshProUGUI 描述1;
-    public TextMeshProUGUI 描述2;
     public BuffSystem actorBuffSystem;
 
     private void Start()

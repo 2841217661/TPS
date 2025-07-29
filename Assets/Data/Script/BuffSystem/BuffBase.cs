@@ -84,11 +84,21 @@ public class BuffBase
     /// <summary>
     /// 当此buff被添加后触发
     /// </summary>
-    public virtual void AfterBeAdded() { }
+    public virtual void AfterBeAdded() { 
+        if(characterManager is PlayerManager)
+        {
+            GameManager.Instance.playerInfo.AddPlayerBuffInfoItem(this);
+        }
+    }
     /// <summary>
     /// 当此buff被移除时触发
     /// </summary>
-    public virtual void AfterBeRemoved() { }
+    public virtual void AfterBeRemoved() {
+        if (characterManager is PlayerManager)
+        {
+            GameManager.Instance.playerInfo.RemovePlayerBuffInfoItem(this);
+        }
+    }
     /// <summary>
     /// Update
     /// </summary>

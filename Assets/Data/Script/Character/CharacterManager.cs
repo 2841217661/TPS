@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -18,9 +19,18 @@ public class CharacterManager : MonoBehaviour
 
     public BuffSystem buffSystem;
 
+    /// <summary>
+    /// 受伤事件：伤害值、伤害具体类型、是否是暴击伤害
+    /// </summary>
+    public Action<float,Vector3, DamageElement, bool> onDamageEvent;
+    public void DamageEvent(float _damageValue,Vector3 _damagePosition, DamageElement _element, bool _isCritical)
+    {
+        onDamageEvent?.Invoke(_damageValue, _damagePosition, _element,_isCritical);
+    }
+
     protected virtual void OnEnable()
     {
-
+        
     }
 
     protected virtual void OnDisable()

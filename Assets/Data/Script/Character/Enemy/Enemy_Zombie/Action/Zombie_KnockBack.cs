@@ -11,6 +11,8 @@ public class Zombie_KnockBack : Action
 
         self.Value.animator.CrossFade("KnockBack", 0.1f);
         self.Value.animator.applyRootMotion = true;
+
+        PoolManager.Instance.Spawn(PoolManager.Instance.sx_½©Ê¬_±»»÷ÍË.name, transform.position, Quaternion.identity, true);
     }
 
     public override TaskStatus OnUpdate()

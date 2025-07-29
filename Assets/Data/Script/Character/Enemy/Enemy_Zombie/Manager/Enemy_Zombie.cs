@@ -1,11 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Zombie : EnemyManager,IDamageable
+public class Enemy_Zombie : EnemyManager, IDamageable
 {
-    [Header("设置相关")]
-    public GameObject boomEffect; //死亡爆炸VFX
-
     public float backResistance; //击退抗性
     private float currentBackResistance;
 
@@ -22,14 +19,23 @@ public class Enemy_Zombie : EnemyManager,IDamageable
 
     
 
-    public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
+    public void TakeDamage(float _value, CharacterManager _source,Vector3 _damagePosition, DamageIntensity _type,DamageElement _element)
     {
         if (state == EnemyState.Death) return;
 
-        Debug.Log($"{gameObject.name}受到来自{_source}的{_value}点伤害，伤害类型:{_type}");
+        if(state == EnemyState.Patrol)
+        {
+            //此时应该发现玩家
+            target = GameManager.Instance.playerManager.transform;
+            //播放警戒语音
+            PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_警戒.name,transform.position,Quaternion.identity,true);
+        }
+
+        DamageEvent(_value,_damagePosition, _element,false); //现在还没有写暴击逻辑
+
         switch (_type)
         {
-            case TakeDamageType.Light: //持续受到轻击会被击退
+            case DamageIntensity.Light: //持续受到轻击会被击退
                 currentBackResistance -= _value;
                 if (currentBackResistance <= 0f)
                 {
@@ -37,11 +43,11 @@ public class Enemy_Zombie : EnemyManager,IDamageable
                     currentBackResistance = backResistance;
                 }
                 break;
-            case TakeDamageType.Middle: //受到较重的攻击会被击退
+            case DamageIntensity.Middle: //受到较重的攻击会被击退
                 state = EnemyState.KnockBack;
                 currentBackResistance = backResistance;
                 break;
-            case TakeDamageType.Heavy: //受到重击会被击飞
+            case DamageIntensity.Heavy: //受到重击会被击飞
                 state = EnemyState.KnockUp;
                 currentBackResistance = backResistance;
                 break;
@@ -54,11 +60,34 @@ public class Enemy_Zombie : EnemyManager,IDamageable
         }
     }
 
+
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        //注册受伤伤害数字飘动事件
+        onDamageEvent += DamageEvent_DisplayDamageTextEffect;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        onDamageEvent -= DamageEvent_DisplayDamageTextEffect;
+    }
+
+    private void DamageEvent_DisplayDamageTextEffect(float _damageValue,Vector3 _damagePosition, DamageElement _element, bool _isCritical)
+    {
+        Debug.Log($"受到{_damageValue}伤害，类型为{_element},发生暴击？{_isCritical}");
+        GameManager.Instance.GenerateDamageTextEffect(_damageValue,  _damagePosition, _element, _isCritical);
+    }
+
     protected override void Awake()
     {
         base.Awake();
 
-        target = GameManager.Instance.playerManager.transform;
+        //target = GameManager.Instance.playerManager.transform;
 
         currentBackResistance = backResistance;
 
@@ -74,8 +103,8 @@ public class Enemy_Zombie : EnemyManager,IDamageable
     {
         base.OnDeath();
 
-        GameObject _boomEffect = Instantiate(boomEffect, transform.position + Vector3.up, transform.rotation);
-        Destroy(_boomEffect, 2f);
+        PoolManager.Instance.Spawn(PoolManager.Instance.zombie_death_explode.name,transform.position + Vector3.up,transform.rotation);
+        PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_死亡爆炸.name,transform.position,transform.rotation);
     }
 
 
@@ -142,6 +171,7 @@ public class Enemy_Zombie : EnemyManager,IDamageable
     /// </summary>
     protected virtual void OnDrawGizmosSelected()
     {
+        #region 绘制警戒范围
         // 绘制颜色
         Color forwardColor = new Color(0, 1, 0, 0.3f); //绿色
         Color aroundColor = new Color(1, 0, 0, 0.2f);  //红色
@@ -173,5 +203,32 @@ public class Enemy_Zombie : EnemyManager,IDamageable
         // 2. 绘制周围近距离检测范围
         Gizmos.color = aroundColor;
         Gizmos.DrawWireSphere(origin, roundCheckRaious);
+        #endregion
+
+        #region 绘制普通攻击范围
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + transform.rotation * normalAttackoffset, normalAttackRadius);
+        #endregion
     }
+
+
+    #region 动画事件
+    public void Play_SX_攻击()
+    {
+        PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_攻击.name, transform.position, Quaternion.identity, true);
+    }
+
+    [Header("普通攻击设置")]
+    public float normalAttackRadius; //普通攻击范围半径
+    public Vector3 normalAttackoffset; //以原点 + offset 为中心
+    public void TryNormalAttack()
+    {
+        Collider[] collisions = Physics.OverlapSphere(transform.position + transform.rotation * normalAttackoffset, normalAttackRadius,targetLayer);
+        if(collisions.Length > 0 ) //敌人在范围内
+        {
+            collisions[0].GetComponent<IDamageable>()?.TakeDamage(attackPower, this, Vector3.zero, DamageIntensity.Light, DamageElement.Physical);
+        }
+    }
+
+    #endregion
 }

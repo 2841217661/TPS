@@ -47,12 +47,25 @@ public class PoolManager : MonoSingleton<PoolManager>
     public GameObject sx_playerFoot_R;
     //Buff
     public GameObject sx_buff_×ÆÉÕ;
+    //PlayerÒôĞ§
+    public GameObject sx_player_damage;
+    //µĞÈËÒôĞ§
+    public GameObject sx_½©Ê¬_¾¯½ä;
+    public GameObject sx_½©Ê¬_±»»÷ÍË;
+    public GameObject sx_½©Ê¬_¹¥»÷;
+    public GameObject sx_½©Ê¬_ËÀÍö±¬Õ¨;
 
     [Header("ÌØĞ§")]
+    //buff
     public GameObject ×ÆÉÕ;
     public GameObject ÌÔÌ­»Ø·Å±¬Õ¨;
     public GameObject ÌÔÌ­»Ø·Å±¬Õ¨Çò;
     public GameObject »ğÑæÓ¡¼Ç±¬Õ¨;
+    //ÊÜÉËÊı×Ö
+    public GameObject damageText;
+    //½©Ê¬
+    public GameObject zombie_death_explode;
+
 
 
     protected override void Init()
@@ -113,6 +126,17 @@ public class PoolManager : MonoSingleton<PoolManager>
         //Buff
         CreatePool(sx_buff_×ÆÉÕ.name, sx_buff_×ÆÉÕ, 10, transform.Find("SFXPool/Pool_SX_Buff_×ÆÉÕ"));
 
+        //Player
+        CreatePool(sx_player_damage.name, sx_player_damage, 1, transform.Find("PlayerSFX"));
+
+
+        //µĞÈËÒôĞ§
+        //½©Ê¬
+        CreatePool(sx_½©Ê¬_¾¯½ä.name, sx_½©Ê¬_¾¯½ä, 3, transform.Find("EnemySFX/½©Ê¬/¾¯½ä"));
+        CreatePool(sx_½©Ê¬_±»»÷ÍË.name, sx_½©Ê¬_±»»÷ÍË, 3, transform.Find("EnemySFX/½©Ê¬/±»»÷ÍË"));
+        CreatePool(sx_½©Ê¬_¹¥»÷.name, sx_½©Ê¬_¹¥»÷, 3, transform.Find("EnemySFX/½©Ê¬/¹¥»÷"));
+        CreatePool(sx_½©Ê¬_ËÀÍö±¬Õ¨.name, sx_½©Ê¬_ËÀÍö±¬Õ¨, 3, transform.Find("EnemySFX/½©Ê¬/ËÀÍö±¬Õ¨"));
+
         #endregion
 
         #region ÌØĞ§VFX
@@ -121,6 +145,10 @@ public class PoolManager : MonoSingleton<PoolManager>
         CreatePool(ÌÔÌ­»Ø·Å±¬Õ¨.name, ÌÔÌ­»Ø·Å±¬Õ¨, 10, transform.Find("VFXPool/Buff/ÌÔÌ­»Ø·Å±¬Õ¨"));
         CreatePool(ÌÔÌ­»Ø·Å±¬Õ¨Çò.name, ÌÔÌ­»Ø·Å±¬Õ¨Çò, 10, transform.Find("VFXPool/Buff/ÌÔÌ­»Ø·Å±¬Õ¨Çò"));
         CreatePool(»ğÑæÓ¡¼Ç±¬Õ¨.name, »ğÑæÓ¡¼Ç±¬Õ¨, 10, transform.Find("VFXPool/Buff/»ğÑæÓ¡¼Ç±¬Õ¨"));
+        //damageText
+        CreatePool(damageText.name, damageText, 10, GameObject.Find("Canvas").transform.Find("NormalPanel/DamageText"));
+        //½©Ê¬
+        CreatePool(zombie_death_explode.name, zombie_death_explode, 10, transform.Find("VFXPool/Zombie/DeathExplode"));
         #endregion
     }
     public void CreatePool(string key, GameObject prefab, int initialSize, Transform parent = null)
@@ -131,7 +159,7 @@ public class PoolManager : MonoSingleton<PoolManager>
         poolDict[key] = pool;
     }
 
-    public GameObject Spawn(string key, Vector3 position, Quaternion rotation)
+    public GameObject Spawn(string key, Vector3 position, Quaternion rotation,bool limitCount = false)
     {
         if (!poolDict.ContainsKey(key))
         {
@@ -139,7 +167,7 @@ public class PoolManager : MonoSingleton<PoolManager>
             return null;
         }
 
-        return poolDict[key].Spawn(position, rotation);
+        return poolDict[key].Spawn(position, rotation, limitCount);
     }
 
     public void Recycle(string key, GameObject obj,Transform parent = null)

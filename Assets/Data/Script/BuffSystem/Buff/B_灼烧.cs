@@ -29,14 +29,17 @@ public class B_灼烧 : BuffBase
         DamageCharacter(onceDamageValue);
 
         vfx_fire = PoolManager.Instance.Spawn(PoolManager.Instance.灼烧.name, characterManager.transform.position + Vector3.up, Quaternion.identity);
-        vfx_fire.transform.SetParent(characterManager.transform);
+        vfx_fire.GetComponent<灼烧>().target = characterManager.transform;
     }
 
     public override void AfterBeRemoved()
     {
         base.AfterBeRemoved();
 
-        PoolManager.Instance.Recycle(vfx_fire.name, vfx_fire,PoolManager.Instance.transform.Find("VFXPool/Pool_VX_Buff_灼烧"));
+        if (vfx_fire.activeSelf)
+        {
+            PoolManager.Instance.Recycle(vfx_fire.name, vfx_fire);
+        }
     }
 
     private void DamageCharacter(float _value)
@@ -44,7 +47,7 @@ public class B_灼烧 : BuffBase
         //判断characterManager是否实现了受击接口
         if(characterManager is IDamageable damageable)
         {
-            damageable.TakeDamage(_value, characterManager, TakeDamageType.Fire);
+            damageable.TakeDamage(_value, characterManager, characterManager.transform.position + Vector3.up, DamageIntensity.Light, DamageElement.Fire);
         }
     }
 }

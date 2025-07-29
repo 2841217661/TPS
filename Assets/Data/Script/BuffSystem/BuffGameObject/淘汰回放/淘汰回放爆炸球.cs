@@ -50,7 +50,7 @@ public class 淘汰回放爆炸球 : MonoBehaviour
                 if(other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                 {
                     collider.transform.GetComponent<IKnockUpable>()?.ApplyExplosionForce(transform.position, explodeForce, explodeRadius);
-                    collider.transform.GetComponent<IDamageable>()?.TakeDamage(500f, GameManager.Instance.playerManager, TakeDamageType.Heavy);
+                    collider.transform.GetComponent<IDamageable>()?.TakeDamage(500f, GameManager.Instance.playerManager,collider.transform.position + Vector3.up, DamageIntensity.Heavy,DamageElement.Fire);
                 }
             }
         }

@@ -18,7 +18,9 @@ public class B_风之祝福 : BuffBase
     {
         base.OnCurrentLevelChange(change);
 
-        float currentMoveAnimSpeedMul = m_playerManager.animator.GetFloat("MoveAnimSpeedMul");
-        m_playerManager.animator.SetFloat("MoveAnimSpeedMul", currentMoveAnimSpeedMul + effectSize * change);
+        //float currentMoveAnimSpeedMul = m_playerManager.animator.GetFloat("MoveAnimSpeedMul");
+        //m_playerManager.animator.SetFloat("MoveAnimSpeedMul", currentMoveAnimSpeedMul + effectSize * change);
+
+        m_playerManager.animationMovementMul += effectSize * change;
     }
 }

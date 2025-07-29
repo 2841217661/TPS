@@ -27,8 +27,17 @@ public class PrefabsPool
         return obj;
     }
 
-    public GameObject Spawn(Vector3 position, Quaternion rotation)
+    public GameObject Spawn(Vector3 position, Quaternion rotation, bool limitCount)
     {
+        if(limitCount == true) //如果池为空，不自动扩容，直接返回null
+        {
+            if(poolQueue.Count <= 0)
+            {
+                return null;
+            }
+        }
+
+        //池不为空则直接取出，否则进行扩容
         GameObject obj = poolQueue.Count > 0 ? poolQueue.Dequeue() : CreateNew();
 
         obj.transform.SetPositionAndRotation(position, rotation);

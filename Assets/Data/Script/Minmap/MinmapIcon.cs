@@ -38,7 +38,7 @@ public class MinmapIcon : MonoBehaviour
         minimapCamera = Minmap.Instance.minimapCamera;
 
         // 设置父级为图标容器
-        transform.SetParent(UIManager.Instance.UIRoot.Find("Left/MinmapParent/Mask/MinmapRawImage"));
+        transform.SetParent(UIManager.Instance.UIRoot.Find("NormalPanel/LeftUp/MinmapParent/Mask/MinmapRawImage"));
 
         RectTransform owner = GetComponent<RectTransform>();
         // 设置锚点为全拉伸（横向/纵向都从0到1）

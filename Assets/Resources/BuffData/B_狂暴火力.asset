@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "B_\u72C2\u66B4\u706B\u529B"
   m_EditorClassIdentifier: 
   buffName: "\u72C2\u66B4\u706B\u529B"
-  maxLevel: 10
+  maxLevel: 1
   isPermanent: 1
   maxDuration: 0.02
   demotion: 1
@@ -22,6 +22,5 @@ MonoBehaviour:
   buffType: 1
   intensity: 0
   tags: []
-  buffDescript1: "\u5C0F\u5E45\u5EA6\u63D0\u5347\u5C04\u51FB\u901F\u5EA6\uFF0C\u53EF\u53E0\u52A0\uFF0C\u81F3\u591A\u53E0\u52A010\u5C42"
-  buffDescript2: "\u556A\u556A\u556A\u63D0\u901F\u5305\uFF0C\u6BCF\u5C42\u63D0\u534710%\u5C04\u51FB\u901F\u5EA6"
+  buffDescript: "\u653B\u901F\u63D0\u5347100%\u3002"
   icon: {fileID: 21300000, guid: dab589fb8f3236b4e97e0053efc51dfb, type: 3}

@@ -46,6 +46,24 @@ public static class BuffDataManager
 {
     private static Dictionary<string, BuffData> buffDataDictionary;
 
+    private static Type[] buffTypes = new Type[]
+    {
+        typeof(B_风之祝福),
+        typeof(B_狂暴火力),
+        typeof(B_胖血模式),
+        typeof(B_怒火焚身),
+        typeof(B_追踪子弹),
+        typeof(B_火焰弹头),
+        typeof(B_淘汰回放),
+    };
+
+    //随机获取一个buff类型
+    public static Type GetRandomBuffType()
+    {
+        int index = UnityEngine.Random.Range(0, buffTypes.Length);
+        return buffTypes[index];
+    }
+
     // 获得BuffData:T为buff的名字，需要与buff类名相同
     public static BuffData GetBuffData<T>() where T : class
     {

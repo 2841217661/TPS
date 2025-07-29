@@ -1,6 +1,7 @@
 using UnityEngine;
 using RootMotion.FinalIK;
 using System.Collections.Generic;
+using System;
 
 public class PlayerManager : CharacterManager,IDamageable
 {
@@ -16,6 +17,40 @@ public class PlayerManager : CharacterManager,IDamageable
     public int baseBulletCount;
     public int maxBulletCount;
     public int currentBulletCount;
+
+    [Header("经验值")]
+    private int m_currentLevel;
+    public int currentLevel
+    {
+        get { return m_currentLevel; }
+        set
+        {
+            m_currentLevel = value;
+
+            //等级发生改变时 ，更新角色面板信息显示
+            GameManager.Instance.playerInfo.UI_Text_PlayerLevel.text = "LV." + value.ToString();
+        }
+    }
+    public float maxExperienceValue;
+    private float m_currentExperienceValue;
+    public float currentExperienceValue
+    {
+        get { return m_currentExperienceValue; }
+        set
+        {
+            m_currentExperienceValue = value;
+            //如果经验值达到最大，将升级,并清空当前经验值
+            if (m_currentExperienceValue >= maxExperienceValue)
+            {
+                currentLevel++;
+                m_currentExperienceValue = 0f;
+            }
+
+            //更新角色面板信息显示
+            GameManager.Instance.playerInfo.UI_Image_PlayerExperienceBar.fillAmount = currentExperienceValue / maxExperienceValue;
+        }
+    }
+
 
     [Header("测试")]
     public string 当前姿态;
@@ -50,6 +85,7 @@ public class PlayerManager : CharacterManager,IDamageable
     public Transform shooter;
     public CurrentUseBulletType currentUseBulletType;
     public float shootTimer;
+
     public enum CurrentUseBulletType
     {
         BulletNormal_Ordinary,
@@ -76,6 +112,25 @@ public class PlayerManager : CharacterManager,IDamageable
     public PlayerElbowStrikeState elbowStrikeState { get; private set; }
     public PlayerKickState kickState { get; private set; }
     #endregion
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+
+    }
+
+    #region 事件
+
+
+
+    #endregion
+
     protected override void Awake()
     {
         base.Awake();
@@ -87,11 +142,8 @@ public class PlayerManager : CharacterManager,IDamageable
         maxBulletCount = baseBulletCount;
         currentBulletCount = maxBulletCount;
 
-        //测试：开始游戏时隐藏鼠标
-        //// 游戏开始时隐藏鼠标
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked; // 可选：锁定鼠标到游戏窗口
-        //isMouseVisible = false;
+        currentExperienceValue = 0f;
+        currentLevel = 1;
 
         inputManager = GetComponent<PlayerInputManager>();
         animator = GetComponent<Animator>();
@@ -167,32 +219,6 @@ public class PlayerManager : CharacterManager,IDamageable
         #endregion
 
         buffSystem.Update();
-
-        //if(Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    B_怒火焚身 b = buffSystem.FindOneBuff<B_怒火焚身>();
-        //    if(b != null)
-        //    {
-        //        Debug.Log("找到buff");
-        //        Debug.Log(b.rotationRadius);
-        //        b.rotationRadius = 333;
-        //        Debug.Log(b.rotationRadius);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("没有找到buff");
-        //    }
-        //}
-    }
-
-    private void ToggleMouseVisibility()
-    {
-        isMouseVisible = !isMouseVisible;
-        Cursor.visible = isMouseVisible;
-
-        // 同步锁定状态
-        Cursor.lockState = isMouseVisible ? CursorLockMode.None : CursorLockMode.Locked;
-
     }
 
     protected override void FixedUpdate()
@@ -368,9 +394,15 @@ public class PlayerManager : CharacterManager,IDamageable
     #endregion
 
     #region 接口实现
-    public void TakeDamage(float _value, CharacterManager _source, TakeDamageType _type)
+    public void TakeDamage(float _value, CharacterManager _source,Vector3 _damagePosition, DamageIntensity _type, DamageElement _element)
     {
-        
+        Debug.Log($"受到{_value}点伤害，来自{_source}");
+
+        //屏幕受伤效果
+        GameManager.Instance.playerDamageScreenEffect.PlayFlash();
+
+        //播放受伤音效
+        PoolManager.Instance.Spawn(PoolManager.Instance.sx_player_damage.name,transform.position,Quaternion.identity,true);
     }
     #endregion
 }

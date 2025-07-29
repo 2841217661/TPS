@@ -4,8 +4,6 @@ public class B_狂暴火力 : BuffBase
 {
     private PlayerManager m_playerManager;
 
-    public float effectSize = 0.1f; 
-
     public override void AfterBeAdded()
     {
         base.AfterBeAdded();
@@ -17,6 +15,6 @@ public class B_狂暴火力 : BuffBase
     {
         base.OnCurrentLevelChange(change);
 
-        m_playerManager.currentShootSpeed -= m_playerManager.baseShootSpeed * 0.5f * effectSize *  change;
+        m_playerManager.currentShootSpeed -= m_playerManager.baseShootSpeed * 0.5f *  change;
     }
 }

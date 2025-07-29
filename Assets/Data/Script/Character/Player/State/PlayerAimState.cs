@@ -68,9 +68,6 @@ public class PlayerAimState : PlayerGroundState
         smoothAimPosition = Vector3.Lerp(smoothAimPosition, targetPos, Time.deltaTime * 20f);
 
         playerManager.aimAimTarget.position = smoothAimPosition;
-
-        //调试线
-        DrawDebugAimLine(camPos, camDir, 10f, Color.red);
     }
     public override void Update()
     {
@@ -154,7 +151,7 @@ public class PlayerAimState : PlayerGroundState
 
         Vector3 targetPoint;
 
-        if (Physics.Raycast(camPos, camForward, out RaycastHit hit, 100f,~playerManager.notDamageLayer))
+        if (Physics.Raycast(camPos, camForward, out RaycastHit hit, 100f,~playerManager.notDamageLayer,QueryTriggerInteraction.Ignore))
         {
             // 命中目标
             targetPoint = hit.point;
@@ -168,18 +165,18 @@ public class PlayerAimState : PlayerGroundState
         // 计算方向（从枪口 -> 瞄准点）
         Vector3 shootDir = (targetPoint - shootOrigin).normalized;
 
-        // 添加一定角度的偏移
-        float maxAngleOffset = 1f;
+        //// 添加一定角度的偏移
+        //float maxAngleOffset = 1f;
 
-        // 生成一个随机方向的偏移角度
-        float offsetYaw = Random.Range(-maxAngleOffset, maxAngleOffset);     // 水平方向偏移
-        float offsetPitch = Random.Range(-maxAngleOffset, maxAngleOffset);   // 垂直方向偏移
+        //// 生成一个随机方向的偏移角度
+        //float offsetYaw = Random.Range(-maxAngleOffset, maxAngleOffset);     // 水平方向偏移
+        //float offsetPitch = Random.Range(-maxAngleOffset, maxAngleOffset);   // 垂直方向偏移
 
-        // 对 shootDir 施加旋转
-        Quaternion offsetRotation = Quaternion.Euler(offsetPitch, offsetYaw, 0f);
-        Vector3 offsetDir = offsetRotation * shootDir;
+        //// 对 shootDir 施加旋转
+        //Quaternion offsetRotation = Quaternion.Euler(offsetPitch, offsetYaw, 0f);
+        //Vector3 offsetDir = offsetRotation * shootDir;
 
-        Quaternion shootRotation = Quaternion.LookRotation(offsetDir);
+        Quaternion shootRotation = Quaternion.LookRotation(shootDir);
 
 
         switch (playerManager.currentUseBulletType)
@@ -217,11 +214,5 @@ public class PlayerAimState : PlayerGroundState
                 Debug.LogWarning("开火类型与当前子弹类型不匹配？？？");
                 break;
         }
-    }
-
-    //调试(需要删除)
-    private void DrawDebugAimLine(Vector3 startPos, Vector3 dir, float length, Color color)
-    {
-        Debug.DrawRay(startPos, dir * length, color);
     }
 }

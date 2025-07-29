@@ -5,6 +5,8 @@ using UnityEngine;
 public class PoolObjectRecyclingAfterEnable_SFX : MonoBehaviour
 {
     private AudioSource audioSource;
+    [SerializeField] private float minDistanceCanListen = 2f; //范围内音量最大
+    [SerializeField] private float maxDistanceCanListen = 10f; //超过该范围完全听不到
 
     private void Awake()
     {
@@ -16,8 +18,8 @@ public class PoolObjectRecyclingAfterEnable_SFX : MonoBehaviour
         // 设置衰减方式为线性
         audioSource.rolloffMode = AudioRolloffMode.Linear;
 
-        audioSource.minDistance = 2f;    // 2米内音量最大
-        audioSource.maxDistance = 10f;   // 超过10米逐渐听不到
+        audioSource.minDistance = minDistanceCanListen;   
+        audioSource.maxDistance = maxDistanceCanListen;   
 
     }
 
