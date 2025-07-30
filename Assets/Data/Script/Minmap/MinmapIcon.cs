@@ -37,23 +37,10 @@ public class MinmapIcon : MonoBehaviour
 
         minimapCamera = Minmap.Instance.minimapCamera;
 
-        // 设置父级为图标容器
-        transform.SetParent(UIManager.Instance.UIRoot.Find("NormalPanel/LeftUp/MinmapParent/Mask/MinmapRawImage"));
-
-        RectTransform owner = GetComponent<RectTransform>();
-        // 设置锚点为全拉伸（横向/纵向都从0到1）
-        owner.anchorMin = Vector2.zero;      // (0, 0)
-        owner.anchorMax = Vector2.one;       // (1, 1)
-
-        // 设置偏移量为0（左、右、上、下）
-        owner.offsetMin = Vector2.zero;      // 左下
-        owner.offsetMax = Vector2.zero;      // 右上
-
         iconRect = currentIcon.GetComponent<RectTransform>();
-        iconRect.anchorMin = iconRect.anchorMax = new Vector2(0.5f, 0.5f); // 以中心锚点定位
 
         // 获取小地图 RawImage 的 RectTransform
-        minimapRect = transform.parent.GetComponent<RectTransform>();
+        minimapRect = NormalPanel.Instance.MinmapRawImage.GetComponent<RectTransform>();
 
         // 半径 = 内切圆半径（你可以根据你的 mask 圆形大小微调）
         maskRadius = minimapRect.rect.width * 0.5f * 0.9f; // 0.9f 是安全比例，避免贴边

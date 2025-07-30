@@ -87,7 +87,7 @@ public class BuffBase
     public virtual void AfterBeAdded() { 
         if(characterManager is PlayerManager)
         {
-            GameManager.Instance.playerInfo.AddPlayerBuffInfoItem(this);
+            NormalPanel.Instance.PlayerInfo.AddPlayerBuffInfoItem(this);
         }
     }
     /// <summary>
@@ -96,7 +96,7 @@ public class BuffBase
     public virtual void AfterBeRemoved() {
         if (characterManager is PlayerManager)
         {
-            GameManager.Instance.playerInfo.RemovePlayerBuffInfoItem(this);
+            NormalPanel.Instance.PlayerInfo.RemovePlayerBuffInfoItem(this);
         }
     }
     /// <summary>

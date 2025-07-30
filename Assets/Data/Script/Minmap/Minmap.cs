@@ -5,6 +5,7 @@ public class Minmap : MonoSingleton<Minmap>
 {
     private Transform followTarget;
     [HideInInspector] public Camera minimapCamera;
+    public GameObject minmapIconPre;
 
     protected override void Init()
     {
@@ -41,7 +42,7 @@ public class Minmap : MonoSingleton<Minmap>
     //生成小地图索引图标
     public void AddMinmapIcon(Transform _target, MinmapIconType _iconType)
     {
-        GameObject minmapIcon = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Minmap/MinmapIcon"));
+        GameObject minmapIcon = Instantiate(minmapIconPre,NormalPanel.Instance.MinmapRawImage);
         MinmapIcon minmap = minmapIcon.GetComponent<MinmapIcon>();
         minmap.Init(_target, _iconType);
         minmapIconList.Add(minmapIcon);

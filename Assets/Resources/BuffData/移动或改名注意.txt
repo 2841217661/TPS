@@ -1,0 +1,2 @@
+此文件夹只能放在Resources根目录下，且不可改名；
+如果需要移动或者改名，则需要将 BuffDataManager.LoadBuffData方法中的路径一同修改

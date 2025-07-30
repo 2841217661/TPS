@@ -146,7 +146,7 @@ public class PoolManager : MonoSingleton<PoolManager>
         CreatePool(Ã‘Ã≠ªÿ∑≈±¨’®«Ú.name, Ã‘Ã≠ªÿ∑≈±¨’®«Ú, 10, transform.Find("VFXPool/Buff/Ã‘Ã≠ªÿ∑≈±¨’®«Ú"));
         CreatePool(ª—Ê”°º«±¨’®.name, ª—Ê”°º«±¨’®, 10, transform.Find("VFXPool/Buff/ª—Ê”°º«±¨’®"));
         //damageText
-        CreatePool(damageText.name, damageText, 10, GameObject.Find("Canvas").transform.Find("NormalPanel/DamageText"));
+        CreatePool(damageText.name, damageText, 10, NormalPanel.Instance.DamageTextPoint);
         //Ω© ¨
         CreatePool(zombie_death_explode.name, zombie_death_explode, 10, transform.Find("VFXPool/Zombie/DeathExplode"));
         #endregion

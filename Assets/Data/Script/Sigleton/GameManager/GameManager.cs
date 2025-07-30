@@ -10,15 +10,8 @@ public class GameManager : MonoSingleton<GameManager>
     public int maxEnemyCount;
     public int currentEnemyCount;
 
-    [Header("伤害数值颜色")]
-    public Color color_Physical;
-    public Color color_Fire;
+    //[Header("随机补给")]
 
-    [Header("受伤屏幕闪烁")]
-    public PlayerDamageScreenEffect playerDamageScreenEffect;
-
-    [Header("玩家信息面板")]
-    public PlayerInfo playerInfo;
 
     protected override void Init()
     {
@@ -84,10 +77,10 @@ public class GameManager : MonoSingleton<GameManager>
         switch (_element)
         {
             case DamageElement.Physical:
-                color = color_Physical;
+                color = new Color(255f/255f, 255f/255f, 255f/255f,1f);
                 break;
             case DamageElement.Fire:
-                color = color_Fire;
+                color = new Color(255f/255f, 100f/255f, 0f/255f,1f);
                 break;
             default:
                 Debug.LogWarning("类型未设置");
@@ -102,34 +95,35 @@ public class GameManager : MonoSingleton<GameManager>
     {
         //测试----------------------------------
         // 打开黑幕面板
-        ScreenFadePanel panel = UIManager.Instance.OpenPanel("ScreenFadePanel", UIManager.Instance.UIRoot) as ScreenFadePanel;
+        //ScreenFadePanel panel = UIManager.Instance.OpenPanel("ScreenFadePanel", UIManager.Instance.UIRoot) as ScreenFadePanel;
 
-        panel.FadeIn(
-            onStart: () =>
-            {
-                GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
-            },
-            onComplete: () =>
-            {
-                Debug.Log("实例敌人。。。");
+        //panel.FadeIn(
+        //    onStart: () =>
+        //    {
+        //        GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
+        //    },
+        //    onComplete: () =>
+        //    {
+        //        Debug.Log("实例敌人。。。");
 
-                // 2秒后执行渐出
-                DOVirtual.DelayedCall(2f, () =>
-                {
-                    panel.FadeOut(
-                        onStart: () =>
-                        {
+        //        // 2秒后执行渐出
+        //        DOVirtual.DelayedCall(2f, () =>
+        //        {
+        //            panel.FadeOut(
+        //                onStart: () =>
+        //                {
 
-                        },
-                        onComplete: () =>
-                        {
-                            GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
-                            panel.ClosePanel();
-                        }
-                    );
-                });
-            });
+        //                },
+        //                onComplete: () =>
+        //                {
+        //                    GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
+        //                    panel.ClosePanel();
+        //                }
+        //            );
+        //        });
+        //    });
 
+        QuestManager.Instance.TryStartQuest(QuestName.Quest_升级1);
 
     }
 
@@ -171,5 +165,6 @@ public class GameManager : MonoSingleton<GameManager>
 
         //测试：持续增加经验
         playerManager.currentExperienceValue += 1f;
+
     }
 }

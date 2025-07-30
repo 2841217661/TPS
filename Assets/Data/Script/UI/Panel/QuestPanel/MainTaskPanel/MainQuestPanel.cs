@@ -10,8 +10,6 @@ public class MainQuestPanel : BasePanel
     [Header("UI设置")]
     public RectTransform content;
     public Button Button_InProgress;
-    public Button Button_CanStart;
-    public Button Button_CanFinish;
     public Button Button_Finished;
     public TextMeshProUGUI Text_QuestShowState;
 
@@ -51,8 +49,6 @@ public class MainQuestPanel : BasePanel
             QuestState.FINISHED);
 
         Button_InProgress.onClick.AddListener(() => { AnimateAndHighlight(Button_InProgress); DisplayQuestList("没有进行中的主线任务", "进行中", q => q.state == QuestState.IN_PROGRESS); });
-        Button_CanStart.onClick.AddListener(() => { AnimateAndHighlight(Button_CanStart); DisplayQuestList("没有可开启的主线任务","可开启", q => q.state == QuestState.CAN_START); });
-        Button_CanFinish.onClick.AddListener(() => { AnimateAndHighlight(Button_CanFinish); DisplayQuestList("没有可完成的主线任务","待完成", q => q.state == QuestState.CAN_FINISH); });
         Button_Finished.onClick.AddListener(() => { AnimateAndHighlight(Button_Finished); DisplayQuestList("没有已完成的主线任务","已完成", q => q.state == QuestState.FINISHED); });
 
         // 默认选中第一个
@@ -116,6 +112,7 @@ public class MainQuestPanel : BasePanel
             }
             catch
             {
+                //已经完成的任务没有questStep,自然GetCurrentQuestStepPrefab会超出索引
                 item.title = quest.info.id;
             }
             item.description = quest.info.questDescription;

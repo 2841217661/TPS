@@ -38,8 +38,8 @@ public class NPCManager : CharacterManager
             if (buttonGroup == null)
             {
                 //显示可交互Button
-                buttonGroup = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Panel/DialoguePanel/SelectButton/Button_SelectGroup"), GameObject.Find("Canvas").transform);
-                GameObject buttonItem = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Panel/DialoguePanel/SelectButton/Button_SelectItem"), buttonGroup.transform);
+                buttonGroup = Instantiate(Resources.Load<GameObject>(UIPanelPath.Button_SelectGroup), NormalPanel.Instance.transform);
+                GameObject buttonItem = Instantiate(Resources.Load<GameObject>(UIPanelPath.Button_SelectItem), buttonGroup.transform);
                 buttonItem.GetComponentInChildren<TextMeshProUGUI>().text = "F 进行交谈";
             }
 

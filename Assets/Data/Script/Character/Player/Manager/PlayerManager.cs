@@ -28,7 +28,10 @@ public class PlayerManager : CharacterManager,IDamageable
             m_currentLevel = value;
 
             //等级发生改变时 ，更新角色面板信息显示
-            GameManager.Instance.playerInfo.UI_Text_PlayerLevel.text = "LV." + value.ToString();
+            NormalPanel.Instance.PlayerInfo.UI_Text_PlayerLevel.text = "LV." + value.ToString();
+
+            //等级提升事件广播
+            EventManager.Instance.playerEvent.PlayerLevelUp();
         }
     }
     public float maxExperienceValue;
@@ -47,7 +50,7 @@ public class PlayerManager : CharacterManager,IDamageable
             }
 
             //更新角色面板信息显示
-            GameManager.Instance.playerInfo.UI_Image_PlayerExperienceBar.fillAmount = currentExperienceValue / maxExperienceValue;
+            NormalPanel.Instance.PlayerInfo.UI_Image_PlayerExperienceBar.fillAmount = currentExperienceValue / maxExperienceValue;
         }
     }
 
@@ -399,7 +402,7 @@ public class PlayerManager : CharacterManager,IDamageable
         Debug.Log($"受到{_value}点伤害，来自{_source}");
 
         //屏幕受伤效果
-        GameManager.Instance.playerDamageScreenEffect.PlayFlash();
+        NormalPanel.Instance.playerDamageScreenEffect.PlayFlash();
 
         //播放受伤音效
         PoolManager.Instance.Spawn(PoolManager.Instance.sx_player_damage.name,transform.position,Quaternion.identity,true);

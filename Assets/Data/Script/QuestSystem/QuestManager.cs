@@ -51,7 +51,7 @@ public class QuestManager : MonoSingleton<QuestManager>
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
 
         //显示任务开始提示
-        GameObject _ = Instantiate(startQuestShowItemPre, UIManager.Instance.UIRoot.Find("Left/QuestStartShowItem/StartQuestShowItemContent"));
+        GameObject _ = Instantiate(startQuestShowItemPre, NormalPanel.Instance.StartQuestShowItemPoint);
         _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name.Substring(3));
     }
 
@@ -66,7 +66,7 @@ public class QuestManager : MonoSingleton<QuestManager>
             quest.InstantiateCurrentQuestStep(this.transform);
             Debug.Log("任务推进中: " +  id);
             //显示任务推进提示
-            GameObject _ = Instantiate(startQuestShowItemPre, UIManager.Instance.UIRoot.Find("Left/QuestStartShowItem"));
+            GameObject _ = Instantiate(startQuestShowItemPre, NormalPanel.Instance.StartQuestShowItemPoint);
             _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name);
         }
         else
@@ -83,7 +83,7 @@ public class QuestManager : MonoSingleton<QuestManager>
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
 
         //弹出任务完成面板提示
-        GameObject _ = Instantiate(finishQuestShowItemPre, UIManager.Instance.UIRoot.Find("Top"));
+        GameObject _ = Instantiate(finishQuestShowItemPre, NormalPanel.Instance.QuestFinishNoticePoint);
         _.GetComponent<QuestFinishShowItem>().Initialize(GetQuestById(id).info.type, id);
     }
 
