@@ -4,7 +4,9 @@ public class B_火焰印记 : BuffBase
 {
     protected override void OnCurrentLevelChange(int change)
     {
-        if(CurrentLevel >= 100)
+        base.OnCurrentLevelChange(change);
+
+        if(CurrentLevel >= 50)
         {
             //进行一次爆炸
             Debug.Log("爆炸一次");
@@ -15,6 +17,8 @@ public class B_火焰印记 : BuffBase
 
     public override void AfterBeRemoved()
     {
+        base.AfterBeRemoved();
+
         Debug.Log("火焰印记被移除");
     }
 }

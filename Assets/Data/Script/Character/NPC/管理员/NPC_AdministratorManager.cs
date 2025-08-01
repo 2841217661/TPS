@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class NPC_AdministratorManager : NPCManager
@@ -33,6 +34,27 @@ public class NPC_AdministratorManager : NPCManager
     {
         Debug.Log("开启挑战!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         isReady = true;
+
+        UIUtils.ScreenFadeTransition(
+            delay: 2f,
+            onFadeInStart: () =>
+            {
+                GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
+            },
+            onFadeInComplete: () =>
+            {
+                GameManager.Instance.怪物传送门.SetActive(true);
+                GameManager.Instance.npcRoot.gameObject.SetActive(false);
+            },
+            onFadeOutStart: () =>
+            {
+                Debug.LogWarning("战斗开始！！！");
+            },
+            onFadeOutComplete: () =>
+            {
+                GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
+            }
+        );
     }
 
     public void CancleChallenge()

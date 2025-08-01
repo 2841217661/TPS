@@ -10,7 +10,26 @@ public class CharacterManager : MonoBehaviour
     [Header("生命值相关")]
     public float baseHealthValue;
     public float maxHealthValue;
-    public float currentHealthValue;
+    [SerializeField] private float m_currentHealthValue;
+    public float currentHealthValue
+    {
+        get { return m_currentHealthValue; }
+        set
+        {
+            if(value > maxHealthValue)
+            {
+                value = maxHealthValue;
+            }
+
+            m_currentHealthValue = value;
+            OnHealthValueChanged();
+        }
+    }
+
+    protected virtual void OnHealthValueChanged()
+    {
+
+    }
 
     [Header("攻击相关")]
     public float baseAttackValue;

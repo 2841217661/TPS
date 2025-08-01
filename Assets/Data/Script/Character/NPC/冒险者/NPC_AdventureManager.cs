@@ -47,4 +47,28 @@ public class NPC_AdventureManager : NPCManager
 
         Minmap.Instance.AddMinmapIcon(this.transform, MinmapIconType.quest);
     }
+
+    #region 对话方法
+    public void AddBuff_狂暴火力()
+    {
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_狂暴火力>();
+    }
+
+    public void AddBuff_危机合约()
+    {
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_危机合约>();
+    }
+
+    public void AddBuff_淘汰回放()
+    {
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_淘汰回放>();
+    }
+
+    public void AddBuff_All()
+    {
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_狂暴火力>();
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_危机合约>();
+        GameManager.Instance.playerManager.buffSystem.AddBuff<B_淘汰回放>();
+    }
+    #endregion
 }

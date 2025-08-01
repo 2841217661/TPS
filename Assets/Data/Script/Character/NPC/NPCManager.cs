@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCManager : CharacterManager
 {
-    [HideInInspector] public GameObject questTip;
+    public GameObject questTip;
     public DialogueGraph currentGraph;
 
     protected GameObject buttonGroup;
@@ -21,15 +21,16 @@ public class NPCManager : CharacterManager
     protected override void Start()
     {
         base.Start();
-
-        questTip = transform.Find("QuestTipCanvas").gameObject;
     }
 
     protected override void Update()
     {
         base.Update();
 
-        QuestTipToFaceCamera();
+        if(questTip != null)
+        {
+            QuestTipToFaceCamera();
+        }
 
         if (m_state != NPCState.Idle) return; //非待机状态下不能进行交谈
 
@@ -38,7 +39,7 @@ public class NPCManager : CharacterManager
             if (buttonGroup == null)
             {
                 //显示可交互Button
-                buttonGroup = Instantiate(Resources.Load<GameObject>(UIPanelPath.Button_SelectGroup), NormalPanel.Instance.transform);
+                buttonGroup = Instantiate(Resources.Load<GameObject>(UIPanelPath.Button_SelectGroup), NormalPanel.Instance.DynamicUI_Canvas);
                 GameObject buttonItem = Instantiate(Resources.Load<GameObject>(UIPanelPath.Button_SelectItem), buttonGroup.transform);
                 buttonItem.GetComponentInChildren<TextMeshProUGUI>().text = "F 进行交谈";
             }

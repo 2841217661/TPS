@@ -25,17 +25,26 @@ public class DamageText : MonoBehaviour, IPoolable
     {
         lifeTimer = 0f;
 
-        // 初始化状态
         rectTransform.localScale = Vector3.zero;
         canvasGroup.alpha = 1f;
         rectTransform.anchoredPosition = Vector2.zero;
 
-        // 动画：缩放 + 漂浮 + 淡出
-        Sequence seq = DOTween.Sequence();
-        seq.Append(rectTransform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack)); // 出现缩放弹出
-        seq.Join(rectTransform.DOAnchorPosY(80f, lifeTime)); // 向上飘
-        seq.Join(canvasGroup.DOFade(0f, lifeTime)); // 渐隐
+        // 先杀掉旧动画，确保不会重叠播放
+        DOTween.Kill(rectTransform);
+
+        seq = DOTween.Sequence();
+
+        // 强力弹出（scale 动画）
+        seq.Append(rectTransform.DOScale(1.2f, 0.1f).SetEase(Ease.OutQuad)); // 快速放大
+        seq.Append(rectTransform.DOScale(0.9f, 0.1f).SetEase(Ease.InQuad));  // 缩回一点
+        seq.Append(rectTransform.DOScale(1.0f, 0.1f).SetEase(Ease.OutElastic)); // 恢复到正常大小
+
+        // 并行：往上飘 + 渐隐（lifeTime - 0.3秒）
+        float floatDuration = lifeTime - 0.3f;
+        seq.Join(rectTransform.DOAnchorPosY(80f, floatDuration).SetEase(Ease.OutCubic));
+        seq.Join(canvasGroup.DOFade(0f, floatDuration).SetEase(Ease.InQuad));
     }
+
 
     public void OnRecycle()
     {
@@ -54,8 +63,6 @@ public class DamageText : MonoBehaviour, IPoolable
 
     public void Setup(string damageText, Color color, bool isCritical = false)
     {
-        isCritical = Random.Range(0f, 1f) > 0.5f ? true : false;
-
         if (isCritical)
         {
             text.fontSize = 60f;

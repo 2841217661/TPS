@@ -48,7 +48,7 @@ public class Zombie_Chase : Action
         float t = 1f - Mathf.Clamp01(distanceToTarget / accelerateDistance);
         t = t * t; // 非线性加速曲线，变化更陡峭
 
-        float currentSpeed = Mathf.Lerp(self.Value.moveSpeed, self.Value.moveSpeed * 2f, t);
+        float currentSpeed = Mathf.Lerp(self.Value.moveSpeed, self.Value.moveSpeed * 1.5f, t);
 
 
         // 使用 Rigidbody 进行移动

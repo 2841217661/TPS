@@ -13,14 +13,26 @@ public class PlayerManager : CharacterManager,IDamageable
     public float baseShootSpeed;
     public float currentShootSpeed;
 
+    [Header("暴击率")]
+    public float currentCrticalMul;
+
     [Header("弹容量倍率")]
     public int baseBulletCount;
     public int maxBulletCount;
     public int currentBulletCount;
 
-    [Header("经验值")]
-    private int m_currentLevel;
-    public int currentLevel
+    [Header("经验相关")]
+    private int m_currentLevel; 
+    public float maxExperienceValue;
+    [HideInInspector] public float currentExperienceIncreaseMul; //当前经验增加倍率
+    [HideInInspector] public float baseExperienceIncreaseMul = 1f; //基础经验增加倍率
+
+    [Header("消耗品")]
+    public GameObject currentSelectConsumableItem; //当前选中的道具
+    public List<GameObject> consumableItems; //当前拥有的道具
+
+
+    public int currentLevel 
     {
         get { return m_currentLevel; }
         set
@@ -34,7 +46,6 @@ public class PlayerManager : CharacterManager,IDamageable
             EventManager.Instance.playerEvent.PlayerLevelUp();
         }
     }
-    public float maxExperienceValue;
     private float m_currentExperienceValue;
     public float currentExperienceValue
     {
@@ -49,11 +60,18 @@ public class PlayerManager : CharacterManager,IDamageable
                 m_currentExperienceValue = 0f;
             }
 
-            //更新角色面板信息显示
+            //更新角色面板经验值信息显示
             NormalPanel.Instance.PlayerInfo.UI_Image_PlayerExperienceBar.fillAmount = currentExperienceValue / maxExperienceValue;
         }
     }
 
+    protected override void OnHealthValueChanged()
+    {
+        base.OnHealthValueChanged();
+
+        //更新角色面板血条信息显示
+        NormalPanel.Instance.PlayerInfo.UI_Image_PlayerHealthBar.fillAmount = currentHealthValue / maxHealthValue;
+    }
 
     [Header("测试")]
     public string 当前姿态;
@@ -78,7 +96,6 @@ public class PlayerManager : CharacterManager,IDamageable
     [Header("Throw")]
     public Transform grenadeSpawnPoint;
     public GameObject grenadeTargetPrefab; //瞄准时，在目标终点生成的预制体
-    public GameObject throwPre; //手雷预制体(测试)
 
     [Header("Aim")]
     public GameObject aimImage; //准星图标
@@ -147,6 +164,10 @@ public class PlayerManager : CharacterManager,IDamageable
 
         currentExperienceValue = 0f;
         currentLevel = 1;
+
+        currentCrticalMul = 0f;
+
+        currentExperienceIncreaseMul = baseExperienceIncreaseMul;
 
         inputManager = GetComponent<PlayerInputManager>();
         animator = GetComponent<Animator>();
@@ -222,6 +243,9 @@ public class PlayerManager : CharacterManager,IDamageable
         #endregion
 
         buffSystem.Update();
+
+        //持续增加经验
+        currentExperienceValue += currentExperienceIncreaseMul * Time.deltaTime;
     }
 
     protected override void FixedUpdate()

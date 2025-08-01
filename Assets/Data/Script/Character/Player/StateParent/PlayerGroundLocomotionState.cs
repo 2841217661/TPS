@@ -29,12 +29,24 @@ public class PlayerGroundLocomotionState : PlayerGroundState
             ChangeState(playerManager.aimState);
             playerManager.animator.CrossFadeInFixedTime(playerManager.aimState.animationName, 0.2f);
         }
-        //this -> throwStart
+        //this -> throwStart/使用道具/使用buff
         else if (playerManager.inputManager.GetThrowInput())
         {
-            ChangeState(playerManager.throwStartState);
-            playerManager.animator.CrossFadeInFixedTime(playerManager.throwStartState.animationName, 0.2f);
-            return;
+            switch(playerManager.currentSelectConsumableItem.GetComponent<ConsumableItem>().itemType)
+            {
+                case ConsumableItemType.Throw:
+                    ChangeState(playerManager.throwStartState);
+                    playerManager.animator.CrossFadeInFixedTime(playerManager.throwStartState.animationName, 0.2f);
+                    return;
+                case ConsumableItemType.Prop:
+                    GameObject.Instantiate(playerManager.currentSelectConsumableItem);
+                    break;
+                case ConsumableItemType.Buff:
+                    break;
+                default:
+
+                    break;
+            }
         }
 
 

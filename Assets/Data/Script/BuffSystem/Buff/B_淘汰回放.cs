@@ -4,11 +4,15 @@ public class B_淘汰回放 : BuffBase
 {
     public override void AfterBeAdded()
     {
+        base.AfterBeAdded();
+
         EventManager.Instance.enemyEvent.onDeath_Enemy += Death_Enemy;
     }
 
     public override void AfterBeRemoved()
     {
+        base.AfterBeRemoved();
+
         EventManager.Instance.enemyEvent.onDeath_Enemy -= Death_Enemy;
     }
 

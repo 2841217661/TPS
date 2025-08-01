@@ -31,7 +31,15 @@ public class Enemy_Zombie : EnemyManager, IDamageable
             PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_警戒.name,transform.position,Quaternion.identity,true);
         }
 
-        DamageEvent(_value,_damagePosition, _element,false); //现在还没有写暴击逻辑
+        //判断是否发生暴击
+        if(Random.Range(0,1f) < GameManager.Instance.playerManager.currentCrticalMul)
+        {
+            DamageEvent(_value * 2f, _damagePosition, _element, true); 
+        }
+        else
+        {
+            DamageEvent(_value, _damagePosition, _element, false);
+        }
 
         switch (_type)
         {

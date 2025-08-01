@@ -4,12 +4,16 @@ public class B_火焰弹头 : BuffBase
 {
     public override void AfterBeAdded()
     {
+        base.AfterBeAdded();
+
         GameManager.Instance.playerManager.currentUseBulletType = PlayerManager.CurrentUseBulletType.BulletNormal_Flame;
         EventManager.Instance.bulletEvent.onBulletHitObject += BulletHitObject;
     }
 
     public override void AfterBeRemoved()
     {
+        base.AfterBeRemoved();
+
         GameManager.Instance.playerManager.currentUseBulletType = PlayerManager.CurrentUseBulletType.BulletNormal_Ordinary;
         EventManager.Instance.bulletEvent.onBulletHitObject -= BulletHitObject;
     }

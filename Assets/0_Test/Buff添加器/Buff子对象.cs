@@ -58,6 +58,12 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
             case "淘汰回放":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_淘汰回放>();
                 break;
+            case "危机合约":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_危机合约>();
+                break;
+            case "枪枪重击":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_枪枪重击>();
+                break;
             default:
                 Debug.LogWarning("buff类型没有找到: " + "B_" + _buffName);
                 break;

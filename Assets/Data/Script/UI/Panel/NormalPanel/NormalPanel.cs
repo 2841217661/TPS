@@ -33,4 +33,7 @@ public class NormalPanel : MonoSingleton<NormalPanel>
 
     [Header("ÊÜÉËÆÁÄ»ÉÁË¸")]
     public PlayerDamageScreenEffect playerDamageScreenEffect;
+
+    [Header("¶¯Ì¬UICanvas")]
+    public Transform DynamicUI_Canvas;
 }

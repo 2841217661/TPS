@@ -4,7 +4,10 @@ public class PlayerThrowLoopState : PlayerGroundState
 {
     private LineRenderer lineRenderer;
     private GameObject lineRendererObject;
-    private GameObject targetMarker; // 新增：命中点标记
+    private GameObject targetMarker; // 命中点标记
+    private float throwForce = 15f; //投射力度
+
+    private Vector3 throwDirection;
 
     public PlayerThrowLoopState(PlayerManager _playerManager, string _animationName, bool _useRootMotionPart)
         : base(_playerManager, _animationName, _useRootMotionPart)
@@ -87,15 +90,12 @@ public class PlayerThrowLoopState : PlayerGroundState
     }
     private void ThrowGrenade()
     {
-        // 实例化手雷预制体
-        GameObject grenade = playerManager.InstantiatePrefab(playerManager.throwPre, playerManager.grenadeSpawnPoint.position, Quaternion.identity);
+        // 实例化当前选中的消耗品预制体
+        var throwItem = GameManager.Instance.UseCurrentSelectItem();
+        throwItem.transform.position = playerManager.grenadeSpawnPoint.position;
+
         // 获取刚体并精确配置
-        Rigidbody rb = grenade.GetComponent<Rigidbody>();
-        rb.mass = 1f;                    // 必须为1（与物理公式匹配）
-        rb.linearDamping = 0f;                    // 禁用线性阻力
-        rb.angularDamping = 0f;             // 禁用旋转阻力
-        rb.useGravity = true;            // 启用重力
-        rb.interpolation = RigidbodyInterpolation.Interpolate; // 平滑移动
+        Rigidbody rb = throwItem.GetComponent<Rigidbody>();
 
         // 计算与预测完全一致的初速度
         Vector3 throwVelocity = GetPredictedThrowVelocity();
@@ -103,25 +103,16 @@ public class PlayerThrowLoopState : PlayerGroundState
 
         // 添加随机旋转（可选）
         rb.AddTorque(new Vector3(
-            Random.Range(-2f, 2f),
-            Random.Range(-2f, 2f),
-            Random.Range(-2f, 2f)),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f)),
             ForceMode.Impulse);
-
-        // 忽略与玩家的碰撞
-        //Physics.IgnoreCollision(grenade.GetComponent<Collider>(), playerManager.GetComponent<CharacterController>());
     }
 
     private Vector3 GetPredictedThrowVelocity()
     {
-        // 完全复制轨迹预测的计算方式
-        Quaternion horizontalRot = Quaternion.Euler(0, playerManager.transform.eulerAngles.y, 0);
-        Quaternion pitchRot = Quaternion.Euler(playerManager.cameraManager.playerCamera.transform.eulerAngles.x, 0, 0);
-        Vector3 throwDirection = (horizontalRot * pitchRot * Vector3.forward + Vector3.up * 0.5f).normalized;
-        return throwDirection * 15f; // 与预测相同的力度
+        return throwDirection * throwForce; // 与预测相同的力度
     }
-
-
 
     public override void LateUpdate()
     {
@@ -139,19 +130,19 @@ public class PlayerThrowLoopState : PlayerGroundState
 
         // 合成投掷方向
         Quaternion finalRotation = horizontalRotation * pitchRotation;
-        Vector3 throwDirection = finalRotation * Vector3.forward;
+        throwDirection = finalRotation * Vector3.forward;
 
         // 加一个向上偏移
         throwDirection += Vector3.up * 0.5f;
         throwDirection.Normalize();
 
         // 抛射初速度
-        Vector3 startVelocity = throwDirection * 15f;
+        Vector3 startVelocity = throwDirection * throwForce;
 
         int steps = 30;
         float timeStep = 0.1f;
         Vector3[] points = new Vector3[steps];
-        bool hasHit = false; // 新增：是否命中标志
+        bool hasHit = false; // 是否命中标志
 
         for (int i = 0; i < steps; i++)
         {

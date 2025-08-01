@@ -6,12 +6,50 @@ public class GameManager : MonoSingleton<GameManager>
     public PlayerManager playerManager;
     public Transform[] enemyPatrolPoints;
 
-    [Header("测试")]
+    [Header("怪物生成数量控制")]
     public int maxEnemyCount;
     public int currentEnemyCount;
 
-    //[Header("随机补给")]
+    [Header("怪物传送门")]
+    public GameObject 怪物传送门;
 
+    [Header("NPC")]
+    public Transform npcRoot;
+
+    [Header("补给")]
+    public float supplyInterval; //补给的时间间隔
+    public float supplyIntervalTimer; //补给倒计时
+    public Transform[] supplyPoints;  //补给掉落点数组
+
+    //辅助方法：随机获取一个补给点位置
+    private Transform RandomSelectSupplyPoint()
+    {
+        return supplyPoints[Random.Range(0,supplyPoints.Length)];
+    }
+
+    //辅助方法：判断补给间隔是否达到
+    private bool IsCaculateSupplyIntervalEnd()
+    {
+        supplyIntervalTimer += Time.deltaTime;
+
+        if(supplyIntervalTimer > supplyInterval)
+        {
+            supplyIntervalTimer = 0f;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void TryAddSupply()
+    {
+        if (IsCaculateSupplyIntervalEnd())
+        {
+            Transform supplyPoint = RandomSelectSupplyPoint();
+
+            //TODO:实例补给
+        }
+    }
 
     protected override void Init()
     {
@@ -48,7 +86,7 @@ public class GameManager : MonoSingleton<GameManager>
     public void GenerateDamageTextEffect(float _value,  Vector3 _position, DamageElement _element, bool _isCritical)
     {
         //伤害值太小不显示
-        //if (_value < 5f) return;
+        if (_value < 2f) return;
 
         //转换为屏幕坐标
         Vector3 screentPosition = Camera.main.WorldToScreenPoint(_position);
@@ -87,48 +125,106 @@ public class GameManager : MonoSingleton<GameManager>
                 break;
         }
 
-        dt.Setup(_value.ToString(), color);
+        dt.Setup(_value.ToString(), color, _isCritical);
+    }
+
+
+    //辅助方法：通过消耗物品的id来查找Resources下对应的资源
+    private GameObject GetConsumableItemById(string _itemName)
+    {
+        string itemPath = "Prefabs/ConsumableItems/" + _itemName;
+        return Resources.Load<GameObject>(itemPath);
+    }
+
+    /// <summary>
+    /// 增加消耗品
+    /// </summary>
+    /// <param name="_itemId">物品</param>
+    /// <param name="_count">个数</param>
+    public void AddConsumableItem(string _itemId, int _count = 1)
+    {
+        //查找playermanager是否含有该物品（通过物品名）：
+        //没有：新添加一个
+        //有：数量加一
+        foreach (var item in playerManager.consumableItems)
+        {
+            ConsumableItem ci = item.GetComponent<ConsumableItem>();
+            if (ci.itemId == _itemId) //已有，数量加一
+            {
+                ci.count++;
+            }
+            else //没有，加入
+            {
+                var obj = GetConsumableItemById(_itemId);
+                obj.GetComponent<ConsumableItem>().count = _count;
+                playerManager.consumableItems.Add(obj);
+                //TODO:同步ui
+            }
+        }
+    }
+
+    /// <summary>
+    /// 使用一次当前选中的消耗物品
+    /// </summary>
+    /// <param name="_count">消耗数量</param>
+    /// <returns></returns>
+    public GameObject UseCurrentSelectItem()
+    {
+        var obj = Instantiate(playerManager.currentSelectConsumableItem);
+
+        ConsumableItem ci = playerManager.currentSelectConsumableItem.GetComponent<ConsumableItem>();
+        ci.count--;
+        if(ci.count <= 0) //消耗完了
+        {
+            playerManager.consumableItems.Remove(playerManager.currentSelectConsumableItem);
+        }
+
+        if(playerManager.consumableItems.Count > 0)
+        {
+            playerManager.currentSelectConsumableItem = playerManager.consumableItems[0];
+        }
+        else
+        {
+            playerManager.currentSelectConsumableItem = null;
+        }
+
+        return obj;
     }
 
 
     private void Start()
     {
-        //测试----------------------------------
-        // 打开黑幕面板
-        //ScreenFadePanel panel = UIManager.Instance.OpenPanel("ScreenFadePanel", UIManager.Instance.UIRoot) as ScreenFadePanel;
+        //测试
+        UIUtils.ScreenFadeTransition(
+            delay: 2f,
+            onFadeInStart: () =>
+            {
+                GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
+            },
+            onFadeInComplete: () =>
+            {
+                GameManager.Instance.怪物传送门.SetActive(true);
+                GameManager.Instance.npcRoot.gameObject.SetActive(false);
+            },
+            onFadeOutStart: () =>
+            {
+                Debug.LogWarning("战斗开始！！！");
+            },
+            onFadeOutComplete: () =>
+            {
+                GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
+            }
+        );
 
-        //panel.FadeIn(
-        //    onStart: () =>
-        //    {
-        //        GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
-        //    },
-        //    onComplete: () =>
-        //    {
-        //        Debug.Log("实例敌人。。。");
-
-        //        // 2秒后执行渐出
-        //        DOVirtual.DelayedCall(2f, () =>
-        //        {
-        //            panel.FadeOut(
-        //                onStart: () =>
-        //                {
-
-        //                },
-        //                onComplete: () =>
-        //                {
-        //                    GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
-        //                    panel.ClosePanel();
-        //                }
-        //            );
-        //        });
-        //    });
-
+        //测试
         QuestManager.Instance.TryStartQuest(QuestName.Quest_升级1);
-
     }
 
     private void Update()
     {
+
+        //TryAddSupply();
+
         // 测试：打开任务面板
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -162,9 +258,5 @@ public class GameManager : MonoSingleton<GameManager>
                 Cursor.lockState = CursorLockMode.None;
             }
         }
-
-        //测试：持续增加经验
-        playerManager.currentExperienceValue += 1f;
-
     }
 }

@@ -171,8 +171,7 @@ public class DialoguePanel : BasePanel
         {
             Button_Next.GetComponent<CanvasGroup>().interactable = false; // 选项出现前禁用Next
 
-            Transform canvas = GameObject.Find("Canvas").transform;
-            GameObject buttonGroup = Instantiate(Pre_Button_SelectGroup, canvas);
+            GameObject buttonGroup = Instantiate(Pre_Button_SelectGroup, transform);
 
             for (int i = 0; i < choiceNode.outputs.Count; i++)
             {
