@@ -14,6 +14,7 @@ public class ClickEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public BuffData buffData;
     public Image icon;
     public TextMeshProUGUI description;
+    public GameObject dontSelect;
     [HideInInspector] public BuffSelectPanel buffSelectPanel;
 
     private void Awake()
@@ -32,20 +33,26 @@ public class ClickEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         isPointerOver = true;
         // 鼠标悬停时轻微放大
-        rectTransform.DOScale(1.05f, 0.15f).SetEase(Ease.OutQuad);
+        rectTransform.DOScale(1.05f, 0.15f)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         isPointerOver = false;
         // 鼠标离开时恢复正常大小（如果没有点击状态）
-        rectTransform.DOScale(1f, 0.15f).SetEase(Ease.OutQuad);
+        rectTransform.DOScale(1f, 0.15f)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         // 鼠标按下时缩小
-        rectTransform.DOScale(0.9f, 0.1f).SetEase(Ease.OutQuad);
+        rectTransform.DOScale(0.9f, 0.1f)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true);
         canvasGroup.alpha = 0.7f;
     }
 
@@ -53,7 +60,9 @@ public class ClickEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         // 松开后，根据是否在悬停状态决定缩放
         float targetScale = isPointerOver ? 1.05f : 1f;
-        rectTransform.DOScale(targetScale, 0.15f).SetEase(Ease.OutBack);
+        rectTransform.DOScale(targetScale, 0.15f)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true);
         canvasGroup.alpha = 1f;
     }
 
@@ -64,6 +73,7 @@ public class ClickEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // 点击动画
         rectTransform.DOScale(1.15f, 0.08f)
             .SetEase(Ease.OutQuad)
+            .SetUpdate(true)
             .OnComplete(() =>
             {
                 rectTransform.DOScale(1f, 0.08f).SetEase(Ease.OutQuad);

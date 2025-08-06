@@ -81,4 +81,9 @@ public class PlayerInputManager : MonoBehaviour
     {
         return inputActions.Normal.ElbowStrike.WasPressedThisFrame();
     }
+
+    public bool GetNextCnsumableItemInput()
+    {
+        return inputActions.Normal.ChangeConsumableItem.WasPressedThisFrame();
+    }
 }

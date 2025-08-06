@@ -98,6 +98,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeConsumableItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""6111b9cb-7d75-4e84-bcc0-58325a52686b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +241,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""ElbowStrike"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c74da6ab-1043-409c-84b8-02dd921c198e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeConsumableItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -307,6 +327,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Normal_Jump = m_Normal.FindAction("Jump", throwIfNotFound: true);
         m_Normal_Throw = m_Normal.FindAction("Throw", throwIfNotFound: true);
         m_Normal_ElbowStrike = m_Normal.FindAction("ElbowStrike", throwIfNotFound: true);
+        m_Normal_ChangeConsumableItem = m_Normal.FindAction("ChangeConsumableItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Dialogue = m_UI.FindAction("Dialogue", throwIfNotFound: true);
@@ -386,6 +407,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Normal_Jump;
     private readonly InputAction m_Normal_Throw;
     private readonly InputAction m_Normal_ElbowStrike;
+    private readonly InputAction m_Normal_ChangeConsumableItem;
     public struct NormalActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -398,6 +420,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Normal_Jump;
         public InputAction @Throw => m_Wrapper.m_Normal_Throw;
         public InputAction @ElbowStrike => m_Wrapper.m_Normal_ElbowStrike;
+        public InputAction @ChangeConsumableItem => m_Wrapper.m_Normal_ChangeConsumableItem;
         public InputActionMap Get() { return m_Wrapper.m_Normal; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -431,6 +454,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ElbowStrike.started += instance.OnElbowStrike;
             @ElbowStrike.performed += instance.OnElbowStrike;
             @ElbowStrike.canceled += instance.OnElbowStrike;
+            @ChangeConsumableItem.started += instance.OnChangeConsumableItem;
+            @ChangeConsumableItem.performed += instance.OnChangeConsumableItem;
+            @ChangeConsumableItem.canceled += instance.OnChangeConsumableItem;
         }
 
         private void UnregisterCallbacks(INormalActions instance)
@@ -459,6 +485,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @ElbowStrike.started -= instance.OnElbowStrike;
             @ElbowStrike.performed -= instance.OnElbowStrike;
             @ElbowStrike.canceled -= instance.OnElbowStrike;
+            @ChangeConsumableItem.started -= instance.OnChangeConsumableItem;
+            @ChangeConsumableItem.performed -= instance.OnChangeConsumableItem;
+            @ChangeConsumableItem.canceled -= instance.OnChangeConsumableItem;
         }
 
         public void RemoveCallbacks(INormalActions instance)
@@ -540,6 +569,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnElbowStrike(InputAction.CallbackContext context);
+        void OnChangeConsumableItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

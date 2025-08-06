@@ -169,13 +169,23 @@ public class BuffSystem
     }
 
     /// <summary>
-    /// 返回当前拥有的所有buff。
+    /// 检查当前buffsystem是否存在指定的buff
     /// </summary>
+    /// <param name="_buffData"></param>
     /// <returns></returns>
-    public List<BuffBase> FindAllBuff()
+    public BuffBase CheckBuffIsExist(BuffData _buffData)
     {
-        return m_Buffs;
+        foreach(BuffBase _buff in buffs)
+        {
+            if(_buff.BuffData == _buffData)
+            {
+                return _buff;
+            }
+        }
+
+        return null;
     }
+
     #endregion
 
     #region private方法

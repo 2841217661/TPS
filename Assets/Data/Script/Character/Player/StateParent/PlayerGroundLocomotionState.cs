@@ -32,23 +32,30 @@ public class PlayerGroundLocomotionState : PlayerGroundState
         //this -> throwStart/使用道具/使用buff
         else if (playerManager.inputManager.GetThrowInput())
         {
-            switch(playerManager.currentSelectConsumableItem.GetComponent<ConsumableItem>().itemType)
+            if (playerManager.canUseConItem && playerManager.currentSelectConItemSO.count > 0)
             {
-                case ConsumableItemType.Throw:
-                    ChangeState(playerManager.throwStartState);
-                    playerManager.animator.CrossFadeInFixedTime(playerManager.throwStartState.animationName, 0.2f);
-                    return;
-                case ConsumableItemType.Prop:
-                    GameObject.Instantiate(playerManager.currentSelectConsumableItem);
-                    break;
-                case ConsumableItemType.Buff:
-                    break;
-                default:
+                switch (playerManager.currentSelectConItemSO.itemType)
+                {
+                    case ConsumableItemType.Throw: //手雷
+                        ChangeState(playerManager.throwStartState);
+                        playerManager.animator.CrossFadeInFixedTime(playerManager.throwStartState.animationName, 0.2f);
+                        return;
+                    case ConsumableItemType.Prop: //药水
+                        GameManager.Instance.UseCurrentSelectItem(playerManager.currentSelectConItemSO.itemId);
+                        break;
+                    case ConsumableItemType.Buff: //buff
+                        GameManager.Instance.UseCurrentSelectItem(playerManager.currentSelectConItemSO.itemId);
+                        break;
+                    default:
 
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("道具用完了：" + playerManager.currentSelectConItemSO.itemId);
             }
         }
-
 
         //基本运动姿态下,按下一次攻击键
         //前方有敌人 -> 肘击； 前方无敌人 -> 前方有问 -> 脚踢

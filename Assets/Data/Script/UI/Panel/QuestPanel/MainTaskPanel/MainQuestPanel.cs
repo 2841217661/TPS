@@ -18,7 +18,7 @@ public class MainQuestPanel : BasePanel
     public TextMeshProUGUI Text_Introduce;
     public TextMeshProUGUI Text_Reward;
 
-    public GameObject mainQuestItem;
+    public GameObject questItem;
     public GameObject noQuestItem;
     public GameObject right;
 
@@ -101,10 +101,10 @@ public class MainQuestPanel : BasePanel
 
         foreach (Quest quest in filteredQuests)
         {
-            GameObject questDisplayItem = Instantiate(mainQuestItem, content);
+            GameObject questDisplayItem = Instantiate(questItem, content);
 
             //为每个QuestItem添加点击事件
-            MainQuestItem item = questDisplayItem.GetComponent<MainQuestItem>();
+            QuestItem item = questDisplayItem.GetComponent<QuestItem>();
             //如果任务已经完成，则就没有Step了
             try
             {
@@ -128,12 +128,12 @@ public class MainQuestPanel : BasePanel
             });
 
             //显示左边Item的信息
-            questDisplayItem.transform.Find("Chapter").GetComponent<TextMeshProUGUI>().text = quest.info.chapter;
-            questDisplayItem.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = quest.info.id;
+            item.UI_chapter.text = quest.info.chapter;
+            item.UI_chapter.text = quest.info.id;
         }
     }
 
-    private void ShowRightInfo(MainQuestItem _item)
+    private void ShowRightInfo(QuestItem _item)
     {
         // 还原上一个按钮颜色和缩放（如果有）
         if (currentSelectItemButton != null)

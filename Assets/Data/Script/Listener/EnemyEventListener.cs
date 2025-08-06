@@ -10,9 +10,7 @@ public class EnemyEventListener : MonoBehaviour
 
     private void OnDisable()
     {
-
         if (EventManager.Instance == null) return;
-
 
         EventManager.Instance.enemyEvent.onDeath_Enemy -= Death_Enemy;
         EventManager.Instance.enemyEvent.onDeath_Zombie -= Death_Zombie;
@@ -22,6 +20,7 @@ public class EnemyEventListener : MonoBehaviour
     private void Death_Enemy(EnemyManager _enemyManager)
     {
         Debug.Log("µĞÈËËÀÍö");
+        GameManager.Instance.playerKillEnemyCount++;
         if(_enemyManager is Enemy_Zombie)
         {
             EventManager.Instance.enemyEvent.Death_Zombie(_enemyManager);

@@ -60,7 +60,7 @@ MonoBehaviour:
   Text_TaskName: {fileID: 8675969612668307706}
   Text_Introduce: {fileID: 980598124707642676}
   Text_Reward: {fileID: 411289395509447162}
-  mainQuestItem: {fileID: 3186891201825463031, guid: f26ccddfdfb311d468d93e486634fcab, type: 3}
+  questItem: {fileID: 3186891201825463031, guid: f26ccddfdfb311d468d93e486634fcab, type: 3}
   noQuestItem: {fileID: 179024038657581228, guid: decbf454b368e1b448e50a3b23d8082e, type: 3}
   right: {fileID: 5557961478028092070}
 --- !u!95 &2726282864008604795

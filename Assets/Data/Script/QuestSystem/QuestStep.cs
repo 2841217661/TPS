@@ -16,8 +16,15 @@ public abstract class QuestStep : MonoBehaviour
         if (!isFinished)
         {
             isFinished = true;
+            FinishThisStepReward();
             EventManager.Instance.questEvent.AdvanceQuest(questId);
             Destroy(this.gameObject);
         }
+    }
+
+    //该步骤完成后的奖励
+    protected virtual void FinishThisStepReward()
+    {
+        Debug.Log("奖励："  + quest.rewardDescription);
     }
 }

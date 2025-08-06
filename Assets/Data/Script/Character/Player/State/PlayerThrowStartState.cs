@@ -17,11 +17,13 @@ public class PlayerThrowStartState : PlayerGroundState
         faceDir.y = 0;
         faceDir = faceDir.normalized;
         playerManager.transform.rotation = Quaternion.LookRotation(faceDir);
+
     }
 
     public override void Exit()
     {
         base.Exit();
+
     }
 
     public override void Update()

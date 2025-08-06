@@ -12,6 +12,23 @@ public class PlayerInfo : MonoBehaviour
     public Transform UI_Rect_BuffContent; //buff信息显示容器
     public GameObject BuffInfoItemPre; //单个buff信息
 
+    private BuffSystem playerBuffSystem;
+
+    private void OnEnable()
+    {
+        playerBuffSystem = GameManager.Instance.playerManager.buffSystem;
+
+        //注册玩家的buff 添加/移除 事件
+        playerBuffSystem.E_OnAddBuff += AddPlayerBuffInfoItem;
+        playerBuffSystem.E_OnRemoveBuff += RemovePlayerBuffInfoItem;
+    }
+
+    private void OnDisable()
+    {
+        playerBuffSystem.E_OnAddBuff -= AddPlayerBuffInfoItem;
+        playerBuffSystem.E_OnRemoveBuff -= RemovePlayerBuffInfoItem;
+    }
+
 
     //每当player添加了一个新buff时，都应该调用该方法
     public void AddPlayerBuffInfoItem(BuffBase _newBuff)
@@ -28,7 +45,7 @@ public class PlayerInfo : MonoBehaviour
         {
             if (UI_Rect_BuffContent.GetChild(i).GetComponent<PlayerBuffInfoItem>().buff == _targetBuff)
             {
-                Destroy(UI_Rect_BuffContent.GetChild(i));
+                Destroy(UI_Rect_BuffContent.GetChild(i).gameObject);
                 return;
             }
         }

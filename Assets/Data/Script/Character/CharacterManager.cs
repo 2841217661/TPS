@@ -9,7 +9,19 @@ public class CharacterManager : MonoBehaviour
 
     [Header("生命值相关")]
     public float baseHealthValue;
-    public float maxHealthValue;
+    [SerializeField] private float m_maxHealthValue;
+    public float maxHealthValue
+    {
+        get { return m_maxHealthValue; }
+        set
+        {
+            //注意：目前没有考虑到生命上限降低的情况
+            float changeValue = value - maxHealthValue; //增加的生命上限值
+            //最大生命值增加时，例如增加10，那么当前生命值也会增加10
+            m_maxHealthValue = value;
+            currentHealthValue += changeValue;
+        }
+    }
     [SerializeField] private float m_currentHealthValue;
     public float currentHealthValue
     {

@@ -19,6 +19,8 @@ public class BuffSelectPanel : BasePanel
     {
         base.ClosePanel();
 
+        GameManager.Instance.Continue();
+
         StopBlinking();
 
         //恢复ui和player输入
@@ -28,6 +30,8 @@ public class BuffSelectPanel : BasePanel
     public override void OpenPanel(string name)
     {
         base.OpenPanel(name);
+
+        GameManager.Instance.Pause();
 
         //禁用ui和player输入
         GameManager.Instance.playerManager.inputManager.ApplyActionMap(false,false);
@@ -50,42 +54,56 @@ public class BuffSelectPanel : BasePanel
             GameObject obj = Instantiate<GameObject>(buffSelectItemPre, content);
 
             // 4. 使用返回值
-            obj.GetComponent<ClickEffect>().buffData = GetBuffDataByType();
 
-            obj.GetComponent<Button>().onClick.AddListener(() =>
+            BuffData _buffData = GetRandomBuffDataByType();
+            ClickEffect clickEffect = obj.GetComponent<ClickEffect>();
+            clickEffect.buffData = _buffData;
+
+            var (canSelect, info)= CheckBuffCanBeSelect(_buffData);
+            if (!canSelect)
             {
-                string typeName = "B_" + obj.GetComponent<ClickEffect>().buffData.buffName;
-
-                Type type = Type.GetType(typeName); // 你需要确保类型名是完整的，包括命名空间
-
-                if (type == null)
+                clickEffect.GetComponent<CanvasGroup>().interactable = false;
+                clickEffect.dontSelect.SetActive(true);
+                clickEffect.dontSelect.GetComponentInChildren<TextMeshProUGUI>().text = info.ToString();
+            }
+            else
+            {
+                obj.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    Debug.LogError($"无法找到类型 {typeName}");
-                    return;
-                }
+                    string typeName = "B_" + obj.GetComponent<ClickEffect>().buffData.buffName;
 
-                // 检查是否是 BuffBase 的子类
-                if (!typeof(BuffBase).IsAssignableFrom(type))
-                {
-                    Debug.LogError($"{typeName} 不是 BuffBase 的子类");
-                    return;
-                }
+                    Type type = Type.GetType(typeName); // 你需要确保类型名是完整的，包括命名空间
 
-                // 获取泛型方法定义
-                MethodInfo method = typeof(BuffSystem).GetMethod("AddBuff", BindingFlags.Public | BindingFlags.Instance);
+                    if (type == null)
+                    {
+                        Debug.LogError($"无法找到类型 {typeName}");
+                        return;
+                    }
 
-                // 构造泛型方法
-                MethodInfo generic = method.MakeGenericMethod(type);
+                    // 检查是否是 BuffBase 的子类
+                    if (!typeof(BuffBase).IsAssignableFrom(type))
+                    {
+                        Debug.LogError($"{typeName} 不是 BuffBase 的子类");
+                        return;
+                    }
 
-                // 调用（this 是你调用 AddBuff 的实例）
-                generic.Invoke(GameManager.Instance.playerManager.buffSystem, new object[] { 1 }); // 参数 heap = 1
+                    // 获取泛型方法定义
+                    MethodInfo method = typeof(BuffSystem).GetMethod("AddBuff", BindingFlags.Public | BindingFlags.Instance);
 
-                obj.GetComponent<ClickEffect>().buffSelectPanel = this;
-            });
+                    // 构造泛型方法
+                    MethodInfo generic = method.MakeGenericMethod(type);
+
+                    // 调用（this 是你调用 AddBuff 的实例）
+                    generic.Invoke(GameManager.Instance.playerManager.buffSystem, new object[] { 1 }); // 参数 heap = 1
+
+                    obj.GetComponent<ClickEffect>().buffSelectPanel = this;
+                });
+            }
         }
     }
 
-    private BuffData GetBuffDataByType()
+    //随机获取一个buff类型
+    private BuffData GetRandomBuffDataByType()
     {
         Type thisBuffType = BuffDataManager.GetRandomBuffType();
 
@@ -101,6 +119,38 @@ public class BuffSelectPanel : BasePanel
         return buff;
     }
 
+    //检查PlayerSystem中是否可以添加该buff，或者说满足添加这个buff的条件
+    //例如：需要添加的buff需要前置buff(此时应当无法选择)；
+    //例如：当前buff层数已经达到上限(此时应该提升玩家当前选择这个buff没有效果，但是可以选择)
+    private (bool canSelect,string info) CheckBuffCanBeSelect(BuffData _buffData)
+    {
+        BuffSystem playerBuffsystem = GameManager.Instance.playerManager.buffSystem;
+        switch (_buffData.conflictResolution)
+        {
+            /*该buff是独立存在的：目前没有限制*/
+            case ConflictResolution.separate:
+                return (true, null);
+            /*该buff是进行合并的：如果达到最大层数，则提升继续添加无效*/
+            case ConflictResolution.combine:
+                //1：准备添加的buff在buffSystem中不存在，则说明是新buff，可以添加：
+                BuffBase buffBase = playerBuffsystem.CheckBuffIsExist(_buffData);
+                //注意：这里如果设计前置buff，则需要在判断一下是否存在前置buff，当前项目没有设计前置buff这个设计
+                if (buffBase == null) return (true, null);
+
+                //2：既然已经有了该buff，判断是否处于满级状态
+                if (buffBase.CurrentLevel != buffBase.BuffData.maxLevel) return (true, null);
+
+                //3：已经满级了...无法添加，就算添加也不会有效果
+                return (false,"当前buff已达到满级");
+            /*该buff是覆盖类型的：可以直接添加*/
+            case ConflictResolution.cover:
+                return (true,null);
+            default:
+                Debug.LogError("没有类型：" + _buffData.conflictResolution);
+                return (false, null);
+        }
+    }
+
     public void StartBlinking()
     {
         // 停止之前的 Tween（如果有）
@@ -109,7 +159,8 @@ public class BuffSelectPanel : BasePanel
         // 设置循环淡入淡出
         blinkTween = tip.DOFade(0f, blinkDuration)
             .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutSine);
+            .SetEase(Ease.InOutSine)
+            .SetUpdate(true);
     }
 
     public void StopBlinking()

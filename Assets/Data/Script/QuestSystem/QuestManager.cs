@@ -50,9 +50,13 @@ public class QuestManager : MonoSingleton<QuestManager>
         quest.InstantiateCurrentQuestStep(this.transform);
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
 
-        //显示任务开始提示
-        GameObject _ = Instantiate(startQuestShowItemPre, NormalPanel.Instance.StartQuestShowItemPoint);
-        _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name.Substring(3));
+        //只有主线任务才显示开始任务提示
+        if(quest.info.type == QuestType.Main)
+        {
+            //显示任务开始提示
+            GameObject _ = Instantiate(startQuestShowItemPre, NormalPanel.Instance.StartQuestShowItemPoint);
+            _.GetComponent<QuestStartShowItem>().Initialize(id, quest.GetCurrentQuestStepPrefab().name.Substring(3));
+        }
     }
 
     private void AdvanceQuest(string id)
@@ -67,7 +71,7 @@ public class QuestManager : MonoSingleton<QuestManager>
             Debug.Log("任务推进中: " +  id);
             //显示任务推进提示
             GameObject _ = Instantiate(startQuestShowItemPre, NormalPanel.Instance.StartQuestShowItemPoint);
-            _.GetComponent<QuestStartShowItem>().Initialize(id, GetQuestById(id).GetCurrentQuestStepPrefab().name);
+            _.GetComponent<QuestStartShowItem>().Initialize(id, quest.GetCurrentQuestStepPrefab().name);
         }
         else
         {

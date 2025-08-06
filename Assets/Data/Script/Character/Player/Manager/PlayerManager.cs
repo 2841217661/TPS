@@ -27,10 +27,12 @@ public class PlayerManager : CharacterManager,IDamageable
     [HideInInspector] public float currentExperienceIncreaseMul; //当前经验增加倍率
     [HideInInspector] public float baseExperienceIncreaseMul = 1f; //基础经验增加倍率
 
-    [Header("消耗品")]
-    public GameObject currentSelectConsumableItem; //当前选中的道具
-    public List<GameObject> consumableItems; //当前拥有的道具
-
+    [Header("消耗物品相关")]
+    public List<ConsumableItemSO> consumableItems = new List<ConsumableItemSO>(3); //道具栏
+    public ConsumableItemSO currentSelectConItemSO; //当前选中的ItemSO
+    //限制道具的使用和切换，但是目前没有使用到
+    public bool canChangeConItem = true; //是否可以切换道具
+    public bool canUseConItem = true; //是否可以使用道具
 
     public int currentLevel 
     {

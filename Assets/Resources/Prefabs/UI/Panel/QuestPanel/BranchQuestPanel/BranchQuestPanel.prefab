@@ -1305,7 +1305,7 @@ MonoBehaviour:
   Text_TaskName: {fileID: 5734372967781447810}
   Text_Introduce: {fileID: 7403351966576771428}
   Text_Reward: {fileID: 7236045957191012141}
-  branchQuestItem: {fileID: 7868928859745784393, guid: 138e9feefaf34fb4e920aba18c18e19a, type: 3}
+  questItem: {fileID: 3186891201825463031, guid: f26ccddfdfb311d468d93e486634fcab, type: 3}
   noQuestItem: {fileID: 179024038657581228, guid: decbf454b368e1b448e50a3b23d8082e, type: 3}
   right: {fileID: 4724639903911369753}
 --- !u!225 &6980136100841795893

@@ -20,4 +20,4 @@ MonoBehaviour:
   - {fileID: 8519885627659206362, guid: 69cb800612332ce42bbfb5a7fbcb53cb, type: 3}
   startRequestPrefabs:
   - {fileID: 11400000, guid: 2cf19707ebf79574b9d88afa67616baf, type: 2}
-  rewardDescription: ........................
+  rewardDescription: "\u65E0"

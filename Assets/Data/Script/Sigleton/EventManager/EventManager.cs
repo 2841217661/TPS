@@ -8,6 +8,7 @@ public class EventManager : MonoSingleton<EventManager>
     public NPCEvent npcEvent;
     public BulletEvent bulletEvent;
     public PlayerEvent playerEvent;
+    public SundryEvent sundryEvent;
     protected override void Init()
     {
         base.Init();
@@ -19,5 +20,6 @@ public class EventManager : MonoSingleton<EventManager>
         npcEvent = new NPCEvent();
         bulletEvent = new BulletEvent();
         playerEvent = new PlayerEvent();
+        sundryEvent = new SundryEvent();
     }
 }

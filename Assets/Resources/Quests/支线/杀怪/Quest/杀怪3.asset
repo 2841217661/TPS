@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6824776e264c7408035b79881d9529, type: 3}
+  m_Name: "\u6740\u602A3"
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: "\u6740\u602A3"
+  type: 1
+  chapter: "\u7B2C\u4E00\u7AE0"
+  questDescription: "\u51FB\u674020\u4E2A\u602A\u7269"
+  questStepPrefabs:
+  - {fileID: 3333673589991914985, guid: 3433d5286c3fe574b81e9fc194f9d888, type: 3}
+  startRequestPrefabs:
+  - {fileID: 11400000, guid: 95652e00ad024e84b922a010a061668c, type: 2}
+  rewardDescription: "\u968F\u673ABuff\u9053\u5177 * 1"

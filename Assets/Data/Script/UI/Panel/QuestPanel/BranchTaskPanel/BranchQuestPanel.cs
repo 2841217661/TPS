@@ -17,7 +17,7 @@ public class BranchQuestPanel : BasePanel
     public TextMeshProUGUI Text_Introduce;
     public TextMeshProUGUI Text_Reward;
 
-    public GameObject branchQuestItem;
+    public GameObject questItem;
     public GameObject noQuestItem;
     public GameObject right;
 
@@ -98,11 +98,20 @@ public class BranchQuestPanel : BasePanel
 
         foreach (Quest quest in filteredQuests)
         {
-            GameObject questDisplayItem = Instantiate(branchQuestItem, content);
+            GameObject questDisplayItem = Instantiate(questItem, content);
 
             //为每个QuestItem添加点击事件
-            MainQuestItem item = questDisplayItem.GetComponent<MainQuestItem>();
-            item.title = quest.GetCurrentQuestStepPrefab().name.Substring(3);
+            QuestItem item = questDisplayItem.GetComponent<QuestItem>();
+            //如果任务已经完成，则就没有Step了
+            try
+            {
+                item.title = quest.GetCurrentQuestStepPrefab().name.Substring(3);
+            }
+            catch
+            {
+                //已经完成的任务没有questStep,自然GetCurrentQuestStepPrefab会超出索引
+                item.title = quest.info.id;
+            }
             item.description = quest.info.questDescription;
             item.reward = quest.info.rewardDescription;
             //默认选中第一个
@@ -116,12 +125,12 @@ public class BranchQuestPanel : BasePanel
             });
 
             //显示左边Item的信息
-            questDisplayItem.transform.Find("Chapter").GetComponent<TextMeshProUGUI>().text = quest.info.chapter;
-            questDisplayItem.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = quest.info.id;
+            item.UI_chapter.text = quest.info.chapter;
+            item.UI_chapter.text = quest.info.id;
         }
     }
 
-    private void ShowRightInfo(MainQuestItem _item)
+    private void ShowRightInfo(QuestItem _item)
     {
         // 还原上一个按钮颜色和缩放（如果有）
         if (currentSelectItemButton != null)

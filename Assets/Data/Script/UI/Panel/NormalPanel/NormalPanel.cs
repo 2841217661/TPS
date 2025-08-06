@@ -36,4 +36,7 @@ public class NormalPanel : MonoSingleton<NormalPanel>
 
     [Header("动态UICanvas")]
     public Transform DynamicUI_Canvas;
+
+    [Header("消耗品列表")]
+    public CarouselView consumableItemCarouselView;
 }

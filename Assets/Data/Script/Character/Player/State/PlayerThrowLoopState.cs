@@ -30,6 +30,7 @@ public class PlayerThrowLoopState : PlayerGroundState
         }
 
         lineRenderer.enabled = true;
+
     }
 
     public override void Exit()
@@ -91,7 +92,7 @@ public class PlayerThrowLoopState : PlayerGroundState
     private void ThrowGrenade()
     {
         // 实例化当前选中的消耗品预制体
-        var throwItem = GameManager.Instance.UseCurrentSelectItem();
+        var throwItem = GameManager.Instance.UseCurrentSelectItem(playerManager.currentSelectConItemSO.itemId);
         throwItem.transform.position = playerManager.grenadeSpawnPoint.position;
 
         // 获取刚体并精确配置

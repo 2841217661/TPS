@@ -20,6 +20,12 @@ public class PlayerGroundState : PlayerState
     {
         base.Update();
 
+        //检测切换道具输入
+        if (playerManager.inputManager.GetNextCnsumableItemInput())
+        {
+            GameManager.Instance.ChangeCurrentSelectConsumableItem();
+        }
+
         //应用重力效果
         playerManager.HandleGravity();
 

@@ -64,6 +64,9 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
             case "枪枪重击":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_枪枪重击>();
                 break;
+            case "生命药水":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_生命药水>();
+                break;
             default:
                 Debug.LogWarning("buff类型没有找到: " + "B_" + _buffName);
                 break;

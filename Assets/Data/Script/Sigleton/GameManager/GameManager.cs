@@ -1,5 +1,6 @@
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -21,43 +22,39 @@ public class GameManager : MonoSingleton<GameManager>
     public float supplyIntervalTimer; //补给倒计时
     public Transform[] supplyPoints;  //补给掉落点数组
 
-    //辅助方法：随机获取一个补给点位置
-    private Transform RandomSelectSupplyPoint()
+    [Header("玩家总共击杀的怪物数量")]
+    public int playerKillEnemyCount;
+
+
+    ////辅助方法：随机获取一个补给点位置
+    //private Transform RandomSelectSupplyPoint()
+    //{
+    //    return supplyPoints[Random.Range(0,supplyPoints.Length)];
+    //}
+
+    ////辅助方法：判断补给间隔是否达到
+    //private bool IsCaculateSupplyIntervalEnd()
+    //{
+    //    supplyIntervalTimer += Time.deltaTime;
+
+    //    if(supplyIntervalTimer > supplyInterval)
+    //    {
+    //        supplyIntervalTimer = 0f;
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
+
+    public void Pause()
     {
-        return supplyPoints[Random.Range(0,supplyPoints.Length)];
+        Time.timeScale = 0f;
     }
 
-    //辅助方法：判断补给间隔是否达到
-    private bool IsCaculateSupplyIntervalEnd()
+    public void Continue()
     {
-        supplyIntervalTimer += Time.deltaTime;
-
-        if(supplyIntervalTimer > supplyInterval)
-        {
-            supplyIntervalTimer = 0f;
-            return true;
-        }
-
-        return false;
+        Time.timeScale = 1f;
     }
-
-    private void TryAddSupply()
-    {
-        if (IsCaculateSupplyIntervalEnd())
-        {
-            Transform supplyPoint = RandomSelectSupplyPoint();
-
-            //TODO:实例补给
-        }
-    }
-
-    protected override void Init()
-    {
-        base.Init();
-
-        DontDestroyOnLoad(gameObject);
-    }
-    
 
     /// <summary>
     /// 随机获取一个巡逻点
@@ -129,68 +126,62 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
 
-    //辅助方法：通过消耗物品的id来查找Resources下对应的资源
-    private GameObject GetConsumableItemById(string _itemName)
-    {
-        string itemPath = "Prefabs/ConsumableItems/" + _itemName;
-        return Resources.Load<GameObject>(itemPath);
-    }
-
     /// <summary>
     /// 增加消耗品
     /// </summary>
-    /// <param name="_itemId">物品</param>
+    /// <param name="_itemId">物品id</param>
     /// <param name="_count">个数</param>
-    public void AddConsumableItem(string _itemId, int _count = 1)
+    public void GetConsumableItem(string _itemId, int _count = 1)
     {
-        //查找playermanager是否含有该物品（通过物品名）：
-        //没有：新添加一个
-        //有：数量加一
-        foreach (var item in playerManager.consumableItems)
+
+        foreach(var ci in playerManager.consumableItems)
         {
-            ConsumableItem ci = item.GetComponent<ConsumableItem>();
-            if (ci.itemId == _itemId) //已有，数量加一
+            if(ci.itemId == _itemId)
             {
-                ci.count++;
-            }
-            else //没有，加入
-            {
-                var obj = GetConsumableItemById(_itemId);
-                obj.GetComponent<ConsumableItem>().count = _count;
-                playerManager.consumableItems.Add(obj);
-                //TODO:同步ui
+                ci.count += _count;
+
+                //杂项事件回调
+                EventManager.Instance.sundryEvent.ConItemGet(_itemId,_count);
+
+                return;
             }
         }
+        Debug.LogError("添加的消耗物品道具Id不存在");
     }
 
     /// <summary>
     /// 使用一次当前选中的消耗物品
     /// </summary>
-    /// <param name="_count">消耗数量</param>
-    /// <returns></returns>
-    public GameObject UseCurrentSelectItem()
+    public GameObject UseCurrentSelectItem(string _itemId)
     {
-        var obj = Instantiate(playerManager.currentSelectConsumableItem);
+        ConsumableItemSO ci = playerManager.currentSelectConItemSO;
+        if (ci.count <= 0)
+        {
+            Debug.LogWarning("道具已经使用完了: " + ci.itemId);
+            return null;
+        }
 
-        ConsumableItem ci = playerManager.currentSelectConsumableItem.GetComponent<ConsumableItem>();
         ci.count--;
-        if(ci.count <= 0) //消耗完了
-        {
-            playerManager.consumableItems.Remove(playerManager.currentSelectConsumableItem);
-        }
 
-        if(playerManager.consumableItems.Count > 0)
-        {
-            playerManager.currentSelectConsumableItem = playerManager.consumableItems[0];
-        }
-        else
-        {
-            playerManager.currentSelectConsumableItem = null;
-        }
+        //杂项事件回调
+        EventManager.Instance.sundryEvent.ConItemUsed(_itemId);
 
-        return obj;
+        return ci.MakeItem();
     }
 
+    //切换下一个道具
+    public void ChangeCurrentSelectConsumableItem()
+    {
+        if (!playerManager.canChangeConItem)
+        {
+            Debug.LogWarning("当前状态无法切换道具");
+            return;
+        }
+
+        NormalPanel.Instance.consumableItemCarouselView.OnClickNext();
+
+        //playerManager.currentSelectConsumableItem = NormalPanel.Instance.consumableItemCarouselView.m_itemDic[0].GetComponent<UIConsumableItemView>().consumableItem;
+    }
 
     private void Start()
     {
@@ -218,11 +209,11 @@ public class GameManager : MonoSingleton<GameManager>
 
         //测试
         QuestManager.Instance.TryStartQuest(QuestName.Quest_升级1);
+        QuestManager.Instance.TryStartQuest(QuestName.Quest_杀怪1);
     }
 
     private void Update()
     {
-
         //TryAddSupply();
 
         // 测试：打开任务面板
@@ -235,6 +226,7 @@ public class GameManager : MonoSingleton<GameManager>
         if (Input.GetKeyDown(KeyCode.B))
         {
             UIManager.Instance.OpenPanel("BuffSelectPanel",UIManager.Instance.UIRoot);
+            //playerManager.buffSystem.AddBuff<B_生命药水>();
         }
 
         // 测试：关闭最近打开的面板
