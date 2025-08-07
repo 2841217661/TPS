@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyManager : CharacterManager,IKnockUpable
+public class EnemyManager : CharacterManager
 {
     public EnemyState state;
 
@@ -19,7 +19,6 @@ public class EnemyManager : CharacterManager,IKnockUpable
     [Header("攻击设置")]
     public float attackPower;
 
-    
 
     protected override void Awake()
     {
@@ -28,8 +27,6 @@ public class EnemyManager : CharacterManager,IKnockUpable
         rb = GetComponent<Rigidbody>();
 
         buffSystem = new BuffSystem(this);
-
-        //Minmap.Instance.AddMinmapIcon(this.transform, MinmapIconType.enemy);
     }
 
     protected override void Start()
@@ -40,12 +37,12 @@ public class EnemyManager : CharacterManager,IKnockUpable
 
     protected override void Update()
     {
-        GroundCheck();
-
         base.Update();
 
-
         buffSystem.Update();
+
+        GroundCheck();
+
     }
 
     protected override void FixedUpdate()
@@ -69,7 +66,7 @@ public class EnemyManager : CharacterManager,IKnockUpable
     public float groundCheckSphereRadius; //使用球型检测，检测的半径,与capsuleCollision半径一致最为合适
     private float airTime = 0.1f;
     private float airTimer;
-    private void GroundCheck()
+    protected virtual void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.position, groundCheckSphereRadius, groundLayer);
         if (!isGrounded)
@@ -87,15 +84,4 @@ public class EnemyManager : CharacterManager,IKnockUpable
             airTimer = 0f;
         }
     }
-
-    public void ApplyExplosionForce(Vector3 explosionPosition, float force, float radius, float upwardModifier = 0.5F)
-    {
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero; 
-            rb.AddExplosionForce(force, explosionPosition, radius, upwardModifier, ForceMode.Impulse);
-        }
-    }
-
-
 }

@@ -116,10 +116,21 @@ public class DialoguePanel : BasePanel
         }
         else if (currentNode is ChoiceNode)
         {
-            NodePort choiceNode = (currentNode as ChoiceNode).GetOutputPort($"outputs {_choiceIndex}");
-            currentNode = choiceNode.Connection.node;
-            ShowCurrentNodeContent();
+            NodePort choicePort = (currentNode as ChoiceNode).GetOutputPort($"outputs {_choiceIndex}");
+
+            if (choicePort != null && choicePort.Connection != null)
+            {
+                currentNode = choicePort.Connection.node;
+                ShowCurrentNodeContent();
+            }
+            else
+            {
+                Debug.LogWarning($"选项 {_choiceIndex} 没有连接后续节点，结束对话。");
+                npcManager.InteractableFinish();
+                ClosePanel();
+            }
         }
+
     }
 
     private Tween typingTween;             // 当前的打字动画

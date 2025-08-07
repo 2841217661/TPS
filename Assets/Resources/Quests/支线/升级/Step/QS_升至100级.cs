@@ -27,6 +27,6 @@ public class QS_升至100级 : QuestStep
     {
         base.FinishThisStepReward();
 
-        UIManager.Instance.OpenPanel("BuffSelectPanel", UIManager.Instance.UIRoot);
+        GameManager.Instance.GetConsumableItem("随机Buff", 1);
     }
 }

@@ -9,10 +9,10 @@ public class NPCManager : CharacterManager
 
     protected GameObject buttonGroup;
 
-    protected NPCState m_state = NPCState.Idle;
-
+    public NPCState state = NPCState.Idle;
+    
     protected float m_interactableDis = 3f; //可交互的最大距离
-    protected enum NPCState
+    public enum NPCState
     {
         Idle, //闲置状态
         Interactable, //交谈状态
@@ -32,7 +32,7 @@ public class NPCManager : CharacterManager
             QuestTipToFaceCamera();
         }
 
-        if (m_state != NPCState.Idle) return; //非待机状态下不能进行交谈
+        if (state != NPCState.Idle) return; //非待机状态下不能进行交谈
 
         if (PlayerDetected())
         {
@@ -67,14 +67,14 @@ public class NPCManager : CharacterManager
     //剧情对话结束
     public virtual void InteractableFinish()
     {
-        m_state = NPCState.Idle;
+        state = NPCState.Idle;
         EventManager.Instance.npcEvent.FinishConversation_Anyone(this);
     }
 
     //剧情对话开始
     public virtual void InteractableStart()
     {
-        m_state = NPCState.Interactable;
+        state = NPCState.Interactable;
         EventManager.Instance.npcEvent.StartConversation_Anyone(this);
     }
 
@@ -95,4 +95,6 @@ public class NPCManager : CharacterManager
             questTip.transform.rotation = Quaternion.LookRotation(questTip.transform.position - Camera.main.transform.position);
         }
     }
+
+
 }

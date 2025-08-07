@@ -18,33 +18,75 @@ public class GameManager : MonoSingleton<GameManager>
     public Transform npcRoot;
 
     [Header("补给")]
-    public float supplyInterval; //补给的时间间隔
-    public float supplyIntervalTimer; //补给倒计时
-    public Transform[] supplyPoints;  //补给掉落点数组
+    public float buffSupplyInterval; //buff补给的时间间隔
+    private float buffSupplyIntervalTimer; //buff补给倒计时
+    public float storeSupplyInterval; //商人补给的时间间隔
+    private float storeSupplyIntervalTimer; //商人补给倒计时
+    public Transform traderPoint; //商人刷新位置
+    public Transform[] supplyPoints;  //buff补给掉落点数组
+    public GameObject buffSupplyPre; //buff补给预制体
 
     [Header("玩家总共击杀的怪物数量")]
     public int playerKillEnemyCount;
 
 
-    ////辅助方法：随机获取一个补给点位置
-    //private Transform RandomSelectSupplyPoint()
-    //{
-    //    return supplyPoints[Random.Range(0,supplyPoints.Length)];
-    //}
+    #region 补给
+    //辅助方法：随机获取一个buff补给点位置
+    private Transform RandomSelectSupplyPoint()
+    {
+        return supplyPoints[Random.Range(0, supplyPoints.Length)];
+    }
 
-    ////辅助方法：判断补给间隔是否达到
-    //private bool IsCaculateSupplyIntervalEnd()
-    //{
-    //    supplyIntervalTimer += Time.deltaTime;
+    //辅助方法：判断buff补给间隔是否达到
+    private bool IsCaculateBuffSupplyIntervalEnd()
+    {
+        buffSupplyIntervalTimer += Time.deltaTime;
 
-    //    if(supplyIntervalTimer > supplyInterval)
-    //    {
-    //        supplyIntervalTimer = 0f;
-    //        return true;
-    //    }
+        if (buffSupplyIntervalTimer > buffSupplyInterval)
+        {
+            buffSupplyIntervalTimer = 0f;
+            return true;
+        }
 
-    //    return false;
-    //}
+        return false;
+    }
+
+    //辅助方法：判断商人补给间隔是否达到
+    private bool IsCaculateStoreSupplyIntervalEnd()
+    {
+        storeSupplyIntervalTimer += Time.deltaTime;
+
+        if (storeSupplyIntervalTimer > storeSupplyInterval)
+        {
+            storeSupplyIntervalTimer = 0f;
+            return true;
+        }
+
+        return false;
+    }
+
+    //实例神秘商店补给,位置是固定的
+    private void TryAddStoreSupply()
+    {
+        if (!IsCaculateStoreSupplyIntervalEnd()) return;
+
+        GameObject go = Instantiate(NormalPanel.Instance.RandomEventNoticeItemPre, NormalPanel.Instance.RandomEventNoticePoint);
+        go.GetComponentInChildren<TextMeshProUGUI>().text = "神秘商店已刷新";
+        Instantiate(Resources.Load<GameObject>("Prefabs/NPC/NPC_商人"), traderPoint.position, Quaternion.identity);
+    }
+
+    //实例一个buff，随机位置
+    public void TryBuffSelectSupply()
+    {
+        if (!IsCaculateBuffSupplyIntervalEnd()) return;
+
+        GameObject go = Instantiate(NormalPanel.Instance.RandomEventNoticeItemPre, NormalPanel.Instance.RandomEventNoticePoint);
+        go.GetComponentInChildren<TextMeshProUGUI>().text = "Buff补给已刷新";
+        Instantiate(Resources.Load<GameObject>("Prefabs/Supply/BuffSupply"), RandomSelectSupplyPoint().position, Quaternion.identity);
+    }
+    #endregion
+
+
 
     public void Pause()
     {
@@ -185,6 +227,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
+        TryBuffSelectSupply();
+
+
         //测试
         UIUtils.ScreenFadeTransition(
             delay: 2f,
@@ -214,7 +259,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Update()
     {
-        //TryAddSupply();
+        TryAddStoreSupply(); 
+        TryBuffSelectSupply();
+
 
         // 测试：打开任务面板
         if (Input.GetKeyDown(KeyCode.O))

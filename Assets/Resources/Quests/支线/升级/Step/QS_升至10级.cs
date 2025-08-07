@@ -28,7 +28,6 @@ public class QS_升至10级 : QuestStep
     protected override void FinishThisStepReward()
     {
         base.FinishThisStepReward();
-
-        UIManager.Instance.OpenPanel("BuffSelectPanel", UIManager.Instance.UIRoot);
+        GameManager.Instance.GetConsumableItem("随机Buff", 1);
     }
 }
