@@ -67,6 +67,9 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
             case "生命药水":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_生命药水>();
                 break;
+            case "超级闪现":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_超级闪现>(10);
+                break;
             default:
                 Debug.LogWarning("buff类型没有找到: " + "B_" + _buffName);
                 break;

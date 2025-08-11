@@ -1,17 +1,20 @@
+using Cinemachine;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(CinemachineImpulseSource))]
 public class 火焰印记爆炸 : MonoBehaviour,IPoolable
 {
-
+    private CinemachineImpulseSource impulseSource;
+    [SerializeField] private float explosionForce = 0.5f;
     [SerializeField] private float explodeRadius = 3;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float explodeForce = 300f;
 
-    [Header("相机抖动设置")]
-    [SerializeField] private float sharkTime = 0.3f;
-    [SerializeField] private LayerMask playerLayer;
-    [SerializeField] private float checkRadius = 10f;
+    private void Awake()
+    {
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
 
     public void OnRecycle()
     {
@@ -29,17 +32,6 @@ public class 火焰印记爆炸 : MonoBehaviour,IPoolable
             collider.GetComponent<IDamageable>()?.TakeDamage(100f, GameManager.Instance.playerManager,collider.transform.position + Vector3.up, DamageIntensity.Heavy,DamageElement.Fire);
         }
 
-        Vector3 toPlayer = GameManager.Instance.playerManager.transform.position - transform.position;
-        if (toPlayer.sqrMagnitude < checkRadius * checkRadius)
-        {
-            StartCoroutine(SharkCamera(sharkTime));
-        }
-    }
-
-    private IEnumerator SharkCamera(float duraction)
-    {
-        GameManager.Instance.playerManager.cameraManager.AddCurrentCameraShark(0.5f, 15);
-        yield return new WaitForSeconds(duraction);
-        GameManager.Instance.playerManager.cameraManager.RemoveCurrentCameraShark();
+        GameManager.Instance.playerManager.cameraManager.ApplyImpluseCameraShark(impulseSource, explosionForce);
     }
 }

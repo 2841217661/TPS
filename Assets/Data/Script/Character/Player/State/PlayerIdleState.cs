@@ -21,8 +21,18 @@ public class PlayerIdleState : PlayerGroundLocomotionState
     {
         base.Update();
 
+
+
         if (playerManager.inputManager.movementInput != Vector2.zero)
         {
+            //this -> run
+            if (playerManager.inputManager.runInput)
+            {
+                ChangeState(playerManager.runState);
+                playerManager.animator.CrossFadeInFixedTime(playerManager.runState.animationName, 0.2f);
+            }
+
+            //this -> walk
             string animName = "";
 
             //获取当前玩家应当移动的方向向量

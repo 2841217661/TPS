@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Ordinary : EnemyManager,IKnockUpable
+public class Enemy_Ordinary : EnemyManager
 {
     public float backResistance; //击退抗性
-    private float currentBackResistance;
+    protected float currentBackResistance;
 
     //检测范围分为两个检测
     //1：前方一定视角
@@ -17,85 +18,9 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
     private float checkInterval = 1f;  // 每隔1秒检测一次
     private float checkTimer = 0f;
 
-
-
-    public void TakeDamage(float _value, CharacterManager _source, Vector3 _damagePosition, DamageIntensity _type, DamageElement _element)
-    {
-        if (state == EnemyState.Death) return;
-
-        if (state == EnemyState.Patrol)
-        {
-            //此时应该发现玩家
-            target = GameManager.Instance.playerManager.transform;
-            //播放警戒语音
-            PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_警戒.name, transform.position, Quaternion.identity, true);
-        }
-
-        //判断是否发生暴击
-        if (Random.Range(0, 1f) < GameManager.Instance.playerManager.currentCrticalMul)
-        {
-            DamageEvent(_value * 2f, _damagePosition, _element, true);
-        }
-        else
-        {
-            DamageEvent(_value, _damagePosition, _element, false);
-        }
-
-        switch (_type)
-        {
-            case DamageIntensity.Light: //持续受到轻击会被击退
-                currentBackResistance -= _value;
-                if (currentBackResistance <= 0f)
-                {
-                    state = EnemyState.KnockBack;
-                    currentBackResistance = backResistance;
-                }
-                break;
-            case DamageIntensity.Middle: //受到较重的攻击会被击退
-                state = EnemyState.KnockBack;
-                currentBackResistance = backResistance;
-                break;
-            case DamageIntensity.Heavy: //受到重击会被击飞
-                state = EnemyState.KnockUp;
-                currentBackResistance = backResistance;
-                break;
-        }
-
-        currentHealthValue -= _value;
-        if (currentHealthValue <= 0f)
-        {
-            state = EnemyState.Death;
-        }
-    }
-
-
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        //注册受伤伤害数字飘动事件
-        onDamageEvent += DamageEvent_DisplayDamageTextEffect;
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        onDamageEvent -= DamageEvent_DisplayDamageTextEffect;
-    }
-
-    private void DamageEvent_DisplayDamageTextEffect(float _damageValue, Vector3 _damagePosition, DamageElement _element, bool _isCritical)
-    {
-        Debug.Log($"受到{_damageValue}伤害，类型为{_element},发生暴击？{_isCritical}");
-        GameManager.Instance.GenerateDamageTextEffect(_damageValue, _damagePosition, _element, _isCritical);
-    }
-
     protected override void Awake()
     {
         base.Awake();
-
-        //target = GameManager.Instance.playerManager.transform;
 
         currentBackResistance = backResistance;
 
@@ -107,14 +32,17 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
 
     }
 
-    public override void OnDeath()
+    protected override void OnEnable()
     {
-        base.OnDeath();
+        base.OnEnable();
 
-        PoolManager.Instance.Spawn(PoolManager.Instance.zombie_death_explode.name, transform.position + Vector3.up, transform.rotation);
-        PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_死亡爆炸.name, transform.position, transform.rotation);
+        //注册玩家死亡事件
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
 
 
     protected override void Update()
@@ -123,6 +51,7 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
 
         CheckPlayerIsAround(target);
     }
+
 
 
 
@@ -161,6 +90,8 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
         if (targets.Length > 0)
         {
             target = targets[0].transform;
+            SuccessCheckPlayerIsAround();
+            return;
         }
 
         // 前方扇形视野检测:直接由检测点向玩家发射射线，如果第一个命中了玩家，说明看见了玩家
@@ -169,16 +100,21 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
             if (hit.transform == player && Vector3.Angle(transform.forward, hit.transform.position - transform.position) <= forwardCheckAngle)
             {
                 target = player;
+                SuccessCheckPlayerIsAround();
                 return;
             }
         }
+
+        //到这里就说明没有发现玩家:回调失败检测到玩家的事件
+        FailureCheckPlayerIsAround();
     }
 
     /// <summary>
     /// 绘制检测范围
     /// </summary>
-    protected virtual void OnDrawGizmosSelected()
+    protected override void OnDrawGizmosSelected()
     {
+        base.OnDrawGizmosSelected();
         #region 绘制警戒范围
         // 绘制颜色
         Color forwardColor = new Color(0, 1, 0, 0.3f); //绿色
@@ -212,40 +148,5 @@ public class Enemy_Ordinary : EnemyManager,IKnockUpable
         Gizmos.color = aroundColor;
         Gizmos.DrawWireSphere(origin, roundCheckRaious);
         #endregion
-
-        #region 绘制普通攻击范围
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + transform.rotation * normalAttackoffset, normalAttackRadius);
-        #endregion
     }
-
-
-    #region 动画事件
-    public void Play_SX_攻击()
-    {
-        PoolManager.Instance.Spawn(PoolManager.Instance.sx_僵尸_攻击.name, transform.position, Quaternion.identity, true);
-    }
-
-    [Header("普通攻击设置")]
-    public float normalAttackRadius; //普通攻击范围半径
-    public Vector3 normalAttackoffset; //以原点 + offset 为中心
-    public void TryNormalAttack()
-    {
-        Collider[] collisions = Physics.OverlapSphere(transform.position + transform.rotation * normalAttackoffset, normalAttackRadius, targetLayer);
-        if (collisions.Length > 0) //敌人在范围内
-        {
-            collisions[0].GetComponent<IDamageable>()?.TakeDamage(attackPower, this, Vector3.zero, DamageIntensity.Light, DamageElement.Physical);
-        }
-    }
-
-    public void ApplyExplosionForce(Vector3 explosionPosition, float force, float radius, float upwardModifier = 0.5F)
-    {
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.AddExplosionForce(force, explosionPosition, radius, upwardModifier, ForceMode.Impulse);
-        }
-    }
-
-    #endregion
 }

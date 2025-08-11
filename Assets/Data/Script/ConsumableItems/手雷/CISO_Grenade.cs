@@ -5,7 +5,7 @@ public class CISO_Grenade : ConsumableItemSO
 {
     public override GameObject MakeItem()
     {
-
-        return Instantiate(Resources.Load<GameObject>("Prefabs/ConsumableItems/Item/ÊÖÀ×"));
+        var obj = Instantiate(Resources.Load<GameObject>("Prefabs/ConsumableItems/Item/ÊÖÀ×"));
+        return obj;
     }
 }

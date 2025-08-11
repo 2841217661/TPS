@@ -32,6 +32,10 @@ public class CharacterManager : MonoBehaviour
             {
                 value = maxHealthValue;
             }
+            else if(value <= 0)
+            {
+                value = 0f;
+            }
 
             m_currentHealthValue = value;
             OnHealthValueChanged();

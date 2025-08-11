@@ -22,6 +22,7 @@ public class B_火焰弹头 : BuffBase
     {
         if(_manaer != null) //有可能命中的是障碍物
         {
+            Debug.LogWarning("火焰弹头击中： " + _manaer);
             _manaer.buffSystem.AddBuff<B_火焰印记>();
         }
     }

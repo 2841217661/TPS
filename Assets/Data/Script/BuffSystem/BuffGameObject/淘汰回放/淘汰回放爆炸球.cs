@@ -1,7 +1,12 @@
+using Cinemachine;
 using UnityEngine;
 
+[RequireComponent(typeof(CinemachineImpulseSource))]
 public class 淘汰回放爆炸球 : MonoBehaviour
 {
+    private CinemachineImpulseSource impulseSource;
+    public float impulseForce = 0.5f;
+
     [SerializeField] private float moveSpeed = 0.5f;
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float explodeRadius = 4;
@@ -9,6 +14,11 @@ public class 淘汰回放爆炸球 : MonoBehaviour
     private Vector3 offset = Vector3.up;
 
     private Transform target;
+
+    private void Awake()
+    {
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
 
     private void Start()
     {
@@ -54,6 +64,8 @@ public class 淘汰回放爆炸球 : MonoBehaviour
                 }
             }
         }
+
+        GameManager.Instance.playerManager.cameraManager.ApplyImpluseCameraShark(impulseSource, impulseForce);
         PoolManager.Instance.Recycle(PoolManager.Instance.淘汰回放爆炸.name, this.gameObject);
     }
 }

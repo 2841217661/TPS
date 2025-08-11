@@ -9,4 +9,11 @@ public class PlayerEvent
     {
         onPlayerLevelUp?.Invoke();
     }
+
+    //Íæ¼ÒËÀÍöÊÂ¼ş
+    public event Action onPlayerDeath;
+    public void PlayerDeath()
+    {
+        onPlayerDeath?.Invoke();
+    }
 }

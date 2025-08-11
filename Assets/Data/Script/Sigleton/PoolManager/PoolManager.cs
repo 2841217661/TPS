@@ -50,10 +50,17 @@ public class PoolManager : MonoSingleton<PoolManager>
     //Player音效
     public GameObject sx_player_damage;
     //敌人音效
+    //机械僵尸
     public GameObject sx_僵尸_警戒;
     public GameObject sx_僵尸_被击退;
     public GameObject sx_僵尸_攻击;
     public GameObject sx_僵尸_死亡爆炸;
+    //石头人
+    public GameObject sx_石头人_警戒;
+    public GameObject sx_石头人_被击退;
+    public GameObject sx_石头人_挥拳;
+    public GameObject sx_石头人_锤击;
+    public GameObject sx_石头人_死亡;
 
     [Header("特效")]
     //buff
@@ -132,10 +139,17 @@ public class PoolManager : MonoSingleton<PoolManager>
 
         //敌人音效
         //僵尸
-        CreatePool(sx_僵尸_警戒.name, sx_僵尸_警戒, 3, transform.Find("EnemySFX/僵尸/警戒"));
-        CreatePool(sx_僵尸_被击退.name, sx_僵尸_被击退, 3, transform.Find("EnemySFX/僵尸/被击退"));
-        CreatePool(sx_僵尸_攻击.name, sx_僵尸_攻击, 3, transform.Find("EnemySFX/僵尸/攻击"));
-        CreatePool(sx_僵尸_死亡爆炸.name, sx_僵尸_死亡爆炸, 3, transform.Find("EnemySFX/僵尸/死亡爆炸"));
+        CreatePool(sx_僵尸_警戒.name, sx_僵尸_警戒, 3, transform.Find("EnemySFX/僵尸/僵尸_警戒"));
+        CreatePool(sx_僵尸_被击退.name, sx_僵尸_被击退, 3, transform.Find("EnemySFX/僵尸/僵尸_被击退"));
+        CreatePool(sx_僵尸_攻击.name, sx_僵尸_攻击, 3, transform.Find("EnemySFX/僵尸/僵尸_攻击"));
+        CreatePool(sx_僵尸_死亡爆炸.name, sx_僵尸_死亡爆炸, 3, transform.Find("EnemySFX/僵尸/僵尸_死亡爆炸"));
+        //石头人
+        CreatePool(sx_石头人_警戒.name, sx_石头人_警戒, 3, transform.Find("EnemySFX/石头人/石头人_警戒"));
+        CreatePool(sx_石头人_死亡.name, sx_石头人_死亡, 3, transform.Find("EnemySFX/石头人/石头人_死亡"));
+        CreatePool(sx_石头人_锤击.name, sx_石头人_锤击, 3, transform.Find("EnemySFX/石头人/石头人_锤击"));
+        CreatePool(sx_石头人_挥拳.name, sx_石头人_挥拳, 3, transform.Find("EnemySFX/石头人/石头人_挥拳"));
+        CreatePool(sx_石头人_被击退.name, sx_石头人_被击退, 3, transform.Find("EnemySFX/石头人/石头人_被击退"));
+
 
         #endregion
 

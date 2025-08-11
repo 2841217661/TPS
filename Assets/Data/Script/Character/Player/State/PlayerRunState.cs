@@ -41,10 +41,18 @@ public class PlayerRunState : PlayerGroundLocomotionState
             playFootIntervaler = 0f;
         }
 
+        //this -> runEnd
         if (playerManager.inputManager.movementInput.magnitude == 0)
         {
             ChangeState(playerManager.runEndState);
             playerManager.animator.CrossFadeInFixedTime(playerManager.runEndState.animationName, 0.2f);
+        }
+
+        //this -> walk
+        if (!playerManager.inputManager.runInput)
+        {
+            ChangeState(playerManager.walkState);
+            playerManager.animator.CrossFade(playerManager.walkState.animationName, 0.25f);
         }
     }
 }

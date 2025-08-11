@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerThrowEndState : PlayerGroundState
 {
+    private float exitByInputTime = 0.7f;
     public PlayerThrowEndState(PlayerManager _playerManager, string _animationName, bool _useRootMotionPart) : base(_playerManager, _animationName, _useRootMotionPart)
     {
     }
@@ -24,9 +25,19 @@ public class PlayerThrowEndState : PlayerGroundState
 
         //this -> idle
         AnimatorStateInfo stateInfo = playerManager.animator.GetCurrentAnimatorStateInfo(0);
-        if(stateInfo.IsName(animationName) && playerManager.animator.IsInTransition(0))
+        if(stateInfo.IsName(animationName))
         {
-            ChangeState(playerManager.idleState);
+            if (playerManager.animator.IsInTransition(0))
+            {
+                ChangeState(playerManager.idleState);
+            }
+            else if(stateInfo.normalizedTime > exitByInputTime)
+            {
+                if(playerManager.inputManager.movementInput != Vector2.zero)
+                {
+                    ChangeState(playerManager.idleState);
+                }
+            }
         }
     }
 }

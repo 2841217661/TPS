@@ -350,8 +350,8 @@ GameObject:
   - component: {fileID: 3595449483969618386}
   - component: {fileID: 2638558166450524024}
   - component: {fileID: 4170988787561289733}
-  - component: {fileID: 1172754368638467147}
   - component: {fileID: 534230242338969125}
+  - component: {fileID: 1172754368638467147}
   m_Layer: 9
   m_Name: "\u673A\u68B0\u50F5\u5C38"
   m_TagString: Enemy
@@ -368,7 +368,7 @@ Transform:
   m_GameObject: {fileID: 1388206898607748835}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.01816, y: 0.0000009536743, z: 91.27506}
+  m_LocalPosition: {x: 14.47, y: 0.00000047683716, z: 69.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -405,7 +405,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388206898607748835}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 811c48419ce061746ad82a5b43451e34, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -470,67 +470,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1172754368638467147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1388206898607748835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startWhenEnabled: 1
-  asynchronousLoad: 0
-  pauseWhenDisabled: 0
-  restartWhenComplete: 1
-  logTaskChanges: 0
-  group: 0
-  resetValuesOnRestart: 0
-  externalBehavior: {fileID: 0}
-  mBehaviorSource:
-    behaviorName: "\u673A\u68B0\u50F5\u5C38\u884C\u4E3A\u6811"
-    behaviorDescription: "\u6700\u57FA\u672C\u7684\u654C\u4EBA\u884C\u4E3A\u6811"
-    mTaskData:
-      types: []
-      parentIndex: 
-      startIndex: 
-      variableStartIndex: 
-      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(319.7,30)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(1.82538223,184.2857)"},"ID":1,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-1149.16785,194.507233)","Comment":"\u6b7b\u4ea1\u68c0\u6d4b"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Zombie_DeathCheck","NodeData":{"Offset":"(-220,170)"},"ID":3,"Name":"Zombie  
-        Death Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":0}},{"Type":"Zombie_Death","NodeData":{"Offset":"(-25.7142525,170)"},"ID":4,"Name":"Zombie  
-        Death","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-882.185059,200.502487)","Comment":"\u5148\u68c0\u6d4b\u662f\u5426\u88ab\u51fb\u98de"},"ID":5,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Zombie_KnockUpCheck","NodeData":{"Offset":"(-120.555725,163.772247)"},"ID":6,"Name":"Zombie  
-        Knock Up Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":2}},{"Type":"Zombie_KnockUp","NodeData":{"Offset":"(86.4242554,167.614716)"},"ID":7,"Name":"Zombie  
-        Knock Up","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":3}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-499.2942,211.379272)","Comment":"\u518d\u68c0\u6d4b\u662f\u5426\u88ab\u51fb\u9000"},"ID":8,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Zombie_KonckBackCheck","NodeData":{"Offset":"(-111.034424,147.801636)"},"ID":9,"Name":"Zombie  
-        Konck Back Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":4}},{"Type":"Zombie_KnockBack","NodeData":{"Offset":"(113.570007,147.58606)"},"ID":10,"Name":"Zombie  
-        Knock Back","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":5}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-2.5,188.151855)","Comment":"\u73a9\u5bb6\u5728\u89c6\u91ce\u8303\u56f4\u5185"},"ID":11,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Zombie_PlayerCheck","NodeData":{"Offset":"(-205.53804,194.390228)"},"ID":12,"Name":"Zombie  
-        Player Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":6}},{"Type":"Zombie_Chase","NodeData":{"Offset":"(-59.5818634,180)"},"ID":13,"Name":"Zombie  
-        Chase","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":7}},{"Type":"Zombie_Attack","NodeData":{"Offset":"(68.78049,180)"},"ID":14,"Name":"Zombie  
-        Attack","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":8}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(192.051559,198.755524)"},"ID":15,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.5},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(378.8956,156.359528)"},"ID":16,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(4.661972,160)","Comment":"\u73a9\u5bb6\u5728\u89c6\u91ce\u8303\u56f4\u5185"},"ID":17,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Zombie_Patrol","NodeData":{"Offset":"(-68.57147,120)"},"ID":18,"Name":"Zombie  
-        Patrol","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":9}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(95.7142944,117.069611)"},"ID":19,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2}}]}]}]},"Variables":[{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":10}]}'
-      fieldSerializationData:
-        typeName: []
-        fieldNameHash: 
-        startIndex: 
-        dataPosition: 
-        unityObjects:
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        - {fileID: 534230242338969125}
-        byteData: 
-        byteDataArray: 
-      Version: 1.7.11
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
 --- !u!114 &534230242338969125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,8 +485,8 @@ MonoBehaviour:
   characterName: "\u673A\u68B0\u50F5\u5C38"
   characterTitle: "\u5931\u8D25\u7684\u5B9E\u9A8C\u7269\u54C1"
   baseHealthValue: 500
-  maxHealthValue: 0
-  currentHealthValue: 0
+  m_maxHealthValue: 0
+  m_currentHealthValue: 0
   baseAttackValue: 0
   maxAttackValue: 0
   currentAttackValue: 0
@@ -576,6 +515,57 @@ MonoBehaviour:
   checkOffset: {x: 0, y: 1, z: 0}
   normalAttackRadius: 0.9
   normalAttackoffset: {x: 0, y: 1, z: 0.6}
+--- !u!114 &1172754368638467147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388206898607748835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWhenEnabled: 1
+  asynchronousLoad: 0
+  pauseWhenDisabled: 0
+  restartWhenComplete: 1
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 11400000, guid: a4586b5e82a31a34db104f7777abb942, type: 2}
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(330.400024,-25.9999924)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(4.57763672E-05,170.30304)"},"ID":1,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-981.8928,199.4387)","Comment":"\u6b7b\u4ea1\u68c0\u6d4b"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Ordinary_DeathCheck","NodeData":{"Offset":"(-197.093475,149.8971)"},"ID":3,"Name":"Ordinary  
+        Death Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"Ordinary_Death","NodeData":{"Offset":"(55.0277557,152.32135)"},"ID":4,"Name":"Ordinary  
+        Death","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-698.528137,211.969666)","Comment":"\u51fb\u98de\u68c0\u6d4b"},"ID":5,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Ordinary_KnockUpCheck","NodeData":{"Offset":"(-61.941925,151.412262)"},"ID":6,"Name":"Ordinary  
+        Knock Up Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"Ordinary_KnockUp","NodeData":{"Offset":"(147.148926,153.230438)"},"ID":7,"Name":"Ordinary  
+        Knock Up","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-301.128571,205.944031)","Comment":"\u51fb\u9000\u68c0\u6d4b"},"ID":8,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Ordinary_KonckBackCheck","NodeData":{"Offset":"(-58.305603,147.1698)"},"ID":9,"Name":"Ordinary  
+        Konck Back Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"Ordinary_KnockBack","NodeData":{"Offset":"(132.906387,162.321289)"},"ID":10,"Name":"Ordinary  
+        Knock Back","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(131.901627,190)","Comment":"\u77e5\u9053\u73a9\u5bb6\u4f4d\u7f6e"},"ID":11,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Ordinary_PlayerCheck","NodeData":{"Offset":"(-121.676994,192.131958)"},"ID":12,"Name":"Ordinary  
+        Player Check","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"Ordinary_Chase","NodeData":{"Offset":"(34.0161934,187.972473)"},"ID":13,"Name":"Ordinary  
+        Chase","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"Ordinary_Attack","NodeData":{"Offset":"(174.787308,194.0058)"},"ID":14,"Name":"Ordinary  
+        Attack","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(512.9505,203.813461)"},"ID":15,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-4.33535,182.499939)","Comment":"\u4e0d\u77e5\u9053\u73a9\u5bb6\u4f4d\u7f6e"},"ID":16,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Ordinary_Patrol","NodeData":{"Offset":"(-113.829842,141.276611)"},"ID":17,"Name":"Ordinary  
+        Patrol","Instant":true,"SharedEnemyManagerself":{"Type":"SharedEnemyManager","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(97.95316,142.297974)"},"ID":18,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":4}}]}]}]},"Variables":[{"Type":"SharedEnemyManager","Name":"self","IsShared":true,"EnemyManagermValue":0}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects:
+        - {fileID: 534230242338969125}
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.11
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1
 --- !u!1 &1722886568167487660
 GameObject:
   m_ObjectHideFlags: 0

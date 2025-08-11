@@ -9,6 +9,13 @@ public class PartalManager : CharacterManager
     private float generateTimer; //生成计时器
     private float currentGenerateInterval; //当前生成的时间间隔
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        buffSystem = new BuffSystem(this);
+    }
+
     protected override void Start()
     {
         base.Start();

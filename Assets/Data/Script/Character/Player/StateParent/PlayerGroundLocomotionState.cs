@@ -23,6 +23,16 @@ public class PlayerGroundLocomotionState : PlayerGroundState
 
         HandleRotate();
 
+        playerManager.inputManager.GetRunInput(); //³ÖĞø¼ì²âÊÇ·ñÓĞwalk -> run µÄÇĞ»»
+
+        //ÌøÔ¾ÊäÈë¼ì¼ì²â
+        if (playerManager.inputManager.GetJumpInput())
+        {
+            ChangeState(playerManager.liftState);
+            playerManager.animator.CrossFadeInFixedTime(playerManager.liftState.animationName, 0.2f);
+            return;
+        }
+
         //this -> aim
         if (playerManager.inputManager.GetAimInput())
         {

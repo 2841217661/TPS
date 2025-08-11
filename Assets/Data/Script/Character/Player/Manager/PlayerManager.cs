@@ -5,6 +5,13 @@ using System;
 
 public class PlayerManager : CharacterManager,IDamageable
 {
+    [Header("闪避输入")]
+    //public bool canDodgeUnlimt; //无限制闪避(可在任意状态触发闪避)
+    public Material ghostMaterial; //残影材质
+    public float baseDodgeCooldown; //初始闪避冷却时间
+    public float dodgeCooldown; //闪避冷却时间
+    public float dodgeCooldownTimer; //闪避冷却计时器
+
     [Header("攻击力倍率")]
     public float defaultAttackPowerMul;
     public float currentAttackPowerMul;
@@ -73,6 +80,13 @@ public class PlayerManager : CharacterManager,IDamageable
 
         //更新角色面板血条信息显示
         NormalPanel.Instance.PlayerInfo.UI_Image_PlayerHealthBar.fillAmount = currentHealthValue / maxHealthValue;
+
+        //如果生命值空了，调用死亡事件
+        if(currentHealthValue <= 0f)
+        {
+            Debug.LogWarning("玩家血量为0");
+            EventManager.Instance.playerEvent.PlayerDeath();
+        }
     }
 
     [Header("测试")]
@@ -133,22 +147,31 @@ public class PlayerManager : CharacterManager,IDamageable
     public PlayerThrowEndState throwEndState { get; private set; }
     public PlayerElbowStrikeState elbowStrikeState { get; private set; }
     public PlayerKickState kickState { get; private set; }
+    public PlayerDeathState deathState { get; private set; }
+    public PlayerHitState hitState { get; private set; }
+    public PlayerDodgeState dodgeState { get; private set; }
     #endregion
 
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        EventManager.Instance.playerEvent.onPlayerDeath += Death_Player;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-
+        EventManager.Instance.playerEvent.onPlayerDeath -= Death_Player;
     }
 
     #region 事件
-
+    //玩家死亡事件：进入死亡状态
+    private void Death_Player()
+    {
+        currentState.ChangeState(deathState);
+    }
 
 
     #endregion
@@ -171,6 +194,8 @@ public class PlayerManager : CharacterManager,IDamageable
 
         currentExperienceIncreaseMul = baseExperienceIncreaseMul;
 
+        dodgeCooldown = baseDodgeCooldown;
+
         inputManager = GetComponent<PlayerInputManager>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
@@ -191,6 +216,9 @@ public class PlayerManager : CharacterManager,IDamageable
         throwEndState = new PlayerThrowEndState(this, PlayerAnimationName.ThrowEnd, true);
         elbowStrikeState = new PlayerElbowStrikeState(this, PlayerAnimationName.ElbowStrike, true);
         kickState = new PlayerKickState(this, PlayerAnimationName.Kick, true);
+        deathState = new PlayerDeathState(this, PlayerAnimationName.Death, false);
+        hitState = new PlayerHitState(this, PlayerAnimationName.Hit, true);
+        dodgeState = new PlayerDodgeState(this, PlayerAnimationName.Dodge, true);
         #endregion
     }
 
@@ -248,6 +276,12 @@ public class PlayerManager : CharacterManager,IDamageable
 
         //持续增加经验
         currentExperienceValue += currentExperienceIncreaseMul * Time.deltaTime;
+
+        //闪避能却时间计算
+        if (dodgeCooldownTimer < dodgeCooldown)
+        {
+            dodgeCooldownTimer += Time.deltaTime;
+        }
     }
 
     protected override void FixedUpdate()
@@ -322,7 +356,7 @@ public class PlayerManager : CharacterManager,IDamageable
     {
         Vector3 lowestPoint = new Vector3(
             transform.position.x,
-            characterController.bounds.min.y + groundCheckSphereRadius - 0.05f, // 上移一点
+            characterController.bounds.min.y + groundCheckSphereRadius - 0.25f, // 上移一点
             transform.position.z
         );
 
@@ -425,7 +459,28 @@ public class PlayerManager : CharacterManager,IDamageable
     #region 接口实现
     public void TakeDamage(float _value, CharacterManager _source,Vector3 _damagePosition, DamageIntensity _type, DamageElement _element)
     {
+        //死亡状态和闪避状态不受到伤害
+        if (currentState == deathState || currentState == dodgeState) return;
+
+
         Debug.Log($"受到{_value}点伤害，来自{_source}");
+
+        currentHealthValue -= _value;
+
+        //判断是否受到打断动作的伤害:非轻击则打断动作
+        switch (_type)
+        {
+            case DamageIntensity.Middle:
+                currentState.ChangeState(hitState);
+                hitState.hitTargetFaceDir = _source.transform.position - transform.position;
+                break;
+            case DamageIntensity.Heavy:
+                currentState.ChangeState(hitState);
+                hitState.hitTargetFaceDir = _source.transform.position - transform.position;
+                break;
+            default:
+                break;
+        }
 
         //屏幕受伤效果
         NormalPanel.Instance.playerDamageScreenEffect.PlayFlash();

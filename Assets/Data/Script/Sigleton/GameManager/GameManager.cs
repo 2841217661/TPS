@@ -229,7 +229,6 @@ public class GameManager : MonoSingleton<GameManager>
     {
         TryBuffSelectSupply();
 
-
         //≤‚ ‘
         UIUtils.ScreenFadeTransition(
             delay: 2f,

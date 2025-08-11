@@ -4,7 +4,7 @@ public class Å­»ğ·ÙÉíĞ¡Çò : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        CharacterManager manager = other.GetComponent<CharacterManager>();
+        EnemyManager manager = other.GetComponent<EnemyManager>();
         if (manager != null)
         {
             var buffSystem = manager.buffSystem;

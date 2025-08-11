@@ -90,4 +90,10 @@ public class PlayerCameraManager : MonoBehaviour
         thro.m_AmplitudeGain = 0;
         thro.m_FrequencyGain = 0;
     }
+
+    //Ïà»úÂö³å¶¶¶¯
+    public void ApplyImpluseCameraShark(CinemachineImpulseSource impulseSource,float explosionForce)
+    {
+        impulseSource.GenerateImpulseWithForce(explosionForce);
+    }
 }

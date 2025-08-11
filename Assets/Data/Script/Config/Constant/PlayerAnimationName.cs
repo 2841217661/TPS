@@ -15,5 +15,16 @@ public static class PlayerAnimationName
     public const string ThrowEnd = "ThrowEnd";
     public const string ElbowStrike = "ElbowStrike";
     public const string Kick = "Kick";
+    public const string Dodge = "Dodge";
+
+    public const string Hit = "Hit"; //标签
+    public const string Hit_1 = "Hit_1";
+    public const string Hit_2 = "Hit_2";
+    public const string Hit_3 = "Hit_3";
+    public const string Hit_4 = "Hit_4";
+
+    public const string Death = "Death"; //标签,目前未使用
+    public const string Death_1 = "Death_1";
+    public const string Death_2 = "Death_2";
 }
 

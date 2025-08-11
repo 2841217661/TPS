@@ -55,6 +55,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c36b6e3-c96a-4023-a51e-71fbc2f4932a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""51e351b1-3452-41f6-b50f-a51c9eba90f2"",
@@ -179,11 +188,22 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ca75e6f5-aa1e-4f31-9294-834ce18c96f8"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8d69cae-cdce-4a12-b76d-11ba06c48abe"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -322,6 +342,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Normal_Movement = m_Normal.FindAction("Movement", throwIfNotFound: true);
         m_Normal_Look = m_Normal.FindAction("Look", throwIfNotFound: true);
         m_Normal_Run = m_Normal.FindAction("Run", throwIfNotFound: true);
+        m_Normal_Dodge = m_Normal.FindAction("Dodge", throwIfNotFound: true);
         m_Normal_Fire = m_Normal.FindAction("Fire", throwIfNotFound: true);
         m_Normal_Aim = m_Normal.FindAction("Aim", throwIfNotFound: true);
         m_Normal_Jump = m_Normal.FindAction("Jump", throwIfNotFound: true);
@@ -402,6 +423,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Normal_Movement;
     private readonly InputAction m_Normal_Look;
     private readonly InputAction m_Normal_Run;
+    private readonly InputAction m_Normal_Dodge;
     private readonly InputAction m_Normal_Fire;
     private readonly InputAction m_Normal_Aim;
     private readonly InputAction m_Normal_Jump;
@@ -415,6 +437,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Normal_Movement;
         public InputAction @Look => m_Wrapper.m_Normal_Look;
         public InputAction @Run => m_Wrapper.m_Normal_Run;
+        public InputAction @Dodge => m_Wrapper.m_Normal_Dodge;
         public InputAction @Fire => m_Wrapper.m_Normal_Fire;
         public InputAction @Aim => m_Wrapper.m_Normal_Aim;
         public InputAction @Jump => m_Wrapper.m_Normal_Jump;
@@ -439,6 +462,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @Dodge.started += instance.OnDodge;
+            @Dodge.performed += instance.OnDodge;
+            @Dodge.canceled += instance.OnDodge;
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
@@ -470,6 +496,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @Dodge.started -= instance.OnDodge;
+            @Dodge.performed -= instance.OnDodge;
+            @Dodge.canceled -= instance.OnDodge;
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
@@ -564,6 +593,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);

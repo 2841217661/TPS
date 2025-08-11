@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6190552572681403927}
   - component: {fileID: 6381399330386430446}
   - component: {fileID: -4866286123805957129}
+  - component: {fileID: 9098252463194311649}
   m_Layer: 16
   m_Name: "\u624B\u96F7"
   m_TagString: Untagged
@@ -98,6 +99,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exploreEffectPre: {fileID: 1237819361445894, guid: e827f07476336f04c8510b15e5b400e0, type: 3}
+  impluseForce: 0.5
+  explodeTime: 3
+  explodeForce: 800
+--- !u!114 &9098252463194311649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897591181431803622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: -1
+    m_ImpulseShape: 3
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.3
+    m_ImpulseType: 1
+    m_DissipationRate: 0.5
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 30
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: 0.5, z: 0.5}
 --- !u!1 &8622277657580712181
 GameObject:
   m_ObjectHideFlags: 0

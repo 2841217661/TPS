@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class PlayerThrowLoopState : PlayerGroundState
 {
@@ -65,7 +66,7 @@ public class PlayerThrowLoopState : PlayerGroundState
     public override void Update()
     {
         base.Update();
-
+        
         //退出逻辑
         if (playerManager.inputManager.GetThrowInput())
         {

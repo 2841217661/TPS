@@ -7,6 +7,8 @@ public class PlayerInputManager : MonoBehaviour
 
     public PlayerInputAction inputActions;
 
+    public bool runInput;
+
 
     public void ApplyActionMap(bool _useNormalInput, bool _useUIInput)
     {
@@ -49,7 +51,22 @@ public class PlayerInputManager : MonoBehaviour
 
     public bool GetRunInput()
     {
-        return inputActions.Normal.Run.WasPressedThisFrame();
+        if (inputActions.Normal.Run.WasPressedThisFrame())
+        {
+            runInput = !runInput;
+        }
+        return runInput;
+    }
+
+    public bool GetDodgeInput()
+    {
+        if(inputActions.Normal.Dodge.WasPressedThisFrame() && GameManager.Instance.playerManager.dodgeCooldownTimer > GameManager.Instance.playerManager.dodgeCooldown)
+        {
+            //重新进入冷却
+            GameManager.Instance.playerManager.dodgeCooldownTimer = 0;
+            return true;
+        }
+        return false;
     }
 
     public void GetCameraInput()
