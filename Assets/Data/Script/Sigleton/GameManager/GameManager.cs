@@ -227,33 +227,32 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-        TryBuffSelectSupply();
 
-        //测试
-        UIUtils.ScreenFadeTransition(
-            delay: 2f,
-            onFadeInStart: () =>
-            {
-                GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
-            },
-            onFadeInComplete: () =>
-            {
-                GameManager.Instance.怪物传送门.SetActive(true);
-                GameManager.Instance.npcRoot.gameObject.SetActive(false);
-            },
-            onFadeOutStart: () =>
-            {
-                Debug.LogWarning("战斗开始！！！");
-            },
-            onFadeOutComplete: () =>
-            {
-                GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
-            }
-        );
+        ////测试
+        //UIUtils.ScreenFadeTransition(
+        //    delay: 2f,
+        //    onFadeInStart: () =>
+        //    {
+        //        GameManager.Instance.playerManager.inputManager.ApplyActionMap(false, false);
+        //    },
+        //    onFadeInComplete: () =>
+        //    {
+        //        GameManager.Instance.怪物传送门.SetActive(true);
+        //        GameManager.Instance.npcRoot.gameObject.SetActive(false);
+        //    },
+        //    onFadeOutStart: () =>
+        //    {
+        //        Debug.LogWarning("战斗开始！！！");
+        //    },
+        //    onFadeOutComplete: () =>
+        //    {
+        //        GameManager.Instance.playerManager.inputManager.ApplyActionMap(true, true);
+        //    }
+        //);
 
-        //测试
-        QuestManager.Instance.TryStartQuest(QuestName.Quest_升级1);
-        QuestManager.Instance.TryStartQuest(QuestName.Quest_杀怪1);
+        ////测试
+        //QuestManager.Instance.TryStartQuest(QuestName.Quest_升级1);
+        //QuestManager.Instance.TryStartQuest(QuestName.Quest_杀怪1);
     }
 
     private void Update()

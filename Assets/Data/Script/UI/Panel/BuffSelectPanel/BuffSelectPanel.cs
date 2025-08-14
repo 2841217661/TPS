@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Linq;
 using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
@@ -132,15 +133,45 @@ public class BuffSelectPanel : BasePanel
                 return (true, null);
             /*该buff是进行合并的：如果达到最大层数，则提升继续添加无效*/
             case ConflictResolution.combine:
-                //1：准备添加的buff在buffSystem中不存在，则说明是新buff，可以添加：
+                //准备添加的buff在buffSystem中不存在，则说明是新buff，可以添加：
                 BuffBase buffBase = playerBuffsystem.CheckBuffIsExist(_buffData);
-                //注意：这里如果设计前置buff，则需要在判断一下是否存在前置buff，当前项目没有设计前置buff这个设计
-                if (buffBase == null) return (true, null);
 
-                //2：既然已经有了该buff，判断是否处于满级状态
-                if (buffBase.CurrentLevel != buffBase.BuffData.maxLevel) return (true, null);
+                //当前不存在该buff
+                if (buffBase == null)
+                {
+                    //判断当前添加的buff是否含有前置buff：
+                    if (_buffData.PreBuffData.Length > 0)
+                    {
+                        BuffData[] pre_buff_datas = _buffData.PreBuffData; //获取当前buff的前置buff
 
-                //3：已经满级了...无法添加，就算添加也不会有效果
+                        //判断当前buffs中是否包含该buff的所有前置buff                                              
+                        bool allContained = pre_buff_datas.All(preBuff =>
+                            GameManager.Instance.playerManager.buffSystem.buffs.Any(b => b.buffData == preBuff)
+                        );
+
+                        //没有包含所有前置buff，无法添加buff
+                        if (!allContained)
+                        {
+                            return (false, "无法添加该Buff");
+                        }
+                        else
+                        {
+                            //包含所有前置条件，可以添加
+                            return (true, null);
+                        }
+                    }
+                    //当前添加的buff没有前置buff
+                    else 
+                    {
+                        //直接添加
+                        return (true, null);
+                    }
+                }
+
+                //既然已经有了该buff，判断是否处于满级状态
+                if (buffBase.CurrentLevel != buffBase.buffData.maxLevel) return (true, null);
+
+                //已经满级了...无法添加，就算添加也不会有效果
                 return (false,"当前buff已达到满级");
             /*该buff是覆盖类型的：可以直接添加*/
             case ConflictResolution.cover:

@@ -70,6 +70,9 @@ public class Buff子对象 : MonoBehaviour,IPointerEnterHandler,IPointerExitHand
             case "超级闪现":
                 Buff添加器.Instance.actorBuffSystem.AddBuff<B_超级闪现>(10);
                 break;
+            case "大魔法师":
+                Buff添加器.Instance.actorBuffSystem.AddBuff<B_大魔法师>(1);
+                break;
             default:
                 Debug.LogWarning("buff类型没有找到: " + "B_" + _buffName);
                 break;

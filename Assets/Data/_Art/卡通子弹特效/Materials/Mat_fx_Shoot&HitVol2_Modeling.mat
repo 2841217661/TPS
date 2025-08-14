@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_fx_Shoot&HitVol2_Modeling
-  m_Shader: {fileID: -6465566751694194690, guid: 4327155073ca00d4c83c70bfe294037e, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 885acccc5f38c2840be6c959d19efca0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_F593E37E:
+        m_Texture: {fileID: 2800000, guid: 6fd9ca99d06cb86439e01135fe9a1e86, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -107,6 +111,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Boolean_2FAC1FE4: 1
     - Vector1_7033DCAE: 1.5
     - Vector1_748A98F: 5
     - Vector1_A2086425: 0

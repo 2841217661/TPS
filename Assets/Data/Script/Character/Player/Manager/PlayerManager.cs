@@ -268,7 +268,7 @@ public class PlayerManager : CharacterManager,IDamageable
         当前拥有的Buff.Clear();
         for (int i = 0; i < buffSystem.buffs.Count; i++)
         {
-            当前拥有的Buff.Add(buffSystem.buffs[i].BuffData.buffName);
+            当前拥有的Buff.Add(buffSystem.buffs[i].buffData.buffName);
         }
         #endregion
 

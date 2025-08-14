@@ -20,7 +20,7 @@ public class B_火焰弹头 : BuffBase
 
     private void BulletHitObject(BulletType _, CharacterManager _manaer)
     {
-        if(_manaer != null) //有可能命中的是障碍物
+        if(_manaer != null && _manaer is EnemyManager) //只能为敌人添加火焰印记
         {
             Debug.LogWarning("火焰弹头击中： " + _manaer);
             _manaer.buffSystem.AddBuff<B_火焰印记>();

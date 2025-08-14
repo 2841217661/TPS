@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f08d2ae4cba14087c1ed36193d82b, type: 3}
+  m_Name: "\u9B54\u6CD5\u5E08"
+  m_EditorClassIdentifier: 
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(308.4453,-7.11193848)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(-1.5546875,122.888062)"},"ID":1,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-991.6372,167.941238)"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Pet_FarCheck","NodeData":{"Offset":"(-124.613121,140.3419)","Comment":"\u5224\u65ad\u662f\u5426\u8ddd\u79bb\u73a9\u5bb6\u8fc7\u8fdc(\u8d85\u8fc7\u8fdc\u8ddd\u79bb)"},"ID":3,"Name":"Pet  
+        Far Check","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":0}},{"Type":"Pet_CloseTarget","NodeData":{"Offset":"(87.704155,138.008881)","Comment":"\u5411\u4e2d\u8ddd\u79bb\u9760\u8fd1"},"ID":4,"Name":"Pet  
+        Close Target","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":1},"SinglestopDistance":10}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-541.7075,176.585373)"},"ID":5,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Pet_EnemyCheck","NodeData":{"Offset":"(-121.682587,132.967468)","Comment":"\u5224\u65ad\u662f\u5426\u68c0\u6d4b\u5230\u4e86\u654c\u4eba(\u8fdc\u8ddd\u79bb\u5185)"},"ID":6,"Name":"Pet  
+        Enemy Check","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":2}},{"Type":"Pet_ChaseEnemy","NodeData":{"Offset":"(59.62554,130.941833)","Comment":"\u9760\u8fd1\u654c\u4eba"},"ID":7,"Name":"Pet  
+        Chase Enemy","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":3},"SinglecanAttackDistance":10},{"Type":"Pet_Attack","NodeData":{"Offset":"(186.778839,133.152252)","Comment":"\u653b\u51fb"},"ID":8,"Name":"Pet  
+        Attack","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":4}},{"Type":"Pet_Idle","NodeData":{"Offset":"(308.372253,127.77774)"},"ID":9,"Name":"Pet  
+        Idle","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":5},"SingleidleMinTime":0.5,"SingleidleMaxTime":1}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(62.2223167,181.111115)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"Pet_NearCheck","NodeData":{"Offset":"(-92.31237,135.250092)","Comment":"\u65e2\u7136\u6ca1\u6709\u68c0\u6d4b\u5230\u654c\u4eba\uff0c\u90a3\u4e48\u5c31\u7d27\u9760\u73a9\u5bb6"},"ID":11,"Name":"Pet  
+        Near Check","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":6}},{"Type":"Pet_CloseTarget","NodeData":{"Offset":"(142.22226,141.111115)"},"ID":12,"Name":"Pet  
+        Close Target","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":7},"SinglestopDistance":5}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(432.250336,158.843933)"},"ID":13,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Pet_Idle","NodeData":{"Offset":"(2.25021362,154.031769)"},"ID":14,"Name":"Pet  
+        Idle","Instant":true,"SharedPetManagerself":{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":8},"SingleidleMinTime":0.5,"SingleidleMaxTime":1}]}]},"Variables":[{"Type":"SharedPetManager","Name":"self","IsShared":true,"PetManagermValue":9}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects:
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        - {fileID: 5057780367788799452, guid: fd81cbffc6879c94ab6176b8723459b6, type: 3}
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.11

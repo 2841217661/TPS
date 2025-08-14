@@ -72,7 +72,13 @@ public class PoolManager : MonoSingleton<PoolManager>
     public GameObject damageText;
     //僵尸
     public GameObject zombie_death_explode;
-
+    //魔法师宠物：
+    public GameObject 普通魔法球_释放;
+    public GameObject 普通魔法球_飞行;
+    public GameObject 普通魔法球_命中;
+    public GameObject 强力魔法球_释放;
+    public GameObject 强力魔法球_飞行;
+    public GameObject 强力魔法球_命中;
 
 
     protected override void Init()
@@ -163,6 +169,13 @@ public class PoolManager : MonoSingleton<PoolManager>
         CreatePool(damageText.name, damageText, 10, NormalPanel.Instance.DamageTextPoint);
         //僵尸
         CreatePool(zombie_death_explode.name, zombie_death_explode, 10, transform.Find("VFXPool/Zombie/DeathExplode"));
+        //宠物
+        CreatePool(普通魔法球_释放.name, 普通魔法球_释放, 1, transform.Find("PetSkillPool/魔法师/普通魔法球/释放"));
+        CreatePool(普通魔法球_飞行.name, 普通魔法球_飞行, 1, transform.Find("PetSkillPool/魔法师/普通魔法球/飞行"));
+        CreatePool(普通魔法球_命中.name, 普通魔法球_命中, 1, transform.Find("PetSkillPool/魔法师/普通魔法球/命中"));
+        CreatePool(强力魔法球_释放.name, 强力魔法球_释放, 1, transform.Find("PetSkillPool/魔法师/强力魔法球/释放"));
+        CreatePool(强力魔法球_飞行.name, 强力魔法球_飞行, 1, transform.Find("PetSkillPool/魔法师/强力魔法球/飞行"));
+        CreatePool(强力魔法球_命中.name, 强力魔法球_命中, 1, transform.Find("PetSkillPool/魔法师/强力魔法球/命中"));
         #endregion
     }
     public void CreatePool(string key, GameObject prefab, int initialSize, Transform parent = null)

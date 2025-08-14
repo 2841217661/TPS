@@ -6,7 +6,7 @@ public class BuffBase
     //无参构造
     public BuffBase() { }
 
-    public BuffData BuffData { get; private set; } = null;
+    public BuffData buffData { get; private set; } = null;
 
     // 持续时间缩放
     public float DurationScale { get; set; } = 1;
@@ -31,14 +31,14 @@ public class BuffBase
         }
         set
         {
-            value = Math.Clamp(value, 0, BuffData.maxLevel);
+            value = Math.Clamp(value, 0, buffData.maxLevel);
             int change = value - m_CurrentLevel;
             m_CurrentLevel = value;
             OnCurrentLevelChange(change);
             //刷新持续时间
-            if (BuffData.autoRefresh && change >= 0)
+            if (buffData.autoRefresh && change >= 0)
             {
-                ResidualDuration = BuffData.maxDuration;
+                ResidualDuration = buffData.maxDuration;
             }
         }
     }
@@ -50,7 +50,7 @@ public class BuffBase
     public float ResidualDuration
     {
         get { return m_ResidualDuration; }
-        set { m_ResidualDuration = Math.Clamp(value, 0, BuffData.maxDuration); }
+        set { m_ResidualDuration = Math.Clamp(value, 0, buffData.maxDuration); }
     }
 
     public CharacterManager characterManager;
@@ -61,7 +61,7 @@ public class BuffBase
         // BuffData 是只初始化一次的配置，不需要重复赋值
         if (!m_Initialized)
         {
-            BuffData = buffData;
+            this.buffData = buffData;
             m_Initialized = true;
         }
     }

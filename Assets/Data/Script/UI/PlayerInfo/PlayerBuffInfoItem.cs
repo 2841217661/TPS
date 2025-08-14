@@ -12,16 +12,16 @@ public class PlayerBuffInfoItem : MonoBehaviour
 
     private void Start()
     {
-        UI_Image_BuffIcon.sprite = buff.BuffData.icon;
+        UI_Image_BuffIcon.sprite = buff.buffData.icon;
     }
 
     private void Update()
     {
         UI_Text_BuffLevel.text = buff.CurrentLevel.ToString();
 
-        if (!buff.BuffData.isPermanent) //只有不是永久性buff才显示持续时间
+        if (!buff.buffData.isPermanent) //只有不是永久性buff才显示持续时间
         {
-            UI_Image_ResidulDurationBg.fillAmount = 1 - (buff.ResidualDuration / buff.BuffData.maxDuration);
+            UI_Image_ResidulDurationBg.fillAmount = 1 - (buff.ResidualDuration / buff.buffData.maxDuration);
         }
     }
 }

@@ -9,6 +9,9 @@ public class BuffData:ScriptableObject
     [Tooltip("buff的名字。")]
     public string buffName;
 
+    [Tooltip("前置Buff数组，当前buff所依赖的buff")]
+    public BuffData[] PreBuffData;
+
     [Tooltip("buff的最大等级（堆叠层数）。")]
     public int maxLevel = 1;
 

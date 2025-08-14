@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: "\u624B\u96F7"
   m_EditorClassIdentifier: 
   itemId: "\u624B\u96F7"
-  count: 1407
+  count: 1399
   itemType: 2
   icon: {fileID: 21300000, guid: f683aa24783019044a546cfad858cdc2, type: 3}

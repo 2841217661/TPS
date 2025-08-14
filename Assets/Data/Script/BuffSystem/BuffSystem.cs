@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffSystem
@@ -30,6 +31,25 @@ public class BuffSystem
     /// <param name="heap">添加多少层?</param>
     public void AddBuff<BuffType>(int heap = 1) where BuffType : BuffBase,new()
     {
+        //判断当前添加的buff是否含有前置buff：
+        BuffData data = BuffDataManager.GetBuffData<BuffType>();
+        if(data.PreBuffData.Length > 0 && data != null)
+        {
+            BuffData[] pre_buff_datas = data.PreBuffData; //获取当前buff的前置buff
+
+            //判断当前buffs中是否包含该buff的所有前置buff                                              
+            bool allContained = pre_buff_datas.All(preBuff =>
+                this.buffs.Any(b => b.buffData == preBuff)
+            );
+
+            //没有包含所有前置buff，无法添加buff
+            if (!allContained)
+            {
+                Debug.LogWarning("未包含所有前置buff，添加buff失败");
+                return;
+            }
+        }
+
         //如果身上没有任何buff则直接挂一个新buff即可
         if (m_Buffs.Count == 0)
         {
@@ -53,7 +73,7 @@ public class BuffSystem
         else//否则进行冲突处理
         {
             BuffType sameProviderBuff = buffs[0];
-            switch (sameProviderBuff.BuffData.conflictResolution)
+            switch (sameProviderBuff.buffData.conflictResolution)
             {
                 /*叠层(合并)：
                  * 规则：
@@ -82,7 +102,7 @@ public class BuffSystem
                     //RemoveBuff(sameProviderBuff);
                     //AddNewBuff<BuffType>(heap);
                     //目前选择刷新buff持续时间
-                    sameProviderBuff.ResidualDuration = sameProviderBuff.BuffData.maxDuration;
+                    sameProviderBuff.ResidualDuration = sameProviderBuff.buffData.maxDuration;
                     break;
             }
         }
@@ -177,7 +197,7 @@ public class BuffSystem
     {
         foreach(BuffBase _buff in buffs)
         {
-            if(_buff.BuffData == _buffData)
+            if(_buff.buffData == _buffData)
             {
                 return _buff;
             }
@@ -203,7 +223,7 @@ public class BuffSystem
 
         m_Buffs.RemoveAt(_index);
 
-        Debug.Log("成功移除buff:" + buff.BuffData.buffName);
+        Debug.Log("成功移除buff:" + buff.buffData.buffName);
 
         BuffPool.Release(buff, buff.GetType().Name);
 
@@ -223,7 +243,7 @@ public class BuffSystem
 
         //添加buff
         m_Buffs.Add(buff);
-        Debug.Log("成功添加buff:" + buff.BuffData.buffName);
+        Debug.Log("成功添加buff:" + buff.buffData.buffName);
         buff.AfterBeAdded(); //该buff的添加成功方法回调
 
         E_OnAddBuff?.Invoke(buff); //该buff系统的buff添加成功事件回调
@@ -231,7 +251,7 @@ public class BuffSystem
         //初始化设置
         buff.DurationScale = 1;
         buff.CurrentLevel = heap;
-        buff.ResidualDuration = buff.BuffData.maxDuration;
+        buff.ResidualDuration = buff.buffData.maxDuration;
     }
     #endregion
 
@@ -251,7 +271,7 @@ public class BuffSystem
             //执行fixed update
             buff.FixedUpdate();
             // 如果不是永久性 Buff 且时间没有被冻结
-            if (!buff.BuffData.isPermanent && !buff.TimeFreeze)
+            if (!buff.buffData.isPermanent && !buff.TimeFreeze)
             {
                 // 处理持续时间衰减
                 if (buff.DurationScale > 0f)
@@ -266,9 +286,9 @@ public class BuffSystem
                 // 如果持续时间耗尽
                 if (buff.ResidualDuration <= 0f)
                 {
-                    if (buff.BuffData.demotion > 0)
+                    if (buff.buffData.demotion > 0)
                     {
-                        buff.CurrentLevel -= buff.BuffData.demotion;
+                        buff.CurrentLevel -= buff.buffData.demotion;
                         // 确保不会变负
                         if (buff.CurrentLevel < 0)
                             buff.CurrentLevel = 0;
@@ -281,7 +301,7 @@ public class BuffSystem
                     // 重置持续时间（如果还有层数）
                     if (buff.CurrentLevel > 0)
                     {
-                        buff.ResidualDuration = buff.BuffData.maxDuration;
+                        buff.ResidualDuration = buff.buffData.maxDuration;
                     }
                 }
             }
